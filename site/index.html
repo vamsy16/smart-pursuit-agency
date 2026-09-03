@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart Pursuit OS — The Growth Department</title>
+<meta name="description" content="A one-person AI operating system that manufactures agency output at ₹10,00,000 project scale. Design blueprint." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#08090c; --ink2:#0d0f14; --ink3:#12151c; --panel:#141822;
+  --line:rgba(222,200,148,.14); --line-soft:rgba(255,255,255,.07);
+  --gold:#dcc389; --gold-bright:#f2dfae; --gold-dim:rgba(220,195,137,.55);
+  --text:#e9e7e1; --muted:#9b9689; --muted2:#6e6a61;
+  --sage:#9fb8a3; --rose:#c79a92; --blue:#93a7c4;
+  --maxw:1240px; --pad:clamp(20px,5vw,72px);
+  --serif:"Fraunces",Georgia,serif; --sans:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--sans);font-weight:300;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E")}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:8;
+  background:radial-gradient(760px 520px at 78% -6%,rgba(220,195,137,.09),transparent 65%),
+             radial-gradient(680px 480px at 8% 108%,rgba(147,167,196,.07),transparent 60%)}
+main{position:relative;z-index:2}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+section{padding:clamp(76px,11vw,148px) 0;border-top:1px solid var(--line-soft);position:relative}
+section:first-of-type{border-top:0}
+
+/* type */
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-dim);display:flex;align-items:center;gap:14px}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--gold-dim)}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(42px,8.2vw,104px);line-height:.96;letter-spacing:-.028em}
+h2{font-family:var(--serif);font-weight:300;font-size:clamp(30px,4.6vw,60px);line-height:1.06;letter-spacing:-.02em;margin:20px 0 0}
+h3{font-family:var(--serif);font-weight:400;font-size:clamp(19px,2vw,25px);line-height:1.24;letter-spacing:-.012em}
+em,.it{font-family:var(--serif);font-style:italic;font-weight:300;color:var(--gold-bright)}
+p{color:#c9c5bc;max-width:64ch;font-size:clamp(14.5px,1.15vw,16.5px)}
+.lead{font-size:clamp(17px,1.75vw,21.5px);line-height:1.62;color:#d8d4cb;max-width:58ch;font-weight:300}
+.small{font-size:13.5px;line-height:1.62;color:var(--muted)}
+.num{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted2)}
+.head{display:flex;flex-direction:column;gap:20px;margin-bottom:clamp(38px,5vw,64px)}
+.head.wide{max-width:none}
+.gold{color:var(--gold-bright)}
+.mono{font-family:var(--mono)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px) saturate(140%);
+  background:linear-gradient(180deg,rgba(8,9,12,.94),rgba(8,9,12,.62));border-bottom:1px solid var(--line-soft)}
+nav .in{max-width:var(--maxw);margin:0 auto;padding:15px var(--pad);display:flex;align-items:center;gap:28px}
+.brand{font-family:var(--serif);font-size:16.5px;letter-spacing:.01em;white-space:nowrap;display:flex;align-items:baseline;gap:10px}
+.brand i{font-family:var(--mono);font-style:normal;font-size:9.5px;letter-spacing:.24em;color:var(--gold-dim);
+  border:1px solid var(--line);padding:3px 7px;border-radius:2px}
+.links{display:flex;gap:24px;margin-left:auto;flex-wrap:wrap}
+.links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.06em;transition:.35s}
+.links a:hover{color:var(--gold-bright)}
+.stamp{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--gold-dim);border-left:1px solid var(--line);padding-left:22px}
+@media(max-width:940px){.links{display:none}.stamp{margin-left:auto;padding-left:0;border:0}}
+
+/* hero */
+.hero{padding:clamp(58px,8vw,104px) 0 clamp(62px,8vw,96px);border-top:0}
+.hero .grid{display:grid;grid-template-columns:1.32fr .68fr;gap:clamp(30px,5vw,72px);align-items:end}
+@media(max-width:900px){.hero .grid{grid-template-columns:1fr}}
+.hero h1 span{display:block}
+.hero h1 .thin{color:var(--muted2)}
+.floors{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:clamp(30px,4vw,44px)}
+.floors div{background:var(--ink2);padding:20px 22px;display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.floors b{font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.3vw,27px);color:var(--gold-bright);white-space:nowrap}
+.floors span{font-size:12.5px;color:var(--muted);text-align:right}
+.hero-side{display:flex;flex-direction:column;gap:22px}
+.spec{border:1px solid var(--line);padding:24px;background:linear-gradient(160deg,var(--ink3),var(--ink2))}
+.spec h4{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px;font-weight:400}
+.spec dl{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:12.5px}
+.spec dt{color:var(--muted2);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;padding-top:2px}
+.spec dd{color:var(--text);text-align:right}
+.quote{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.9vw,22px);line-height:1.42;color:#dcd8cf;border-left:1px solid var(--gold-dim);padding-left:22px}
+.scrollhint{margin-top:44px;font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--muted2);display:flex;align-items:center;gap:12px}
+.scrollhint::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+/* reveal — falls open if JS or the observer is unavailable */
+.js .rv{opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.16,.8,.3,1),transform 1s cubic-bezier(.16,.8,.3,1)}
+.js .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
+
+/* three planes */
+.planes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(max-width:880px){.planes{grid-template-columns:1fr}}
+.plane{background:var(--ink2);padding:clamp(24px,3vw,34px);position:relative;overflow:hidden}
+.plane::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:var(--pc,var(--gold-dim))}
+.plane .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--pc,var(--gold-dim));text-transform:uppercase}
+.plane h3{margin:14px 0 10px}
+.plane ul{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:9px}
+.plane li{font-size:13px;color:#bdb9b0;display:flex;gap:10px;line-height:1.5}
+.plane li::before{content:"—";color:var(--pc,var(--gold-dim));flex:none;opacity:.75}
+.plane .file{margin-top:20px;font-family:var(--mono);font-size:10.5px;color:var(--muted2);word-break:break-all}
+.axis{margin-top:26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.axis .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--muted2);white-space:nowrap}
+.bar{flex:1;min-width:230px;height:5px;background:linear-gradient(90deg,var(--ink3) 0 0),var(--ink3);border:1px solid var(--line);position:relative}
+.bar i{position:absolute;top:-4px;width:1px;height:13px;background:var(--gold)}
+
+/* engines */
+.engines{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(max-width:860px){.engines{grid-template-columns:1fr}}
+.engine{background:var(--ink2);padding:clamp(24px,2.7vw,32px);transition:.5s;position:relative}
+.engine:hover{background:#161a24}
+.engine .id{font-family:var(--mono);font-size:34px;color:var(--gold);opacity:.28;position:absolute;top:22px;right:26px;line-height:1}
+.engine h3{margin-bottom:12px;max-width:80%}
+.engine p{font-size:13.5px;color:#b5b1a8;max-width:52ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.chip{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line-soft);padding:5px 10px;border-radius:2px}
+.chip.g{color:var(--gold-bright);border-color:var(--line)}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);background:var(--ink2)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);
+  text-align:left;padding:16px 18px;border-bottom:1px solid var(--line);font-weight:400;white-space:nowrap;background:rgba(0,0,0,.25)}
+td{padding:14px 18px;border-bottom:1px solid var(--line-soft);color:#c3bfb6;vertical-align:top;line-height:1.5}
+tbody tr:last-child td{border-bottom:0}
+tbody tr{transition:.3s}
+tbody tr:hover{background:rgba(220,195,137,.035)}
+td.k{font-family:var(--mono);font-size:11.5px;color:var(--gold-bright);white-space:nowrap}
+td.mono{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+td.r{text-align:right;font-family:var(--mono);font-size:12px;color:var(--text);white-space:nowrap}
+tr.hot td{color:var(--text)}
+tr.hot td.k{color:var(--gold-bright)}
+
+/* roles */
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(max-width:980px){.roles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.roles{grid-template-columns:1fr}}
+.role{background:var(--ink2);padding:22px;transition:.45s}
+.role:hover{background:#171b25}
+.role .r{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--gold-dim)}
+.role h3{font-size:17px;margin:10px 0 8px}
+.role p{font-size:12.5px;color:#aba79e;line-height:1.55}
+.role .out{margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--muted2);border-top:1px solid var(--line-soft);padding-top:11px}
+
+/* pipeline flow */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.step{border:1px solid var(--line);padding:13px 16px;background:var(--ink2);min-width:118px;flex:1}
+.step b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--gold-bright)}
+.step span{font-size:11.5px;color:var(--muted);display:block;margin-top:5px}
+.arrow{color:var(--gold-dim);font-size:14px;flex:none}
+@media(max-width:760px){.arrow{display:none}.step{min-width:calc(50% - 6px)}}
+
+/* pricing */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(max-width:900px){.tiers{grid-template-columns:1fr}}
+.tier{background:var(--ink2);padding:clamp(26px,3vw,36px);display:flex;flex-direction:column;position:relative}
+.tier.rec{background:linear-gradient(175deg,#181d28,#101319)}
+.tier.rec::after{content:"MOST CHOSEN";position:absolute;top:0;right:0;font-family:var(--mono);font-size:9px;letter-spacing:.2em;
+  background:var(--gold);color:#151109;padding:6px 11px}
+.tier .name{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--gold-dim);text-transform:uppercase}
+.price{font-family:var(--serif);font-size:clamp(30px,3.6vw,46px);line-height:1;margin:16px 0 4px;letter-spacing:-.02em}
+.price small{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);display:block;margin-top:9px}
+.tier ul{list-style:none;margin:22px 0;display:flex;flex-direction:column;gap:10px}
+.tier li{font-size:12.5px;color:#b8b4ab;display:flex;gap:10px;line-height:1.5}
+.tier li::before{content:"◆";color:var(--gold-dim);font-size:7px;flex:none;transform:translateY(4px)}
+.tier .foot{margin-top:auto;padding-top:18px;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--muted2)}
+
+/* bridge */
+.bridge{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(20px,4vw,54px);align-items:center}
+@media(max-width:880px){.bridge{grid-template-columns:1fr}.bridge .mid{transform:rotate(90deg)}}
+.panel{border:1px solid var(--line);background:var(--ink2);padding:clamp(22px,2.6vw,32px)}
+.panel h4{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:18px;font-weight:400}
+.panel .big{font-family:var(--serif);font-size:clamp(28px,4vw,44px);line-height:1;color:var(--text)}
+.panel.dark .big{color:var(--gold-bright)}
+.panel ul{list-style:none;margin:18px 0 0;display:flex;flex-direction:column;gap:7px}
+.panel li{display:flex;justify-content:space-between;gap:14px;font-size:12.5px;color:#b3afa6;border-bottom:1px dotted rgba(255,255,255,.08);padding-bottom:7px}
+.panel li b{font-family:var(--mono);font-size:11.5px;font-weight:400;color:var(--text);white-space:nowrap}
+.mid{text-align:center}
+.mid div{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--gold-dim);line-height:1.4}
+.mid span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--muted2);margin-top:10px}
+
+/* laws */
+.laws{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(max-width:800px){.laws{grid-template-columns:1fr}}
+.law{background:var(--ink2);padding:clamp(24px,3vw,34px)}
+.law .n{font-family:var(--serif);font-size:13px;letter-spacing:.1em;color:var(--gold-dim)}
+.law h3{margin:10px 0 12px}
+.law p{font-size:13.5px;color:#b5b1a8}
+
+/* day timeline */
+.day{position:relative;padding-left:22px}
+.day::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,transparent,var(--line),var(--line),transparent)}
+.slot{position:relative;padding:0 0 26px 20px}
+.slot::before{content:"";position:absolute;left:-22px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--ink);border:1px solid var(--gold-dim)}
+.slot.you::before{background:var(--gold);border-color:var(--gold)}
+.slot .t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--gold-dim)}
+.slot h3{font-size:16px;margin:5px 0 5px}
+.slot p{font-size:12.5px;color:var(--muted)}
+.slot .who{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--muted2);margin-top:7px}
+.daygrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,4vw,56px);align-items:start}
+@media(max-width:860px){.daygrid{grid-template-columns:1fr}}
+
+/* gate meter */
+.gate{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,50px);align-items:center}
+@media(max-width:860px){.gate{grid-template-columns:1fr}}
+.gauge{border:1px solid var(--line);background:var(--ink2);padding:clamp(24px,3vw,34px)}
+.gauge .score{font-family:var(--serif);font-size:clamp(56px,10vw,104px);line-height:.88;color:var(--gold-bright);letter-spacing:-.03em}
+.gauge .score span{font-size:.32em;color:var(--muted);letter-spacing:.06em}
+.meter{height:4px;background:var(--ink3);border:1px solid var(--line);margin:22px 0 10px;position:relative;overflow:hidden}
+.meter i{position:absolute;inset:0 auto 0 0;width:92%;background:linear-gradient(90deg,var(--gold-dim),var(--gold-bright))}
+.meter b{position:absolute;top:-5px;bottom:-5px;left:90%;width:1px;background:var(--rose)}
+.ledger{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line)}
+.ledger div{background:var(--ink2);padding:13px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;font-size:12.5px;color:#b8b4ab}
+.ledger div b{font-family:var(--mono);font-size:11.5px;color:var(--gold-bright);font-weight:400}
+.ledger div.bad b{color:var(--rose)}
+
+/* build plan */
+.weeks{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(max-width:800px){.weeks{grid-template-columns:1fr}}
+.week{background:var(--ink2);padding:22px 24px}
+.week .w{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--gold-dim)}
+.week h3{font-size:16.5px;margin:9px 0 8px}
+.week p{font-size:12.5px;color:var(--muted)}
+.week .ship{margin-top:13px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--sage);border-top:1px solid var(--line-soft);padding-top:11px}
+
+/* honesty */
+.truth{border:1px solid var(--line);background:linear-gradient(165deg,#15120d,#0e1013);padding:clamp(26px,4vw,46px)}
+.truth h3{font-size:clamp(21px,2.6vw,31px);margin-bottom:16px;max-width:30ch}
+.truth p{max-width:74ch}
+.truth p+p{margin-top:14px}
+.warn{margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+@media(max-width:800px){.warn{grid-template-columns:1fr}}
+.warn div{background:#121014;padding:18px 20px}
+.warn b{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--rose);display:block;margin-bottom:8px}
+.warn span{font-size:12px;color:#a9a59c}
+
+/* cta */
+.cta{text-align:center;padding:clamp(80px,11vw,140px) 0}
+.cta h2{margin:0 auto 22px;max-width:22ch;text-align:center}
+.cta .lead{margin:0 auto 40px;text-align:center}
+.btn{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink);background:var(--gold);padding:16px 30px;text-decoration:none;transition:.4s;border:1px solid var(--gold)}
+.btn:hover{background:var(--gold-bright);transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--gold-bright);border-color:var(--line);margin-left:12px}
+.btn.ghost:hover{border-color:var(--gold-dim);background:rgba(220,195,137,.06)}
+@media(max-width:600px){.btn.ghost{margin:12px 0 0}}
+footer{border-top:1px solid var(--line);padding:34px 0 54px;background:var(--ink2)}
+.fgrid{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap;align-items:baseline}
+footer .num{font-size:10px;letter-spacing:.2em}
+hr.fine{border:0;border-top:1px solid var(--line);margin:clamp(40px,6vw,72px) 0 0}
+.kv{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:clamp(34px,5vw,52px)}
+@media(max-width:800px){.kv{grid-template-columns:repeat(2,1fr)}}
+.kv div{background:var(--ink2);padding:20px 22px}
+/* print = client-ready document */
+@page{margin:14mm}
+@media print{
+  :root{--ink:#fff;--ink2:#fff;--ink3:#f7f5f0;--text:#111;--muted:#4d4a45;--muted2:#77746d;
+    --gold:#7a5f18;--gold-bright:#6b5315;--gold-dim:#8a6d24;--line:rgba(0,0,0,.2);--line-soft:rgba(0,0,0,.11);
+    --rose:#8c3f33;--sage:#3d5c46;--blue:#38506e}
+  body{background:#fff}
+  body::before,body::after,nav,.scrollhint,.btn{display:none!important}
+  section{page-break-inside:avoid;padding:30px 0;border-color:rgba(0,0,0,.14)}
+  .wrap{max-width:none;padding:0 4mm}
+  .tw,.bridge,.panel,.gauge,.ledger,.spec,.plane{overflow:visible}
+  table{min-width:0;font-size:9.5px}
+  .js .rv{opacity:1!important;transform:none!important}
+  .hero h1{font-size:44px}
+  h2{font-size:26px}
+}
+.kv b{display:block;font-family:var(--serif);font-size:clamp(21px,2.4vw,30px);color:var(--gold-bright);line-height:1}
+.kv span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--muted2);margin-top:9px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="in">
+    <div class="brand">Smart Pursuit <i>OS</i></div>
+    <div class="links">
+      <a href="#thesis">Thesis</a><a href="#arch">Architecture</a><a href="#engines">Engines</a>
+      <a href="#line">Delivery</a><a href="#pricing">Price</a><a href="#gate">The Gate</a>
+      <a href="#stack">₹0 Stack</a><a href="#build">Build</a>
+    </div>
+    <div class="stamp">BLUEPRINT · v1 · 2026</div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- HERO -->
+<section class="hero" id="thesis">
+  <div class="grid">
+    <div>
+      <div class="eyebrow">Design of an autonomous one-person agency</div>
+      <h1><span>The growth</span><span>department <em>is</em> the</span><span class="thin">operating system.</span></h1>
+      <p class="lead" style="margin-top:30px">
+        Smart Pursuit is not a digital marketing agency that uses AI. It is a <b style="color:var(--text);font-weight:400">manufacturing line</b>
+        with one senior operator: strategy and trust stay human; research, production, measurement,
+        reporting and money-chasing are made by a machine that never sleeps and never forgets a file.
+      </p>
+      <div class="floors">
+        <div><b>₹10,00,000</b><span>Minimum project.<br/>Published. Non-negotiable.</span></div>
+        <div><b>₹1,00,000 / month</b><span>Minimum retainer.<br/>6-month term, auto-invoiced.</span></div>
+        <div><b>₹0 / month</b><span>Software subscriptions.<br/>Domain: ₹700/yr.</span></div>
+      </div>
+      <div class="scrollhint">The full design, eleven sections down</div>
+    </div>
+    <aside class="hero-side">
+      <div class="spec">
+        <h4>Specification</h4>
+        <dl>
+          <dt>Founder</dt><dd>Vamsi</dd>
+          <dt>Model</dt><dd>Growth Dept-as-a-Service</dd>
+          <dt>Engine</dt><dd>Full Growth Partner</dd>
+          <dt>Markets</dt><dd>IN + US/UK/DXB/SG</dd>
+          <dt>Niche</dt><dd>Open door, tuned inside</dd>
+          <dt>Capacity</dt><dd>8 retainers max</dd>
+          <dt>Day</dt><dd>2 h 15 m of work</dd>
+          <dt>Margin</dt><dd>88 – 95 %</dd>
+          <dt>Status</dt><dd style="color:var(--gold-bright)">Design → build</dd>
+        </dl>
+      </div>
+      <blockquote class="quote">After this is built I should not be free and bored. I should be busy with clients.</blockquote>
+      <p class="small">So the design does something unusual for an "AI agency" plan: it starts from the
+      founder's calendar and works backwards. Every module below has to justify itself by either shrinking
+      the day or widening a client's trust. If it does neither, it doesn't get built.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="arch">
+  <div class="head wide">
+    <div class="eyebrow">01 · Architecture</div>
+    <h2>Three planes.<br/>One filesystem.</h2>
+    <p class="lead">No CRM subscription, no dashboard vendor, no bot farm. The company runs on text files in a git
+    repository that an AI kernel reads the way an employee reads a handbook — and on scheduled jobs that write
+    results back. The <em>diff is the timesheet</em>; the commit message is the audit trail.</p>
+  </div>
+  <div class="planes">
+    <div class="plane" style="--pc:var(--gold)">
+      <div class="tag">Control plane</div>
+      <h3>Vamsi, in person</h3>
+      <ul><li>Law and strategy</li><li>Every money decision</li><li>Client relationship &amp; taste</li><li>Presses "send"</li></ul>
+      <div class="file">os/SOVEREIGN.md · os/ops/cadence.md</div>
+    </div>
+    <div class="plane" style="--pc:var(--blue)">
+      <div class="tag">Intelligence plane</div>
+      <h3>Nine roles, one agent</h3>
+      <ul><li>Strategist · SEO · Media buyer</li><li>Copy · Design direction · Analyst</li><li>Sales engineer · Client success</li><li>Librarian (self-improvement)</li></ul>
+      <div class="file">os/kernel/roles.md · quality-gate.md · escalation.md</div>
+    </div>
+    <div class="plane" style="--pc:var(--sage)">
+      <div class="tag">Execution plane</div>
+      <h3>14 daemons, free compute</h3>
+      <ul><li>Cron on GitHub Actions</li><li>n8n on an always-free ARM box</li><li>Publishes, invoices, pulls data</li><li>Never sends unapproved</li></ul>
+      <div class="file">os/daemons/RUNBOOK.md · os/stack/limits.yml</div>
+    </div>
+  </div>
+  <div class="axis">
+    <span class="lbl">AUTONOMY L0 — proposes</span>
+    <span class="bar"><i style="left:2%"></i><i style="left:34%"></i><i style="left:66%"></i><i style="left:98%"></i></span>
+    <span class="lbl">L2 — acts freely</span>
+  </div>
+  <p class="small" style="margin-top:16px;max-width:70ch">Client-facing work sits at <b class="gold">L0</b>: the system drafts into
+  <span class="mono">10-outbox/</span>, a human glances, a human sends. Internal work — research, briefs, audits, filing,
+  gate-scoring — runs at <b class="gold">L2</b>, untouched. Agencies that automate the first column are the ones that end up in
+  refunds and screenshots.</p>
+</section>
+
+<!-- ENGINES -->
+<section id="engines">
+  <div class="head wide">
+    <div class="eyebrow">02 · The six engines</div>
+    <h2>Demand, sale, delivery,<br/>proof, retention — <em>and a filter.</em></h2>
+    <p class="lead">Each engine is a folder: a playbook, its templates, its own data. They run independently, so you can
+    build one per week and have it working before the next exists. Engine 00 exists because "general digital marketing"
+    is a fine front door and a fatal inside.</p>
+  </div>
+  <div class="engines">
+    <div class="engine"><div class="id">00</div>
+      <h3>Triage &amp; Fit</h3>
+      <p>Every enquiry is scored on nine fields — budget, LTV, decision access, urgency, maturity — before it gets a
+      calendar slot. A gets a call. B gets a paid Sprint. C gets a polite one-message no that sends them to a bench partner.</p>
+      <div class="meta"><span class="chip g">100-pt score</span><span class="chip">no discount retainers</span><span class="chip">Tier-C ≤3 min</span></div>
+    </div>
+    <div class="engine"><div class="id">01</div>
+      <h3>Demand &amp; Pipeline</h3>
+      <p>Four free rails: a weekly public <b style="color:#d8d4cb;font-weight:400">Growth Autopsy</b>, search + local +
+      answer-engine pages, 40 researched outbound/day, and build-in-public authority. Measured in conversations booked,
+      never in impressions.</p>
+      <div class="meta"><span class="chip g">6 calls / week</span><span class="chip">public price card</span><span class="chip">25 min founder/wk</span></div>
+    </div>
+    <div class="engine"><div class="id">02</div>
+      <h3>Sales</h3>
+      <p>Diagnose, then offer. A 45-minute structured call, a prep brief generated from the intake, and an eight-page
+      proposal assembled in 20 minutes with three priced options — anchored high, floor stated, exclusions written.</p>
+      <div class="meta"><span class="chip g">72h to proposal</span><span class="chip">5 follow-ups</span><span class="chip">8 objections, answered once</span></div>
+    </div>
+    <div class="engine"><div class="id">03</div>
+      <h3>Delivery line</h3>
+      <p>Six stations: ticket → brief → produce → <b class="gold">gate</b> → approve → ship, then measure and retro.
+      A fixed weekly quota per tier is the contract; batched by task-type per day so a solo operator stops paying the
+      switching tax.</p>
+      <div class="meta"><span class="chip g">47 items / week</span><span class="chip">bulk approve 10 min</span><span class="chip">≤45 min/day</span></div>
+    </div>
+    <div class="engine"><div class="id">04</div>
+      <h3>Reporting &amp; Portal</h3>
+      <p>The client-facing surface, built from the repo itself — a static, access-keyed portal per client that rebuilds
+      on every commit. Weekly digest in five blocks, monthly review that ends in a decision, case study every 90 days.</p>
+      <div class="meta"><span class="chip g">₹0 portal</span><span class="chip">frozen baseline</span><span class="chip">400 words / week</span></div>
+    </div>
+    <div class="engine"><div class="id">05</div>
+      <h3>Retention &amp; Bench</h3>
+      <p>Churn is usually boredom, not disappointment. Weekly sentiment signals, day-45 and day-135 check-ins, an
+      expansion ladder, graceful churn — and a paid-per-job bench of freelancers that lets capacity grow without payroll.</p>
+      <div class="meta"><span class="chip g">≥85% renew</span><span class="chip">3 ambers = escalate</span><span class="chip">83% margin on bench</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DAEMONS -->
+<section id="line">
+  <div class="head wide">
+    <div class="eyebrow">03 · What runs without you</div>
+    <h2>Fourteen scheduled jobs.<br/>One line to your phone.</h2>
+    <p class="lead">This is what "automatic" honestly means at solo scale: <em>batch jobs on free infrastructure, writing
+    results back into the repo</em> — not a swarm of bots pretending to be employees. Idempotent, non-destructive,
+    quota-aware, and never sending anything outside.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Job</th><th>Rhythm</th><th>What it produces</th><th>Your time</th></tr></thead>
+      <tbody>
+        <tr><td class="k">D01 morning-brief</td><td class="mono">07:30 daily</td><td>Today's tickets, SLA breaches, overdue invoices, three pipeline moves, one suggested focus</td><td class="r">2 min read</td></tr>
+        <tr><td class="k">D02 lead-sweep</td><td class="mono">3× / day</td><td>New enquiries scored, first reply drafted into the outbox</td><td class="r">send only</td></tr>
+        <tr><td class="k">D05 pipeline-health</td><td class="mono">18:00 daily</td><td>Orphaned leads flagged — every item must have a next action with a date</td><td class="r">5 min</td></tr>
+        <tr><td class="k">D06 metric-pull</td><td class="mono">05:00 daily</td><td>GA4, Search Console, ads, CRM → each client's analytics folder</td><td class="r">0</td></tr>
+        <tr><td class="k">D07 content-factory</td><td class="mono">Sun 20:00</td><td>Next week's briefs, drafts and gate scores for every SEO slot on every calendar</td><td class="r">approve</td></tr>
+        <tr><td class="k">D08 weekly-digest</td><td class="mono">Fri 16:00</td><td>Each client's five-block digest, built from real files</td><td class="r">glance</td></tr>
+        <tr><td class="k">D09 portal-build</td><td class="mono">on push</td><td>Client portals and public site rebuild and deploy</td><td class="r">0</td></tr>
+        <tr><td class="k">D10 finance-check</td><td class="mono">Mon + Fri</td><td>Invoices, dunning ladder, cash runway, GST and advance-tax calendar</td><td class="r">5 min</td></tr>
+        <tr><td class="k">D11 renewal-radar</td><td class="mono">monthly</td><td>Day-45 / day-135 check-ins, renewal paperwork 60 days out</td><td class="r">10 min</td></tr>
+        <tr><td class="k">D03 competitor-watch</td><td class="mono">weekly</td><td>What the top five competitors shipped, spent and changed, per client</td><td class="r">0</td></tr>
+        <tr><td class="k">D04 client-sentiment</td><td class="mono">weekly</td><td>Reply latency and approval lag scored amber/red; churn pre-warning</td><td class="r">exceptions</td></tr>
+        <tr><td class="k">D12 retrospective</td><td class="mono">Sun 21:00</td><td>What shipped, what slipped, KPI table, and a proposed playbook patch</td><td class="r">15 min</td></tr>
+        <tr><td class="k">D13 ai-radar</td><td class="mono">weekly</td><td>Model and free-tier changes; proposes a swap only if it beats the incumbent</td><td class="r">read</td></tr>
+        <tr><td class="k">D14 backup-audit</td><td class="mono">Sun 03:00</td><td>Repo mirror, data exports, secrets index sanity</td><td class="r">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="kv">
+    <div><b>2,000</b><span>free Actions minutes / month</span></div>
+    <div><b>~250</b><span>minutes these consume</span></div>
+    <div><b>0</b><span>external sends without a human</span></div>
+    <div><b>1</b><span>fallback for each: the written playbook</span></div>
+  </div>
+  <p class="small" style="margin-top:20px;max-width:76ch">If a daemon dies, nothing client-facing stops — because the
+  <b class="gold">manual version of every ritual is already written</b> in its playbook. The system degrades to a documented
+  routine, never to silence. That is the difference between an operating system and a fragile automation.</p>
+</section>
+
+<!-- ROLES -->
+<section id="roles">
+  <div class="head wide">
+    <div class="eyebrow">04 · The org chart that costs ₹0</div>
+    <h2>Nine senior roles.<br/>One payroll line.</h2>
+    <p class="lead">A role is a mode: its own prompt, its own output folder, its own gate, and no write access anywhere else.
+    Work moves role → role through <em>files</em>, not chat context — which is why a fresh conversation behaves like a trained
+    employee instead of a stranger.</p>
+  </div>
+  <div class="roles">
+    <div class="role"><div class="r">R1</div><h3>Chief Strategist</h3><p>Names the one constraint limiting growth, then designs the 90-day bet around it. Refuses a plan without a falsifiable success test.</p><div class="out">→ 02-strategy/ · 90-day plan</div></div>
+    <div class="role"><div class="r">R2</div><h3>SEO &amp; Content Lead</h3><p>Clusters, briefs, technical triage, internal links. No keyword without intent, parent page and conversion action.</p><div class="out">→ 03-delivery/seo/</div></div>
+    <div class="role"><div class="r">R3</div><h3>Performance Media Buyer</h3><p>Account stage, budget split, negatives, stop rule written before launch. Proposes every rupee moved; never moves one.</p><div class="out">→ 03-delivery/ads/</div></div>
+    <div class="role"><div class="r">R4</div><h3>Copy Chief</h3><p>Everything a stranger reads — plus the anti-slop pass. Specific beats clever; banned vocabulary costs points.</p><div class="out">→ 03-delivery/copy/</div></div>
+    <div class="role"><div class="r">R5</div><h3>Design Direction</h3><p>Systems, not one-offs: grid, type scale, colour roles, six reusable layouts, export specs — so the next 20 assets take 10 minutes.</p><div class="out">→ 03-delivery/design/</div></div>
+    <div class="role"><div class="r">R6</div><h3>Analyst</h3><p>Diagnostician, not reporter. Every finding: metric · this week vs baseline · why · what we do. No chart without an action sentence.</p><div class="out">→ 04-analytics/ · 12-reviews/</div></div>
+    <div class="role"><div class="r">R7</div><h3>Sales Engineer</h3><p>Sub-5-minute first response, scoring, proposals assembled from files, follow-up sequences. Protecting founder time is its win condition.</p><div class="out">→ pipeline/ · 10-outbox/</div></div>
+    <div class="role"><div class="r">R8</div><h3>Client Success &amp; Ops</h3><p>Owns the client's experience of time: onboarding, digests, SLA tracking, invoices, change requests, renewals.</p><div class="out">→ 01-onboarding/ · 11-finance/</div></div>
+    <div class="role"><div class="r">R9</div><h3>Librarian</h3><p>The reason the system improves while you aren't watching. Every incident becomes a checklist line within 24 hours.</p><div class="out">→ memory/ · playbooks/</div></div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline">
+  <div class="head wide">
+    <div class="eyebrow">05 · The line</div>
+    <h2>Every enquiry, every deliverable,<br/>one state machine.</h2>
+    <p class="lead">One rule carries the whole thing: every item sits in exactly one stage with one owner and one next action
+    with a date. A stage without a date is a bug, flagged that evening — which is how a solo pipeline stays manageable and an
+    agency pipeline stays profitable.</p>
+  </div>
+  <div class="flow">
+    <div class="step"><b>LEAD</b><span>scored ≤4h</span></div><div class="arrow">→</div>
+    <div class="step"><b>QUALIFIED</b><span>call ≤24h</span></div><div class="arrow">→</div>
+    <div class="step"><b>DIAGNOSED</b><span>45-min call</span></div><div class="arrow">→</div>
+    <div class="step"><b>PROPOSED</b><span>≤72h</span></div><div class="arrow">→</div>
+    <div class="step"><b>NEGOTIATING</b><span>scope, not price</span></div><div class="arrow">→</div>
+    <div class="step"><b>WON</b><span>advance first</span></div><div class="arrow">→</div>
+    <div class="step"><b>DELIVERING</b><span>gated weekly</span></div><div class="arrow">→</div>
+    <div class="step"><b>RENEWED / EXPANDED</b><span>day −60</span></div>
+  </div>
+  <div class="kv">
+    <div><b>&lt; 5 min</b><span>first response, inbound</span></div>
+    <div><b>&lt; 72 h</b><span>call → proposal out</span></div>
+    <div><b>≥ 35 %</b><span>proposal win rate</span></div>
+    <div><b>6 months</b><span>minimum pipeline coverage</span></div>
+  </div>
+  <p class="small" style="margin-top:20px;max-width:74ch">Two exits exist on purpose. <b class="gold">PARKED</b> gets four
+  useful touches in 90 days and no nagging — 20–30% of the good ones come back. <b class="gold">LOST</b> requires a real reason
+  in writing, because that file is the highest-return five minutes in the system: it's how one person gets smarter faster than
+  an agency with a sales team.</p>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="head wide">
+    <div class="eyebrow">06 · Price</div>
+    <h2>₹10,00,000 is not a goal.<br/>It's the <em>floor</em>.</h2>
+    <p class="lead">Price comes from positioning, not tooling — so the card below is a <b style="color:var(--text);font-weight:400">published page</b>,
+    with the minimum stated in public. That one page repels the wrong 80% in four seconds and makes the right 20% assume you're worth it.</p>
+  </div>
+  <div class="tiers">
+    <div class="tier"><div class="name">Foundation</div>
+      <div class="price">₹1,00,000<small>PER MONTH · 6-MO MIN</small></div>
+      <ul><li>One channel, run properly</li><li>Tracking built and verified</li><li>~20 production items / week</li><li>Weekly digest, monthly review</li></ul>
+      <div class="foot">The floor. Replaces one senior hire at a third of the cost.</div>
+    </div>
+    <div class="tier rec"><div class="name">Growth Department</div>
+      <div class="price">₹2,50,000<small>PER MONTH · 6-MO MIN</small></div>
+      <ul><li>SEO + paid + content + email + CRO</li><li>~47 items / week, itemised</li><li>Private always-on portal</li><li>Quarterly business review</li><li>Bench overflow, invisible to you</li></ul>
+      <div class="foot">₹30L/year against a ₹65L–1.1Cr in-house department.</div>
+    </div>
+    <div class="tier"><div class="name">Market Entry</div>
+      <div class="price">₹4,00,000<small>PER MONTH · 6-MO MIN</small></div>
+      <ul><li>Everything above, plus</li><li>New geography or product line</li><li>Two languages, local research</li><li>~70 items / week</li></ul>
+      <div class="foot">For launches, expansions and funded teams.</div>
+    </div>
+  </div>
+  <div class="tw" style="margin-top:1px;border-top:0">
+    <table>
+      <thead><tr><th>Projects — fixed scope, fixed price</th><th>₹</th><th>Weeks</th><th>Why it's worth that</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Growth Audit + 90-day plan</td><td class="r">25,000</td><td class="mono">5 days</td><td>Cash-positive entry. Converts ~40% into retainers. Never free.</td></tr>
+        <tr><td class="k">Growth Sprint — one channel, one outcome</td><td class="r">1,00,000</td><td class="mono">4</td><td>Where budget-constrained buyers go instead of discounting you.</td></tr>
+        <tr><td class="k">Premium website + funnel</td><td class="r">3,00,000 – 6,00,000</td><td class="mono">3–5</td><td>AI-built, senior-designed, client owns the repo.</td></tr>
+        <tr class="hot"><td class="k">Full growth build — site + CRM + tracking + content engine + ads</td><td class="r">8,00,000 – 14,00,000</td><td class="mono">8–12</td><td>The flagship. Sold as replacing a department, not a freelancer.</td></tr>
+        <tr><td class="k">AI Ops for the client — bots, automations, copilots</td><td class="r">3,00,000 – 12,00,000</td><td class="mono">6–10</td><td>You just built this architecture for yourself. Sell the same thing.</td></tr>
+        <tr><td class="k">Bespoke market entry</td><td class="r">25,00,000 +</td><td class="mono">quote</td><td>Multi-country, team-in-a-box.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="truth" style="margin-top:1px;border-top:0">
+    <h3>Never discount. Reduce scope.</h3>
+    <p>"At ₹2.5L we can't include the twelve social posts" keeps the floor intact and keeps the client's respect. "Okay, ₹2L"
+    starts a relationship where you are quietly over-billed and they are quietly disappointed. The floor is not a number you
+    defend to clients — it's a number you defend to yourself on the Tuesday you're short of cash.</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px">Advance before work, always. 50/25/25 on projects, first month prepaid on retainers, payment due on receipt.
+    Ad spend lives on the client's card, funded 5 days ahead — never yours. Every rule here exists because a solo operator has no
+    accounts department to absorb a bad debt.</p>
+  </div>
+</section>
+
+<!-- VALUE BRIDGE -->
+<section id="bridge">
+  <div class="head wide">
+    <div class="eyebrow">07 · The bridge</div>
+    <h2>The number that closes isn't<br/>"marketing is expensive".</h2>
+    <p class="lead">It's the page you put in every proposal that shows what the client is <em>already</em> paying for by not
+    doing this — the department they keep meaning to hire.</p>
+  </div>
+  <div class="bridge">
+    <div class="panel">
+      <h4>One in-house growth team, India 2026</h4>
+      <div class="big">₹65L – 1.1 Cr <span class="small" style="font-family:var(--mono);font-size:10px">/ year</span></div>
+      <ul>
+        <li>Senior growth / performance lead <b>18–30L</b></li>
+        <li>Media buyer <b>10–18L</b></li>
+        <li>SEO specialist <b>8–14L</b></li>
+        <li>Analyst / reporting <b>8–14L</b></li>
+        <li>Content lead + design + video <b>15–28L</b></li>
+        <li>Hiring lag, tools, attrition, management <b>6–10L</b></li>
+      </ul>
+    </div>
+    <div class="mid"><div>same output,<br/>same week</div><span>≈ 1/3 the cost</span></div>
+    <div class="panel dark">
+      <h4>Smart Pursuit — Growth Department</h4>
+      <div class="big">₹30L <span class="small" style="font-family:var(--mono);font-size:10px">/ year</span></div>
+      <ul>
+        <li>Starts next week, not after a 3-month search <b>✓</b></li>
+        <li>Every action documented in your portal <b>✓</b></li>
+        <li>Survives holidays, mood and Monday mornings <b>✓</b></li>
+        <li>240–520 production items a month <b>✓</b></li>
+        <li>You can fire the system, not the person <b>✓</b></li>
+        <li>If it's better to build in-house in 18 months, we'll help you build it <b>✓</b></li>
+      </ul>
+    </div>
+  </div>
+  <p class="small" style="margin-top:26px;max-width:76ch">That last line is said out loud, in the call. A client who hears you
+  volunteer your own obsolescence stops negotiating price and starts negotiating start dates. It is also, quietly, the reason the
+  model has to be true: <b class="gold">₹47 items a week for ₹2.5L only works because a machine manufactures them and a gate stops the bad ones leaving.</b></p>
+</section>
+
+<!-- THE DAY -->
+<section id="day">
+  <div class="head wide">
+    <div class="eyebrow">08 · The founder's day</div>
+    <h2>Two hours, fifteen minutes.<br/>Then the laptop closes.</h2>
+    <p class="lead">This is the actual brief you wrote, translated into a timetable. If the founder is bored, the design is wrong.
+    If the founder is doing machine work, the design is wrong. Both are fixed in a playbook, never with hustle.</p>
+  </div>
+  <div class="daygrid">
+    <div class="day">
+      <div class="slot you"><div class="t">08:00 — 08:40</div><h3>Window 1 · Pipeline</h3><p>Score overnight leads, send five to ten outbound, reply to everything, book calls.</p><div class="who">YOU + R7</div></div>
+      <div class="slot"><div class="t">08:40 — 09:00</div><h3>Triage overnight output</h3><p>Approve or decline what the daemons produced. No new work, only decisions.</p><div class="who">YOU</div></div>
+      <div class="slot you"><div class="t">11:00 — 13:00</div><h3>Calls</h3><p>Discovery and reviews, batched. Never one without a prep brief in front of you.</p><div class="who">YOU</div></div>
+      <div class="slot you"><div class="t">14:00 — 14:45</div><h3>Window 2 · Approvals + money</h3><p>Gate the day's deliverables, bulk-approve client requests, send invoices and proposals.</p><div class="who">YOU + R8</div></div>
+      <div class="slot you"><div class="t">16:00 — 17:00</div><h3>Client time — the real kind</h3><p>Relationship calls, walks through the numbers, expansion conversations.</p><div class="who">YOU</div></div>
+      <div class="slot"><div class="t">17:00 — 17:30</div><h3>Window 3 · Learn</h3><p>Retro, one playbook patch, log line, tomorrow's single focus written down.</p><div class="who">R9</div></div>
+      <div class="slot"><div class="t">19:00 →</div><h3>Protected</h3><p>No client comms after 7pm except amber/red incidents. Boundaries are policy, not mood.</p><div class="who">SYSTEM HOLDS THE LINE</div></div>
+    </div>
+    <div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Only Vamsi can</th><th>Forever automated</th></tr></thead>
+          <tbody>
+            <tr><td>Face the decision-maker</td><td>Research, briefs, drafts, audit pulls</td></tr>
+            <tr><td>Judge strategy and taste</td><td>Calendar, tracking, charts, reports</td></tr>
+            <tr><td>Press send on money &amp; relationships</td><td>Invoices, reminders, ticket triage</td></tr>
+            <tr><td>Decide what <em>not</em> to do</td><td>Filing, naming, versioning, QA scoring</td></tr>
+            <tr><td>Be senior in the room</td><td>Everything junior</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel" style="margin-top:22px">
+        <h4>Weekly shape</h4>
+        <ul>
+          <li>Monday — strategy batch across all clients <b>SEO →</b></li>
+          <li>Tuesday — paid media <b>ADS →</b></li>
+          <li>Wednesday — design and creative <b>DESIGN →</b></li>
+          <li>Thursday — client comms and reports <b>REPORT →</b></li>
+          <li>Friday — new business, money, capacity <b>SELL →</b></li>
+          <li>Sunday — everything runs, you read 300 words <b>—</b></li>
+        </ul>
+        <p class="small" style="margin-top:18px">Switching clients is expensive; switching task types is cheap. The whole weekly
+        calendar exists to avoid paying that tax forty times a week.</p>
+      </div>
+      <p class="small" style="margin-top:22px"><b class="gold">Capacity governor.</b> 🟢 ≤4 retainers · 🟡 5–7 → new prices rise 20%
+      and a start-date queue is published · 🔴 8 → the system refuses to assemble another retainer proposal without a written
+      override, and the bench is activated. Your ceiling is not effort, it's being the senior person in the room — so the design
+      says no mechanically, because you won't want to.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GATE -->
+<section id="gate">
+  <div class="head wide">
+    <div class="eyebrow">09 · The standard</div>
+    <h2>Nothing leaves below<br/><em>ninety</em>.</h2>
+    <p class="lead">This file is the single honest reason one person can charge what a team charges: the floor of output quality
+    is enforced by a process, not by whether you felt good on Tuesday morning. Draft and judgement are never the same pass.</p>
+  </div>
+  <div class="gate">
+    <div class="gauge">
+      <div class="score">92<span>/100</span></div>
+      <div class="meter"><i></i><b></b></div>
+      <p class="small" style="margin-top:12px">90+ ship · 75–89 one revision pass · &lt;75 stop, escalate, and treat it as a
+      <b class="gold">playbook defect</b> — the process failed, not just the output.</p>
+    </div>
+    <div class="ledger">
+      <div>Truth — every number traceable to a source and a date <b>25</b></div>
+      <div>Specificity — could a competitor send this unchanged? <b>20</b></div>
+      <div>Client fit — references ≥3 facts from their own file <b>15</b></div>
+      <div>Actionability — next step owned and dated <b>15</b></div>
+      <div>Craft — format, typos, banned words, export specs <b>10</b></div>
+      <div>Risk &amp; honesty — assumptions and failure conditions named <b>10</b></div>
+      <div class="bad">Deductions: −5 per cliché · −25 per unsourced number <b>−8</b></div>
+    </div>
+  </div>
+  <div class="laws" style="margin-top:1px;border-top:0">
+    <div class="law"><div class="n">LAW I</div><h3>The Floor</h3><p>₹1L minimum, no trial work, no 15-day tests. The only direction price moves is up.</p></div>
+    <div class="law"><div class="n">LAW II</div><h3>Proof before promise</h3><p>No number without a screenshot, export or dashboard behind it. No data yet says "no data yet — first read on 14 Sept".</p></div>
+    <div class="law"><div class="n">LAW III</div><h3>Never guess business truths</h3><p>Budget, access, terms and money come from a signed file in the client's authority folder, or they don't happen.</p></div>
+    <div class="law"><div class="n">LAW IV</div><h3>The human owns the relationship</h3><p>Discovery calls, proposals, renewals, bad news: the system drafts, a person sends. This row is never automated.</p></div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="head wide">
+    <div class="eyebrow">10 · Infrastructure</div>
+    <h2>The whole company runs on ₹0<br/>in subscriptions.</h2>
+    <p class="lead">Free tiers are not cheap, they're <em>fragile</em> — so every row carries a hard limit and a fallback, and
+    anything the business depends on also has a written manual version. One number: spend on a domain and one lawyer-reviewed
+    contract. Fund both from the first client's advance.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Function</th><th>Free tool</th><th>The limit that bites</th><th>Fallback</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Brain · state · history</td><td>GitHub private repo</td><td>2,000 Actions min/mo · 200 MB</td><td>GitLab free</td></tr>
+        <tr><td class="k">The nine employees</td><td>Arena agent + free chat LLM</td><td>daily caps reset — batch work, don't chat</td><td>Google AI Studio</td></tr>
+        <tr><td class="k">Bulk content generation</td><td>Gemini API free (Flash)</td><td>~1,500 req/day · ⚠️ may train on inputs</td><td>Groq free · OpenRouter</td></tr>
+        <tr><td class="k">Research on client documents</td><td>NotebookLM</td><td>per-notebook source cap</td><td>free chat long-context</td></tr>
+        <tr><td class="k">Scheduling &amp; jobs</td><td>GitHub Actions cron</td><td>same 2,000 minutes</td><td>n8n on the free box</td></tr>
+        <tr><td class="k">Webhooks, chat flows, bots</td><td>n8n on Oracle Always Free</td><td>2 OCPU / 12 GB ARM (halved Jun 2026)</td><td>Docker on same box</td></tr>
+        <tr><td class="k">Site + client portals</td><td>Cloudflare Pages</td><td>500 builds/mo · free bandwidth</td><td>Vercel / Netlify / GH Pages</td></tr>
+        <tr><td class="k">Custom-domain email — in</td><td>Cloudflare Email Routing</td><td>genuinely unlimited inbound</td><td>—</td></tr>
+        <tr><td class="k">Email — out, as your domain</td><td>SMTP2Go free / Brevo</td><td>1,000/mo · ⚠️ Gmail send-as dies Jan 2027</td><td>Zoho Mail Lite (paid)</td></tr>
+        <tr><td class="k">CRM &amp; pipeline</td><td>leads.yml in the repo</td><td>none — this is the advantage</td><td>HubSpot free</td></tr>
+        <tr><td class="k">Client request intake</td><td>Tally forms</td><td>free, unlimited, no branding</td><td>Google Forms</td></tr>
+        <tr><td class="k">Design system</td><td>Canva Free + Figma Free</td><td>no brand kit / magic resize</td><td>own template kit (R5)</td></tr>
+        <tr><td class="k">Video &amp; audio</td><td>DaVinci Resolve · CapCut</td><td>Resolve is genuinely pro-grade free</td><td>Audacity</td></tr>
+        <tr><td class="k">Decks &amp; proposals</td><td>Marp from markdown (in repo)</td><td>unlimited, versioned, no credits</td><td>Gamma / Slides</td></tr>
+        <tr><td class="k">Invoicing &amp; books</td><td>Zoho Books Free</td><td>&lt;₹25L turnover · no GST filing on free</td><td>Standard ₹899/mo</td></tr>
+        <tr><td class="k">Payments IN / Intl</td><td>UPI + Razorpay / Wise Business</td><td>2%+GST on cards · UPI free</td><td>NEFT for retainers</td></tr>
+        <tr><td class="k">Analytics &amp; dashboards</td><td>GA4 · Search Console · Ahrefs WMT · Looker</td><td>all free forever</td><td>self-host Plausible</td></tr>
+        <tr><td class="k">Legal cover</td><td>—</td><td>one-time ₹8–15k lawyer review of MSA+SOW</td><td>non-negotiable, buy it</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="truth" style="margin-top:1px;border-top:0">
+    <h3>What "free" quietly costs you — know it, then decide.</h3>
+    <p>Free AI tiers may train on what you paste, so client-confidential material gets anonymised or run on a no-training
+    endpoint — and once a client pays, that paid tier becomes a defensible, billable line item. Watermarks and "via gmail.com"
+    notes read as non-premium on the exact surfaces where trust is judged. Free tiers move without notice: in 2026 alone Oracle
+    halved its free ARM allowance, Google set an end date for custom-domain send-as, and Gemini's free Pro access effectively
+    disappeared. All three would have broken a design that copied a 2024 list.</p>
+    <p style="margin-top:14px">The mitigation is structural, not hopeful: the repo is the source of truth so no vendor holds your
+    company hostage; a weekly AI radar checks limits; nothing critical depends on the free VM; and every daemon's manual twin is
+    already written. Then, when revenue exists, three small purchases retire most of the risk — a paid AI tier, custom-domain
+    sending, Zoho Standard. <b class="gold">Free is the starting position, not the religion.</b></p>
+  </div>
+</section>
+
+<!-- BUILD -->
+<section id="build">
+  <div class="head wide">
+    <div class="eyebrow">11 · Build order</div>
+    <h2>Ninety days,<br/>one module a week.</h2>
+    <p class="lead">Ordered so that money-visible assets exist early — momentum comes from first revenue, not discipline.
+    Constitution before engines, engines before delivery, <b style="color:var(--text);font-weight:400">automation last</b>: you automate a process that already
+    works on paper. Automating a broken process only makes broken faster.</p>
+  </div>
+  <div class="weeks">
+    <div class="week"><div class="w">WEEK 1–2 · THE SPINE</div><h3>Law, kernel, scaffold</h3><p>Constitution + agent rules + nine roles + gate. Domain, DNS, custom email. Secrets and quota ledger. Client scaffold script. Proposal, audit, MSA, invoice templates.</p><div class="ship">SHIP TEST — fake client scaffolded, proposal drafted, gate-scored ≥90</div></div>
+    <div class="week"><div class="w">WEEK 3–4 · THE SHOP WINDOW</div><h3>Site, price card, autopsies</h3><p>Public static site. Price floor stated in public. Two real Growth Autopsies with numbers. Booking page wired to intake. First three daemons: morning brief, lead sweep, pipeline health.</p><div class="ship">SHIP TEST — a stranger finds you, reads a teardown, sees the floor, books a call</div></div>
+    <div class="week"><div class="w">WEEK 5 · PROOF SURFACE</div><h3>Portal &amp; metrics</h3><p>Repo-to-portal builder, access-keyed per client. Metric pulls into analytics folders with provenance. Looker template. Rebuild on commit.</p><div class="ship">SHIP TEST — paste real data → portal renders → digest drafts itself</div></div>
+    <div class="week"><div class="w">WEEK 6 · FIRST MONEY</div><h3>Two pilots</h3><p>Audits at ₹25k and Sprints at ₹1L — never a discounted retainer. The floor holds while proof is manufactured. Every friction point becomes a playbook line that week.</p><div class="ship">SHIP TEST — a client pays ₹25k, receives 25 pages in 72h, books the Sprint</div></div>
+    <div class="week"><div class="w">WEEK 7–8 · THE LINE</div><h3>Delivery at quota</h3><p>Six stations wired end to end. Content factory on Sundays. Ads build + optimisation log, design batch day, tracking verification. Digests and renewal radar live.</p><div class="ship">SHIP TEST — 47 items/week per client on ≤45 min/day of approvals</div></div>
+    <div class="week"><div class="w">WEEK 9 · MONEY &amp; COMPLIANCE</div><h3>Books, GST, bench</h3><p>Invoicing and dunning ladder, runway maths, CA and GST decisions (registration gates international invoicing). Line up 8–12 vetted freelancers now, not at crunch.</p><div class="ship">SHIP TEST — invoice → reminder → pause clause, all automatic, all warm</div></div>
+    <div class="week"><div class="w">WEEK 10 · THE PROFIT ENGINE</div><h3>Retention &amp; expansion</h3><p>Sentiment scoring, amber/red escalations, day-45 and day-135 check-ins, renewal pack, case-study generator, referral ask wired into every review.</p><div class="ship">SHIP TEST — one at-risk client saved before they said a word</div></div>
+    <div class="week"><div class="w">WEEK 11–12 · AUTONOMY</div><h3>All daemons, then attack</h3><p>Fourteen jobs unattended with one-line phone alerts. Capacity stress test — confirm Red really blocks. Then red-team the OS with fake reviews, a billing dispute, a guarantee demand, a scope bully.</p><div class="ship">SHIP TEST — 10 of 14 daemons run 30 days untouched · you publish how the OS works</div></div>
+  </div>
+  <div class="kv">
+    <div><b>≥ 12</b><span>qualified conversations / mo</span></div>
+    <div><b>₹2L+</b><span>MRR by day 90</span></div>
+    <div><b>10 / 14</b><span>daemons unattended 30 days</span></div>
+    <div><b>≤ 2 h 15 m</b><span>founder's operating day</span></div>
+  </div>
+  <p class="small" style="margin-top:22px;max-width:76ch"><b class="gold">If revenue is still zero at day 60:</b> do not lower the price.
+  Four checks, in order — are forty outbound going out, is the first response inside five minutes, does the price card page exist,
+  do two autopsies have real numbers in them. The fix is always one of those four, and never "more tools".</p>
+</section>
+
+<!-- CTA -->
+<section class="cta" style="border-top:1px solid var(--line)">
+  <div class="eyebrow" style="justify-content:center">Next</div>
+  <h2>Design delivered.<br/>Say <em>build</em> and week 1 starts.</h2>
+  <p class="lead" style="margin:0 auto 12px">Everything in this document resolves to files already written in the repo:
+  <span class="mono" style="font-size:12px;color:var(--gold-bright)">os/SOVEREIGN.md · os/AGENTS.md · os/kernel/* · os/engines/* · os/daemons/RUNBOOK.md · os/stack/* · os/pricing/RATES.md</span></p>
+  <p class="small" style="margin:0 auto 36px;text-align:center;max-width:62ch">
+    Implementation order: ① buy the domain and set up custom email · ② generate the client scaffold script ·
+    ③ publish the price card and the public site · ④ wire D01/D02/D05 · ⑤ write Autopsy #1 together.</p>
+  <div>
+    <a class="btn" href="#build">Begin Week 1</a>
+    <a class="btn ghost" href="#gate">Re-read the four laws</a>
+    <p class="small" style="margin:26px auto 0;max-width:56ch">The written specification lives in the repo beside this page:
+    <span class="mono" style="color:var(--muted)">design/01-MASTER-BLUEPRINT.md · 02-90-DAY-BUILD-PLAN.md · 03-RISKS-AND-REALITY.md</span></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fgrid">
+    <div class="brand" style="font-size:14px">Smart Pursuit Agency <i>AI OS</i></div>
+    <div class="num">DESIGN BLUEPRINT v1 · GROWTH DEPARTMENT-AS-A-SERVICE · VIZIANAGARAM, IN</div>
+    <div class="num">₹10,00,000 FLOOR · ₹0/MO RUN COST · 2026</div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+var reveal=function(){document.querySelectorAll('.rv:not(.in)').forEach(function(e){e.classList.add('in')})};
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'-40px 0px -6% 0px',threshold:.04});
+  document.querySelectorAll('.head, .planes, .engines, .tw, .roles, .flow, .tiers, .bridge, .daygrid, .gate, .laws, .weeks, .kv, .truth, .hero .grid, .hero .floors, .cta > *')
+    .forEach(function(el){el.classList.add('rv');io.observe(el)});
+  setTimeout(reveal,1600); // safety: never leave content invisible
+  addEventListener('beforeprint',reveal);
+}else{
+  document.querySelectorAll('.head, .planes, .engines, .tw, .roles, .flow, .tiers, .bridge, .daygrid, .gate, .laws, .weeks, .kv, .truth, .hero .grid, .hero .floors, .cta > *')
+    .forEach(function(el){el.classList.add('rv','in')});
+}
+</script>
+</body>
+</html>

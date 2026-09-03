@@ -1,0 +1,18 @@
+# Pipeline — one line per lead. This file IS the CRM.
+# Updated by D02 on intake, D05 nightly (orphans flagged). Never hand-edit a stage without a next_action.
+leads:
+  - id: L-2026-001
+    name: "—example, delete—"
+    company: apex-realty
+    url: https://example.com
+    vertical: "real estate"
+    market: IN                      # IN | US | UK | DXB | SG
+    source: autopsy-reply           # autopsy | seo | outbound | referral | partner | paid | whatsapp
+    score: 0
+    tier: C                         # A | B+ | B | C
+    stage: LEAD                     # see pipeline/stages.md
+    value_est: 0                    # ₹/month if it closes
+    next_action: "—"
+    next_action_due: null
+    owner: R7
+    updated: 2026-09-03

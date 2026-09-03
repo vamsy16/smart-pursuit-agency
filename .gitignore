@@ -1,0 +1,15 @@
+# OS: never commit secrets or local runtime state
+.env
+.env.*
+*.key
+*.pem
+secrets.*
+!os/ops/secrets.index.md
+node_modules/
+.cache/
+dist/
+.DS_Store
+Thumbs.db
+*.log
+os/clients/*/04-analytics/raw/
+site/.vercel/

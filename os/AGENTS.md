@@ -1,0 +1,67 @@
+# AGENTS.md — Kernel Boot Order
+
+Read this **before doing any work in this repository.** This is what makes a fresh chat
+in Arena behave like a trained employee instead of a stranger.
+
+## 1. Boot sequence (mandatory, in order)
+
+1. `os/SOVEREIGN.md` — constitution, laws, red lines.
+2. `os/kernel/*.md` — behaviour, voice, quality gate, escalation rules.
+3. `os/memory/STATEBOARD.md` — what is live right now: clients, pipeline, cash, blockers.
+4. The relevant **playbook** for the task in `os/playbooks/`.
+5. The client's folder in `os/clients/<slug>/` if the task is client-specific.
+
+Never start client work without steps 1–2 and 4–5. Never answer a business question from memory
+when a file holds the truth.
+
+## 2. The 10 OS rules for agents
+
+| # | Rule |
+|---|---|
+| A1 | **Files are the database.** If it isn't written into the repo, it didn't happen. |
+| A2 | **Write before you report.** Update the state file first, then tell the human. |
+| A3 | **One job = one output path.** Deliverables land in the exact folder the playbook names. |
+| A4 | **Never invent numbers, sources, testimonials or metrics.** (`SOVEREIGN` Law II) |
+| A5 | **Never send externally.** Produce a draft into `os/clients/<slug>/10-outbox/`; a human sends. |
+| A6 | **Run the gate.** No deliverable is "done" until `kernel/quality-gate.md` scores ≥90. |
+| A7 | **Log it.** Append to `os/memory/log/YYYY-MM-DD.md` — one line per action, per client. |
+| A8 | **Batch, don't poll.** Engines run on schedule, not continuously. Respect the daemon times. |
+| A9 | **Respect the free tier.** Check `os/stack/limits.yml` before using a metered service. If near a limit, say so — don't blow the month. |
+| A10 | **Escalate early, escalate small.** Unknowns get flagged in one line, not buried in a 400-word summary. |
+
+## 3. Task intake
+
+Every unit of work starts from a **ticket** in `os/pipeline/tickets/`.
+Format: `NNNN-slug.md` with YAML frontmatter:
+
+```yaml
+---
+id: 1042
+client: apex-realty
+engine: delivery            # leadgen | sales | delivery | reporting | retention | ops
+playbook: PB-07-content-factory
+priority: P1                # P1 revenue-blocking, P2 this week, P3 housekeeping
+status: todo                # todo | ai-doing | needs-review | human-doing | done | blocked
+sla_due: 2026-09-05
+score: null                 # filled by quality-gate, 0-100
+---
+Objective: ...
+Inputs: [paths]
+Output: [exact paths to write]
+```
+
+Movement through `needs-review` is **mandatory** for anything a client will see. `ai-doing → done`
+without a review step is a policy violation for external-facing work.
+
+## 4. Naming
+
+- Clients: lowercase `kebab-slug` (e.g. `apex-realty`). Never change a slug after signing.
+- Deliverables: `YYYY-MM-DD_type_topic_v01.ext` inside the client's numbered folder.
+- Playbooks: `PB-NN-name.md`, numbered, never renumbered.
+- Daemons: `DN-NN-name` (scheduled job).
+
+## 5. If you are confused
+
+Write the confusion into `os/memory/QUESTIONS.md` as a checkbox, choose the **safest
+conservative** action for the deliverable, mark the ticket `needs-review`, and say the confusion
+out loud in your reply. Silence on an unknown is the only unforgivable error.

@@ -1,0 +1,34 @@
+# Quota Ledger — read by every daemon before it uses a metered service (Rule A9)
+# Kept honest by D13. Free tiers change without notice; this file is the tripwire.
+
+```yaml
+github:
+  actions_minutes_month: 2000
+  budget_pct: 60          # daemons must stay under this
+  notes: "one commit per run; no long-lived jobs"
+gemini_api_free:
+  requests_per_day: 1500
+  rpm: 15
+  batch_budget: 600       # content-factory uses ≤600/day, leaving headroom for D02/D07
+  privacy: "⚠️ free tier may train on inputs — anonymise client PII, per SOVEREIGN §5.4"
+arena_agent:
+  model: "session-based"
+  note: "heavy build tasks only; don't spend agent turns on formatting"
+oracle_cloud_free:
+  shape: "2 OCPU / 12GB ARM (cut from 4/24 in Jun 2026)"
+  storage_gb: 200
+  egress_tb_month: 10
+  risk: "idle instances may be reclaimed; keep light cron heartbeat; no critical path depends on it"
+email:
+  cloudflare_routing_inbound: unlimited
+  smtp2go_free_per_month: 1000
+  brevo_free_per_day: 300
+  note: "Gmail send-as for custom domains ends Jan 2027 — migrate to Brevo/SMTP2Go DKIM now"
+hubspot_free: { contacts: 1000000, companies: "limited", workflows: "not on free" }
+notion_free: { blocks: "unlimited for solo", guests: 10 }
+canva_free: { note: "no brand-kit/magic resize; ship our own template system instead" }
+zoho_books_free: { turnover_limit: "₹25L/yr", users: 1, transactions_yr: 1000, gst_filing: false }
+razorpay: { card_fee_pct: 2.0, uppi: 0 }
+whatsapp_business: { api: "NOT free — do not promise to clients", app: "free" }
+
+escalation: "any service at 80% of a monthly quota → park the job, alert founder, propose upgrade or alternative. Never retry a 429."

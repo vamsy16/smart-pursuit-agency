@@ -1,0 +1,65 @@
+# Lead Scoring — Smart Pursuit (v1)
+
+Total 100 + vertical bonus. Score is written on the lead record in `pipeline/leads.yml`.
+
+```yaml
+score:
+  budget_fit:            # 0-30 — the gate. 0 here caps you at Tier B.
+    "15-40k/mo or unknown": 0
+    "40k-1L/mo": 10
+    "1-3L/mo": 22
+    "3L+/mo": 30
+  ltv_economics:         # 0-15 — can our work pay for itself?
+    "unclear": 0
+    "₹5-25k per sale": 7
+    "₹25k-2L per sale, or subscription/SaaS": 15
+  decision_access:       # 0-15
+    "blocker": 0
+    "influencer": 6
+    "owner/founder, on call": 15
+  clarity_of_goal:       # 0-10 — can they name one metric?
+    "vague": 0
+    "named metric + timeframe": 10
+  marketing_maturity:    # 0-10 — tried things = coachable, zero = you'll be doing education, not growth
+    "none": 3            # (3 not 0: blank slate can be good, but it's slower)
+    "inconsistent attempts": 10
+    "has an in-house team (we complement)": 7
+  urgency:               # 0-10
+    "exploring": 0
+    "this quarter": 6
+    "ASAP / budget approved": 10
+  fit_for_us:            # 0-10 — can we actually deliver this well, solo + AI?
+    "needs 24/7 ops / huge creative volume / offline-heavy": 0
+    "clean digital funnel": 10
+  referral_or_inbound:   # 0-5
+    "cold outbound reply": 2
+    "warm referral or inbound content": 5
+  vertical_bonus:        # 0-12 — from os/stack/verticals.yml
+    "in preferred list": 12
+    "adjacent": 6
+    "else": 0
+
+  hard_fails:            # score = C regardless of total
+    - requests black-hat / fake reviews / bought followers
+    - "will only pay after results" or "work free for 1 month, then big budget"
+    - abusive or unclear-payment terms with past agency disputes
+    - requires >40 hrs/mo of human-only work we cannot supply
+    - competitor/spy enquiry
+
+routing:
+  A:      { min: 80, action: "founder call <24h, proposal <72h" }
+  B_plus: { min: 60, max: 79, action: "productised Sprint ₹1L or Audit ₹25k only" }
+  B:      { min: 40, max: 59, action: "nurture 90d, 8 touches, offer teardown" }
+  C:      { max: 39, action: "polite no + self-serve, log reason, 3 min max" }
+
+sla:
+  first_response_inbound: "5 minutes, AI-drafted, human-touched"
+  first_response_outbound_reply: "2 hours"
+  qualification_done: "same day"
+  proposal_sent: "72 hours from call"
+  no_answer_followup: "day 2, 5, 9 — then park"
+```
+
+**Rule that protects the founder:** budget_fit is not "nice to have". A lead at ₹40k/mo budget
+becomes a ₹1L/mo retainer maybe once in 100 — after 40 hours of persuasion. Score honestly and the
+OS gives you your time back.
