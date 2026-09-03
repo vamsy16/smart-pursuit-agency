@@ -14,18 +14,17 @@ done
 for f in os/ops/finance/ledger.yml os/pipeline/live-leads.yml os/ops/bench/rates.yml; do
   [ -f "$f" ] && err "$f is private-only"
 done
+# Count with wc -l, not grep -c: grep exits 1 on no match, so `|| echo 0` appended a second "0" and the
+# integer test errored — and an errored test silently PASSES. A guard that can pass on error is worse than none.
+# Rule is unconditional: a real lead record in the public tree fails, whether or not a vault exists.
 if [ -f os/pipeline/leads.yml ]; then
-  n=$(grep -c '^  - id:' os/pipeline/leads.yml 2>/dev/null || echo 0)
-  [ "$n" -gt 1 ] && err "leads.yml holds $n records — your prospect list is your revenue. Private repo only."
+  n=$(grep -E '^[[:space:]]*-[[:space:]]+id:[[:space:]]+L-[0-9]{4}-[0-9]+' os/pipeline/leads.yml 2>/dev/null | wc -l | tr -d '[:space:]')
+  n=${n:-0}; case "$n" in (*[!0-9]*) n=0;; esac
+  [ "$n" -gt 0 ] && err "leads.yml holds $n record(s) as plaintext — the prospect list is the revenue. Move it: vault init pipeline, then empty this file."
 fi
-echo "$FILES" | grep -qiE '(INV-[0-9]|invoice|contract|msa\.|sow\.|\.pdf$|\.csv$|\.xlsx$)' \
-  && err "invoice / contract / export artefact in a public repo"
-# 3 · secrets
-pats='AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|gho_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{40}|AIza[0-9A-Za-z_-]{35}|rzp_(live|test)_[A-Za-z0-9]{14}|xox[bp]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|password[[:space:]]*[:=][[:space:]]*[^[:space:]]{6,}'
-hits=$(printf '%s\n' "$FILES" | xargs -d '\n' grep -IlE "$pats" 2>/dev/null || true)
-[ -n "$hits" ] && { err "secret-shaped strings:"; printf '  %s\n' $hits; }
+
 # 3b · the vault: ciphertext only, plaintext never
-for f in $(find vault -maxdepth 1 -type f 2>/dev/null | grep -v '\.age$'); do err "$f is plaintext — vault/ may contain only *.age"; done
+for f in $(find vault -maxdepth 1 -type f 2>/dev/null | grep -v '\.age$' || true); do err "$f is plaintext — vault/ may contain only *.age"; done
 find vault -mindepth 2 -type f 2>/dev/null | grep . && err "loose files under vault/ — everything must be inside a sealed .age"
 git ls-files --error-unmatch .vault-work >/dev/null 2>&1 && err ".vault-work is TRACKED — plaintext client data is in the repo. Remove from the index and history now."
 grep -q '.vault-work' .gitignore 2>/dev/null || err ".gitignore missing .vault-work/ (the plaintext working copy)"

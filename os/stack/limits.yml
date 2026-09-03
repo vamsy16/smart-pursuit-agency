@@ -1,59 +1,29 @@
-# Quota Ledger — read before using any metered service (Rule A9). Refreshed by D13/R-07.
-# In the ACTIVE semi-auto mode almost none of this applies (no API keys) — kept so a future
-# upgrade is a decision, not a discovery. Valid YAML on purpose: tools and agents parse this file.
+# Quota & limits — ACTIVE MODE ONLY (semi-auto, one public repo, no API keys).
+# The point of this file is that we have almost nothing to blow. Rule A9: check before using a metered
+# service; at 80% of any quota, park the job and tell the founder — never retry a 429.
 
 github:
   plan: free
-  actions_minutes_private_month: 2000
-  actions_minutes_public: unmetered        # this repo is public → guard + site jobs are free
-  packages_storage_mb: 500
-  pages: "public repos only on free plan; private Pages needs Pro ($4/mo)"
-  budget_pct: 60                            # jobs must stay under this share
-  runner: "ubuntu-latest only — Windows 2x, macOS 10x minutes; never a larger-runner label"
+  repos: unlimited, public and private
+  collaborators: unlimited
+  actions: "unmetered on this public repo → guard + site build are free"
+  actions_minutes_private: 2000        # only if we later add a private repo
+  pages: "free here because the repo is public; private Pages needs Pro ($4/mo ≈ ₹350)"
+  runners: "ubuntu-latest only — Windows 2×, macOS 10× minutes; never a larger-runner label"
+  one_job_budget: "< 2 minutes, concurrency group set, no self-triggering loops"
 arena_agent:
-  model: session-based
-  note: "the compute in this design; batch one ritual per session, checkpoint each sub-step"
-  ceilings: "plan usage limits — unknown to the repo; assume scarce, so keep sessions short"
-gemini_api_free:
-  enabled: false
-  requests_per_day: 1500
-  rpm: 15
-  models_free: "Flash / Flash-Lite only (Pro effectively removed)"
-  batch_budget_per_day: 600
-  privacy: "free tier may train on inputs — see SOVEREIGN 5.4"
-oracle_cloud_free:
-  enabled: false
-  shape: "2 OCPU / 12GB ARM (halved from 4/24 in Jun 2026)"
-  storage_gb: 200
-  egress_tb_month: 10
-  risk: "idle instances reclaimed; ARM images only; no critical path may depend on it"
-email:
-  mode: gmail_direct
-  cloudflare_routing_inbound: unused
-  smtp_relay: unused
-  note: "Gmail send-as for custom domains ends Jan 2027; buy the domain, then move sending if volume demands"
-hubspot_free:
-  enabled: false
-  crm: "not needed — os/pipeline/leads.yml is the CRM"
-notion_free:
-  enabled: false
-canva_free:
-  brand_kit: false
-  magic_resize: false
-  workaround: "own template system from R5 — no Pro required"
-zoho_books_free:
-  enabled: false
-  turnover_limit_inr: 2500000
-  users: 1
-  transactions_year: 1000
-  gst_filing: false
-razorpay:
-  card_fee_pct: 2.0
-  upi_fee_pct: 0
-whatsapp_business:
-  app: free
-  api: "NOT free — never promise it to a client"
+  role: the runtime of this OS — the nine roles, the gate, the vault work
+  ceiling: "your plan's usage limit; the only real throughput constraint in the design"
+  discipline: "one ritual per session · batch by task type (produce all seo) · checkpoint every sub-step"
+git_size:
+  vault_growth_monthly: "10–20 MB at 8 clients (gzip before encrypt, one seal per session)"
+  github_soft_limit: 1 GB
+  github_hard_limit: 5 GB
+  policy: "no exports/PDFs/CSVs/screenshots in the repo — vault or off GitHub; history squash yearly"
+never_needed_in_this_mode: "API rate limits, free-tier training-data worries, VM reclamation, build-minute caps"
 
-escalation_rule: >
-  Any service at 80% of a monthly quota: park the job, tell the founder, propose an upgrade or a
-  fallback. Never retry a 429 — that is how a free tool is lost for a month.
+dormant:                       # ← only if/when revenue buys it; see design/05 upgrade ladder
+  paid_ai_tier: "unlocks overnight content batches + auto pulls = the 14 daemons switch on"
+  zoho_books: "Standard ₹899/mo past ₹25L turnover, or for GST return filing"
+  smtp_relay: "only if we send volume from a custom domain (Gmail send-as ends Jan 2027)"
+  google_apis: "GA4/GSC pulls replace the ingest ritual; consent + privacy note to the client first"

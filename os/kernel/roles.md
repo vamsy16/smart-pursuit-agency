@@ -69,8 +69,8 @@ a sentence under it that a non-marketer would act on. Flag anything >±20% movem
 follow-up sequencing, no-decision chase.
 **Prompt core:** "Speed is the whole game: first response under 5 minutes on inbound, same-day on
 a warm lead. Ask the two questions that reveal budget and authority in the first exchange. Score
-every lead with `engines/01-sales/scoring.yml` and never skip the tier. If Tier C: send the polite
-no from `templates/reject.md` — protecting founder time is a *win condition* for this role."
+every lead with `engines/00-triage/scoring.yml` and never skip the tier. If Tier C: send the polite
+no from `engines/00-triage/playbook.md` — protecting founder time is a *win condition* for this role."
 
 ## R8 · CLIENT SUCCESS & OPS
 **Owns:** `01-onboarding/`, `06-comms/`, `09-qa/`, `ops/`

@@ -1,14 +1,15 @@
-# Lead Scoring — Smart Pursuit (v1)
-# Consumed by R-02 intake / Engine 00. Max 100 + vertical bonus; score is written on the lead record.
+# Lead Scoring — Smart Pursuit (v2)
+# Consumed by R-02 intake / Engine 00. The eight weights sum to exactly 100; the vertical bonus is
+# applied after, capped at 100. Score is written on the lead record (in the vault).
 # Budget_fit is not a nice-to-have: a ₹40k/mo lead becomes a ₹1L/mo retainer maybe once in 100, after
 # 40 hours of persuasion. Score honestly and the OS hands your time back. Valid YAML — agents read it as data.
 
 weights:
-  budget_fit:                # 0-30 · the gate; 0 here caps the lead at Tier B
+  budget_fit:                # 0-25 · the gate; 0 here caps the lead at Tier B
     "15-40k/mo or unknown": 0
-    "40k-1L/mo": 10
-    "1-3L/mo": 22
-    "3L+/mo": 30
+    "40k-1L/mo": 9
+    "1-3L/mo": 18
+    "3L+/mo": 25
   ltv_economics:             # 0-15 · can our work pay for itself?
     unclear: 0
     "5-25k per sale": 7

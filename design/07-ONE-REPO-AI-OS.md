@@ -99,7 +99,7 @@ and in the chat with me, and `vault/pipeline.age` starts the day the first advan
 cryptography for an empty drawer — but do wire the guard now, because the mistake it prevents happens later,
 in a hurry, at 11pm, when there is a client.
 
-## What changed from `design/06` (superseded, deliberately)
+## What changed from the two-repo plan (that draft was `design/06`; removed as redundant, kept in git history)
 | 06 said | 07 says |
 |---|---|
 | Split into a public + a private repo | **One public repo, two zones.** Same protection, one place, no second billing surface |

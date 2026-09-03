@@ -1,4 +1,4 @@
-# ENGINE 04 — Reporting, Client Portal & Proof
+# ENGINE 04 — Reporting, Reports & Proof
 
 Reporting is not paperwork. For a solo AI agency, **reporting is the product's visible surface.**
 Clients don't see your prompts or your process; they see whether the numbers moved and whether the
@@ -7,18 +7,23 @@ in the country still gets cancelled at month 3.
 
 ## Three layers
 
-### 1. The Client Portal (always-on, free, premium)
-Built **from this repo** — no Notion seat, no SaaS subscription.
-`ops/tools/build-portal.mjs` renders `clients/<slug>/` into a static site per client, published on
-Cloudflare Pages (or Vercel/Netlify free) with a shared secret / access password.
+### 1. The client's "portal" — one self-contained file, not a hosted login
+The portal idea is **superseded by `design/07`**: in a single public repo we never publish a client surface,
+and a designed document out-impresses an empty dashboard. So the artefact is a file.
 
-Portal contains: Overview (live numbers + status of everything) · This Week · Deliverables & files ·
-Calendar · Requests (form link) · Invoices & payments · Docs/MSA · Retro log.
-Each client gets `https://<slug>.<yourdomain>.dev?k=<secret>` — a private, fast, white-labelled
-surface. Rebuild on push (GitHub Action D09); a client sees the page update the moment you commit.
+`13-report/<week>_report.html` — one file, CSS inlined, zero external requests, opens on a phone, prints to
+PDF. Contents: Overview (live numbers + status) · This week · Deliverables & files · Next 14 days ·
+Invoices & payments · What we need from you. Generated in the `report` ritual from the week's real files,
+sealed into the vault, **sent by you**.
 
-Why this design: a portal you *pay* for gets stale, because updating it costs money and effort. A
-portal that is just your file system renders itself, free, forever. The better you work, the better it looks.
+Why this is better, not merely cheaper: nothing to host, nothing to secure, no password to manage, no build
+tool to break — and the client keeps a permanent record they can forward internally, which is how a retainer
+gets defended at their end when budgets get reviewed.
+
+**Optional upgrade for tech-literate A-tier clients** (founders, SaaS, D2C), offered rather than assumed: a
+read-only private repo of their own containing their folder — Issues as the request queue, every deliverable
+a dated commit. Still ₹0, and "your growth team runs on version control; audit any Tuesday, three years out"
+closes deals. Default stays the file.
 
 ### 2. Weekly Digest (≤400 words, 90 seconds to read, sent the same hour every week)
 Five blocks, fixed order:

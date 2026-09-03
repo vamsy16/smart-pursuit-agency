@@ -1,5 +1,9 @@
 # Templates — write once, bill forever
 
+> **STATUS: none of these files exist yet.** This is the Week 1–2 build list, and the spec each one must
+> satisfy. Until a file exists, the ritual writes that artefact from the description below — so treat this
+> table as instructions to me, not as a directory listing.
+
 Every template below is **repo-resident** and **variable-driven**, so the sales/ops engine can assemble a
 client-ready document in minutes. Placeholders use `{{like_this}}`; the values come from
 `clients/<slug>/00-account/MANIFEST.yml` and `00-account/` — never from memory.

@@ -18,6 +18,7 @@ Numbering is stable forever — it's how agents, the portal builder, and you all
 | `10-outbox/` | **every draft to the client** (email, digest, proposal, apology) — human sends | all roles | you |
 | `11-finance/` | invoices, receipts, payment proofs, credit notes | R8 | D10 |
 | `12-reviews/` | weekly digests, monthly MBR decks, QBR, renewal | R6/R8 | case study |
+| `13-report/` | the self-contained HTML/PDF we send — the client's "portal" in this mode | R6 | the client |
 | `13-case-study/` | anonymised + (if consented) named proof pack, screenshots, quotes | R9 | Engine 01 |
 | `MANIFEST.yml` | slug, tier, MRR, start, renewal date, health, owner contacts, caps, access status | scaffold | everything |
 
@@ -26,6 +27,7 @@ Numbering is stable forever — it's how agents, the portal builder, and you all
    which is exactly why the system never guesses (Law III).
 2. `01-authority/` gates money and access. No L1 action without it. No "they said yes on a call".
 3. `10-outbox/` is the only exit door. Sending from anywhere else breaks Law IV.
-4. Client never gets repo write access. The portal gives them read access to a rendered, filtered copy.
+4. Clients get **reports**, not repo access. A tech-literate client may be offered a read-only private
+   repo of their own (their choice, still ₹0) — never write access to this one.
 5. On churn: folder is frozen and archived (not deleted) — history is a legal and sales asset.
 6. Naming: `YYYY-MM-DD_type_topic_v01.ext`. Never `_final`, `_final2`, `_realfinal`.

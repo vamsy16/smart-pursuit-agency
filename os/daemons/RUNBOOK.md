@@ -29,24 +29,12 @@ infrastructure, writing results back into the repo**, not a swarm of bots preten
 Every daemon: one YAML file in `os/daemons/`, reads state → does work → commits output → appends to
 `memory/log/` → pushes a 1-line alert to a phone.
 
-## Cadence
-
-| ID | Name | Schedule (IST) | What it does | Founder time |
-|---|---|---|---|---|
-| **D01** | morning-brief | 07:30 Mon–Sat | Today's tickets, SLA breaches, overdue invoices, 3 pipeline updates, one suggested focus | 2 min read |
-| **D02** | lead-sweep | 3×/day | New form entries + inbound replies → scored by Engine 00 → drafted first response to outbox | send only |
-| **D03** | competitor-watch | weekly | Top-5 competitor moves per active client: content published, ads running, offers changed, price changes | 0 |
-| **D04** | client-sentiment | weekly | Reads client `06-comms/log.md` + reply times, scores amber/red, triggers Engine 05 early-warning | exceptions only |
-| **D05** | pipeline-health | daily 18:00 | Every lead must have a next action with a date. Orphans flagged, stale >7d escalated | 5 min |
-| **D06** | metric-pull | daily 05:00 | GA4 / GSC / Ads / CRM via APIs (or CSV drop) → client `04-analytics/` | 0 |
-| **D07** | content-factory | Sun 20:00 | Next week's briefs → drafts → gate scores for every SEO slot on every client calendar | approve |
-| **D08** | weekly-digest | Fri 16:00 | Builds each client's 5-block digest from real files, drafts it to outbox | glance+send |
-| **D09** | portal-build | on push | Rebuild + deploy client portals and the public site (Cloudflare Pages) | 0 |
-| **D10** | finance-check | Mon + Fri | Invoice status, dunning sequence, GST/quarter reminder, cash-runway calc | 5 min |
-| **D11** | renewal-radar | monthly | 45/135-day check-ins, renewal 60 days out, expiry of any client consent/access | 10 min |
-| **D12** | retrospective | Sun 21:00 | What shipped, what slipped, playbook patches proposed, KPI vs target table | 15 min |
-| **D13** | ai-radar | weekly | New free-tier tools/API limits changes/model upgrades; propose a swap if it beats the incumbent | read |
-| **D14** | backup-audit | Sun 03:00 | Verify repo backups, exports, download of GA/GSC data, secrets index sanity | 0 |
+## Cadence — the fourteen, in one line each (full spec: git history of design/01 + the site)
+**Full-auto mode only.** Each row's *output contract* is unchanged; what changes is who runs it — the ritual
+in `os/sessions/RITUALS.md`, or the free CI below. D01 brief · D02 lead sweep+score · D03 competitor watch ·
+D04 sentiment/amber-red · D05 pipeline orphans · D06 metric pull · D07 content factory (Sun) · D08 weekly
+digest (Fri) · D09 portal/build → **replaced by the report file** · D10 finance+dunning · D11 renewal radar ·
+D12 retro · D13 AI/stack radar · D14 backup+audit.
 
 ## Non-negotiable engineering rules
 1. **Idempotent.** Re-running a job must not duplicate work or double-send.
@@ -58,7 +46,7 @@ Every daemon: one YAML file in `os/daemons/`, reads state → does work → comm
    `✅/⚠️/❌ D0X · client · action` line to the phone channel and to the log.
 6. **Small, reviewable diffs.** One commit per job per run, message `D0X: <what changed>`.
 
-## Where things run (all free)
+## Where things run (full-auto mode, if we ever buy it)
 - **Scheduling + compute:** GitHub Actions (2,000 free min/month on the free plan — ~50 hrs of compute; the daemons above use roughly 150–300 min/month).
 - **State:** this repo. Files are the database; git is the audit trail; the diff is the changelog.
 - **Heavy/long flows, webhooks, chatbots:** n8n on Oracle Cloud Always Free (note: 2026 limits are

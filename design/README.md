@@ -7,9 +7,11 @@ This folder is the **specification**. `os/` is the **system**. Read the spec onc
 | `01-MASTER-BLUEPRINT.md` | What is being built, why this shape, and which files implement it |
 | `02-90-DAY-BUILD-PLAN.md` | Week-by-week build, ship tests, Day-90 pass/fail table |
 | `03-RISKS-AND-REALITY.md` | The five ways it fails, mitigations already wired, what money would change |
+| `07-ONE-REPO-AI-OS.md` | **The active model: one public repo, public method + sealed vault, you + Arena + GitHub** |
 
 Supporting design decisions, kept where they are used (not duplicated here):
 - **Rules & roles** → `os/SOVEREIGN.md`, `os/kernel/`
+- **Sessions & rituals** → `os/sessions/RITUALS.md` · **built code** → `os/ops/tools/` (guard + vault)
 - **Engines** → `os/engines/00…05/`
 - **Economics** → `os/pricing/RATES.md`, `os/ops/finance.md`
 - **Infrastructure** → `os/stack/FREE-STACK.md`, `os/stack/limits.yml`, `os/daemons/RUNBOOK.md`

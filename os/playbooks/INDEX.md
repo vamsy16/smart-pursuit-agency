@@ -1,5 +1,9 @@
 # Playbooks — the operating manual
 
+> **STATUS: the 24 rows below are a numbering scheme and a backlog, not files.** The working playbook for
+> each engine currently *is* `os/engines/0N-*/playbook.md`. A `PB-NN` becomes its own file only when a
+> daemon or a second role needs to call it, or when it outgrows its engine. Do not go hunting for `PB-07.md`.
+
 A playbook is how a company of one gets scale: **an SOP written like a man page**. If a task is done
 twice by hand, it becomes a playbook; a playbook is how a daemon is specified; a daemon is how the
 playbook stops needing you.

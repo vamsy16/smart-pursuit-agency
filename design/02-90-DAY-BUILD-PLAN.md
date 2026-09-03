@@ -30,7 +30,8 @@ than if we'd built nothing.
   without you touching a keyboard. Then: send 40 outbound, and start Engine 05's referral loop with 10 partners.
 
 ## WEEK 5 — Portal & proof surface (Engine 04)
-- [ ] `ops/tools/build-portal.mjs`: render any `clients/<slug>/` → static site, access-keyed, one deploy
+- [x] ~~portal builder~~ → replaced by design/07: the client artefact is one self-contained HTML/PDF file
+- [ ] `os/ops/tools/vault.sh` — **already built and tested** (seal/open/rotate + CI guard); wire `vault init pipeline`
 - [ ] D09 (rebuild on push) live · D06 (metric pull) with GSC/GA4 APIs, CSV fallback documented
 - [ ] Looker Studio template per client + `04-analytics/sources.md` provenance discipline
 - **Ship test:** paste one real client's data → portal renders → digest drafts itself → numbers all traceable.

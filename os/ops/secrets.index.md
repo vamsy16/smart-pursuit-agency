@@ -1,13 +1,14 @@
-# Secrets Index — names and locations only. Values NEVER live in this repo.
-Real credentials live in GitHub Actions secrets / a password manager. This file records *what exists and where*.
-Rule: an agent may read this file to know what to request; it may never write a value here, and may never paste one into a deliverable.
+# Secrets — one line of truth
+The OS holds **no API keys, no tokens, no service credentials**. That is a design choice, not a gap:
+semi-auto means the agent reads files you provide, so there is nothing to leak and no quota to blow.
 
-| Name | Scope | Location | Client | Rotation |
-|---|---|---|---|---|
-| `SMTP_LOGIN` | outbound email relay | GitHub secrets | own | yearly |
-| `GEMINI_KEY` | content generation (free tier) | GitHub secrets | own | monthly review |
-| `CF_API_TOKEN` | DNS + Pages deploy | GitHub secrets | own | quarterly |
-| `GA4_*` / `GSC_*` per client | read-only analytics | GitHub secrets, keyed by slug | each | on offboarding |
-| `AD_ACCOUNT_*` per client | **client-owned**, we never store card data | their BM + our agency access | each | on offboarding |
+| Secret | Where it actually lives | In this repo? |
+|---|---|---|
+| **Vault passphrase** | password manager + one printed copy. Never a file, never a commit message, never pasted into a summary. `vault key` rotates. | ⛔ never |
+| Client platform logins (GSC, GA4, Ads, CMS) | the **client's** account and their manager; we get delegated access. We never store their password and never hold their card. | ⛔ never |
+| Signed contracts, account screenshots, exports, invoices | inside `vault/<client>.age`, or off GitHub entirely | ⛔ plaintext never |
+| GitHub account | 2FA (passkey) on, old tokens revoked | ⛔ |
 
-Offboarding: revoke all client tokens the same day, and record the revocation in `clients/<slug>/06-comms/log.md`.
+Rules for agents: never write a credential value anywhere in the repo, including into an outbox draft or a
+log line. If a client sends one by chat, tell them to rotate it and reference it only as "received, rotated".
+On offboarding: revoke our access, and record the revocation in the client's sealed comms log.
