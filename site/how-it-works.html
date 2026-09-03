@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How it works — Smart Pursuit OS</title>
+<meta name="description" content="The operating manual: day minus 7 setup, one Tuesday hour by hour, the anatomy of a lead and a ₹10,00,000 project." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="system.css" />
+<style>
+  h1 .sm{display:block;font-size:.42em;letter-spacing:.01em;color:var(--muted);margin-top:.5em;font-family:var(--sans);font-weight:300;line-height:1.5;max-width:44ch}
+  /* day player */
+  .player{display:grid;grid-template-columns:.82fr 1.18fr;gap:1px;background:var(--line);border:1px solid var(--line);align-items:start}
+  @media(max-width:920px){.player{grid-template-columns:1fr}}
+  .slots{display:flex;flex-direction:column}
+  .slot-btn{display:grid;grid-template-columns:74px 1fr;gap:14px;text-align:left;background:var(--ink2);border:0;border-bottom:1px solid var(--line-soft);
+    color:#b3afa6;padding:15px 18px;cursor:pointer;font-family:var(--sans);font-size:12.5px;line-height:1.45;transition:.35s;width:100%}
+  .slot-btn:last-child{border-bottom:0}
+  .slot-btn time{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--muted2);padding-top:2px}
+  .slot-btn b{display:block;font-weight:500;color:var(--text);font-size:13px;letter-spacing:.005em}
+  .slot-btn:hover{background:#171b25;color:var(--text)}
+  .slot-btn.on{background:linear-gradient(100deg,rgba(220,195,137,.11),rgba(220,195,137,.02));color:var(--text)}
+  .slot-btn.on time{color:var(--gold)}
+  .slot-btn.you b::after{content:"· you";font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--gold-dim);margin-left:9px;font-weight:400}
+  .slot-btn .sub{display:block;font-size:10.5px;color:var(--muted2);margin-top:4px;letter-spacing:.02em}
+  @media print{.player{grid-template-columns:1fr}.stage{min-height:0}.slot-btn.on{background:#fff}.term{white-space:pre-wrap}.term pre{white-space:pre-wrap}}
+  .stage{background:var(--ink2);padding:clamp(20px,2.4vw,30px);min-height:520px;display:flex;flex-direction:column;gap:16px}
+  @media(max-width:920px){.stage{min-height:0}}
+  .stage .hd{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line-soft);padding-bottom:14px}
+  .stage .hd h3{font-size:clamp(19px,2.1vw,25px)}
+  .stage .hd .who{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase;white-space:nowrap}
+  .term{background:#06070a;border:1px solid var(--line);padding:16px 18px;overflow-x:auto}
+  .term pre{font-family:var(--mono);font-size:11.5px;line-height:1.72;color:#9fb0a4;white-space:pre;margin:0}
+  .term .ok{color:var(--sage)}.term .wn{color:#d9b56a}.term .er{color:var(--rose)}.term .dim{color:#5d5a53}.term .g{color:var(--gold-bright)}
+  .stage p.note{font-size:13px;color:#b7b3aa;max-width:72ch}
+  .tick{display:flex;gap:12px;align-items:flex-start;font-size:12.5px;color:#c4c0b7;border-top:1px solid var(--line-soft);padding-top:14px}
+  .tick i{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--gold);border:1px solid var(--line);padding:3px 7px;flex:none;font-style:normal;margin-top:2px}
+  .tick.min i{color:var(--sage)}
+  .files{display:flex;flex-wrap:wrap;gap:7px}
+  .files span{font-family:var(--mono);font-size:10px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--line-soft);padding:4px 8px;border-radius:2px}
+  .counter{display:flex;gap:20px;flex-wrap:wrap;margin-top:auto;padding-top:16px;border-top:1px solid var(--line-soft)}
+  .counter div{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted2)}
+  .counter b{display:block;font-family:var(--serif);font-size:23px;letter-spacing:0;color:var(--gold-bright);margin-top:5px}
+  /* anatomy chain */
+  .chain{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line)}
+  .link{background:var(--ink2);display:grid;grid-template-columns:104px 1.05fr 1fr 78px;gap:18px;padding:15px 20px;align-items:center;transition:.35s}
+  .link:hover{background:#171b25}
+  .link time{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--gold-dim)}
+  .link .act{font-size:13px;color:var(--text)}
+  .link .who{font-size:12px;color:var(--muted)}
+  .link .min{font-family:var(--mono);font-size:11px;color:var(--sage);text-align:right;white-space:nowrap}
+  @media(max-width:820px){.link{grid-template-columns:1fr;gap:7px}.link .min{text-align:left}}
+  .note-line{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--muted2);margin-top:16px}
+  /* see / never */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:760px){.split{grid-template-columns:1fr}}
+  .split>div{background:var(--ink2);padding:clamp(22px,3vw,32px)}
+  .split h3{font-size:15px;font-family:var(--mono);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;font-weight:400}
+  .split .yes h3{color:var(--gold-bright)} .split .no h3{color:var(--muted2)}
+  .split ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .split li{font-size:13px;color:#b8b4ab;display:flex;gap:11px;line-height:1.5}
+  .yes li::before{content:"◆";color:var(--gold-dim);font-size:7px;transform:translateY(5px)}
+  .no li::before{content:"×";color:#6b5b57;flex:none}
+  .no li{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="in">
+    <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none">Smart Pursuit</a> <i>OS</i></div>
+    <div class="links">
+      <a href="index.html">Blueprint</a><a href="#setup">Setup</a><a href="#day">The day</a>
+      <a href="#lead">A lead</a><a href="#project">A ₹10L project</a><a href="#client">The client</a>
+      <a href="#break">When it breaks</a>
+    </div>
+    <div class="stamp">OPERATING MANUAL · v1</div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="hero">
+  <div class="eyebrow">Design document 04 · how it works</div>
+  <h1><span>The machine</span><span>runs the <em>day.</em></span><span class="sm">You run the relationships.</span>
+    <span class="sm" style="font-size:16px;color:var(--muted);margin-top:22px">Click any hour below to see exactly what happens: the job that fires,
+    the files it writes, the terminal output, and the only four minutes of work left for you. Six clients, one Tuesday, nothing hidden.</span></h1>
+  <div class="kv">
+    <div><b>2 h 06 m</b><span>founder time, whole day</span></div>
+    <div><b>1 h 40 m</b><span>of it spent with people</span></div>
+    <div><b>41</b><span>items produced overnight</span></div>
+    <div><b>6 min</b><span>your time on a ₹1.5L/mo lead</span></div>
+  </div>
+</section>
+
+<!-- SETUP -->
+<section id="setup">
+  <div class="head wide">
+    <div class="eyebrow">Part 0 · before anything runs</div>
+    <h2>Day minus seven:<br/>the wiring you do once.</h2>
+    <p class="lead">Fourteen steps, roughly six hours spread across a week, ₹700 of spend. You don't code any of it —
+    an agent writes the workflows, you paste keys and approve. Do them <em>in this order</em>: the domain and the
+    email come first because every premium surface depends on them.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Step</th><th>Tool</th><th>Min</th><th>What it unlocks</th></tr></thead>
+      <tbody>
+        <tr><td class="k">1</td><td>Buy the domain</td><td class="mono">Porkbun / Namecheap / CF Registrar</td><td class="r">15</td><td>Every premium surface. <span class="gold">.agency</span> · <span class="gold">.in</span> · <span class="gold">.co</span> — ₹500–900</td></tr>
+        <tr><td class="k">2</td><td>DNS to Cloudflare</td><td class="mono">Cloudflare free</td><td class="r">20</td><td>Email routing, Pages, SSL, WAF — one panel, ₹0</td></tr>
+        <tr><td class="k">3</td><td>vamsi@ · hello@ · accounts@ · proposals@</td><td class="mono">Email Routing → Gmail</td><td class="r">30</td><td>Real identity, unlimited free inbound</td></tr>
+        <tr><td class="k">4</td><td>Send <em>as</em> your domain</td><td class="mono">SMTP2Go 1,000/mo or Brevo</td><td class="r">30</td><td>No "via gmail.com", proposals out of spam</td></tr>
+        <tr><td class="k">5</td><td>This repo → private GitHub</td><td class="mono">GitHub free + Actions</td><td class="r">20</td><td>The brain, and 2,000 free compute minutes</td></tr>
+        <tr><td class="k">6</td><td>Secrets + quota ledger</td><td class="mono">Actions secrets, <span class="gold">limits.yml</span></td><td class="r">30</td><td>APIs usable without any file holding a password</td></tr>
+        <tr><td class="k">7</td><td>Free AI keys</td><td class="mono">Google AI Studio (Flash)</td><td class="r">15</td><td>Bulk content — D07 stays ≤600 of 1,500 req/day</td></tr>
+        <tr><td class="k">8</td><td>Two forms</td><td class="mono">Tally (free, Indian, no branding)</td><td class="r">45</td><td>Lead intake (9 fields) + client request (4) → files</td></tr>
+        <tr><td class="k">9</td><td>Slots + calls</td><td class="mono">Google Calendar + Meet</td><td class="r">15</td><td>Two 30-min windows/day published — scarcity by design</td></tr>
+        <tr><td class="k">10</td><td>Books + payments</td><td class="mono">Zoho Books free, UPI, Razorpay</td><td class="r">60</td><td>GST-ready invoices, links, collection tracking</td></tr>
+        <tr><td class="k">11</td><td>Your own analytics</td><td class="mono">GA4 + GSC + Looker Studio</td><td class="r">45</td><td>You can't audit a client's numbers without your own</td></tr>
+        <tr><td class="k">12</td><td>Phone-alert channel</td><td class="mono">Telegram bot / Discord of one</td><td class="r">20</td><td>Every daemon reports in one line: ✅ ⚠️ ❌</td></tr>
+        <tr><td class="k">13</td><td>CA + lawyer, one call</td><td class="mono">one-time ₹8–15k</td><td class="r">15</td><td>MSA+SOW that makes ₹9L contracts collectable</td></tr>
+        <tr><td class="k">14</td><td>Optional: n8n on free ARM box</td><td class="mono">Oracle Always Free</td><td class="r">—</td><td>Only when webhooks/bots need it. <span style="color:var(--rose)">Not week 1.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note-line">IF A STEP COSTS YOU MORE THAN AN HOUR OF FIGHTING → log it in memory/QUESTIONS.md and move on.
+    THE SYSTEM RUNS WELL AT 60% WIRING; IT NEVER RUNS AT ALL IF YOU QUIT IN WEEK 2.</p>
+</section>
+
+<!-- THE DAY -->
+<section id="day">
+  <div class="head wide">
+    <div class="eyebrow">Part 1 · one Tuesday, six clients</div>
+    <h2>What actually happens,<br/>hour by hour.</h2>
+    <p class="lead">Select a slot. On the right: the job that fired, the files it wrote, the terminal truth of it,
+    and your action — with a time cost, because the whole point of the design is that your minutes are the scarce currency.</p>
+  </div>
+
+  <div class="player">
+    <div class="slots" role="tablist" aria-label="Timeline of the operating day"></div>
+    <div class="stage" id="stage" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ANATOMY OF A LEAD -->
+<section id="lead">
+  <div class="head wide">
+    <div class="eyebrow">Part 2 · the sales loop</div>
+    <h2>Anatomy of a lead:<br/>₹0 in spend, 6 minutes of you.</h2>
+    <p class="lead">Speed is the entire game and it costs you nothing here, because the drafting happens before you
+    wake up. Below is a real shape — an inbound from a content post, scored 84, Tier A.</p>
+  </div>
+  <div class="chain">
+    <div class="link"><time>08:04</time><div class="act">Form submitted from the Autopsy page</div><div class="who">Tally → <span class="mono">pipeline/leads.yml</span></div><div class="min">0 min</div></div>
+    <div class="link"><time>08:05</time><div class="act">Scored: budget 22 · LTV 15 · access 15 · goal 10 · maturity 10 · urgency 6 · fit 10 · source 5 = <b class="gold">93</b></div><div class="who">D02 · Engine 00</div><div class="min">0</div></div>
+    <div class="link"><time>08:05</time><div class="act">Reply drafted, referencing their own words + two call slots</div><div class="who">R7 → <span class="mono">10-outbox/</span></div><div class="min">0</div></div>
+    <div class="link"><time>08:12</time><div class="act">You read it, change the first line, send</div><div class="who">YOU</div><div class="min">2 min</div></div>
+    <div class="link"><time>08:20</time><div class="act">They pick 11:00 → calendar hold + prep brief generated</div><div class="who">D02 → <span class="mono">pipeline/</span></div><div class="min">1</div></div>
+    <div class="link"><time>10:55</time><div class="act">1-page prep: their funnel's 3 leaks, 2 competitors, likely spend, 3 questions, suggested tier</div><div class="who">R1 · PB-03</div><div class="min">read 4</div></div>
+    <div class="link"><time>11:00</time><div class="act">45-minute diagnosis. Frame → their story → your finding → cost of inaction → offer + floor → next step booked on the call</div><div class="who">YOU, only</div><div class="min">45</div></div>
+    <div class="link"><time>11:50</time><div class="act">Notes dictated (90 sec) → decisions, 2 tickets, stage → DIAGNOSED</div><div class="who">R8 → <span class="mono">06-comms/log.md</span></div><div class="min">15</div></div>
+    <div class="link"><time>+8 h</time><div class="act">8-page proposal with 3 options (₹4L / ₹2.5L recommended / ₹1L), exclusions page, stop rule, 14-day validity</div><div class="who">R7 · PB-04 · templates/proposal</div><div class="min">glance 8</div></div>
+    <div class="link"><time>T+1 · T+3</time><div class="act">"One thing I forgot" · then a 90-second portal walkthrough</div><div class="who">drafts from D02</div><div class="min">4</div></div>
+    <div class="link"><time>T+12</time><div class="act">"Closing the file?" — a no is data, silence is a leak</div><div class="who">R7</div><div class="min">1</div></div>
+    <div class="link"><time>Signed</time><div class="act">Advance lands → folder scaffolded (14 dirs), portal live, 6 review dates booked, kickoff ticket opened</div><div class="who">R8 + scaffold script</div><div class="min">20</div></div>
+  </div>
+  <div class="split" style="margin-top:26px">
+    <div class="yes"><h3>Where money is won</h3><ul>
+      <li>First response inside 5 minutes — 8 of 10 "lost" deals were won by whoever answered first</li>
+      <li>The floor said out loud, early, on the call: "retainers start at ₹1L/month, six months minimum"</li>
+      <li>An exclusions page — scope disputes die there</li>
+      <li>A stop rule: "miss 2 named indicators by day 90, we rework the next 90 days free"</li>
+    </ul></div>
+    <div class="no"><h3>Where they are quietly lost</h3><ul>
+      <li>Replying the next morning "just to think about it properly"</li>
+      <li>A proposal with 11 pages, one price, and no dates</li>
+      <li>Accepting "pay us after results" because the month looked thin</li>
+      <li>Discounting instead of removing scope — costs the relationship, not just the ₹</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ₹10L PROJECT -->
+<section id="project">
+  <div class="head wide">
+    <div class="eyebrow">Part 3 · the delivery line</div>
+    <h2>Anatomy of a ₹10L project,<br/>day by day.</h2>
+    <p class="lead">A client at this level is not buying talent — the talent argument gets lost in a spreadsheet.
+    They are buying <em>relentless visible motion</em>: something arriving every week, in writing, with a number next to it.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Day</th><th>Who runs</th><th>What lands</th><th>Your minutes</th><th>What the client feels</th></tr></thead>
+      <tbody>
+        <tr><td class="k">0</td><td>you</td><td>Advance received → <span class="mono">status: WON</span>, folder scaffold, ledger entry</td><td class="r">20</td><td>"They started the day I paid"</td></tr>
+        <tr><td class="k">1–3</td><td>R1 · R2 · R6</td><td>Audit sprint: 25-page findings, tracking review, funnel teardown, competitor scan</td><td class="r">15 skim</td><td>"Nobody has ever shown us our own data like this"</td></tr>
+        <tr class="hot"><td class="k">4</td><td>R1 + you</td><td>Findings &amp; 90-day plan — 12 slides, incl. <b>3 things to stop doing this week</b></td><td class="r">45</td><td>The moment you become a peer, not a vendor</td></tr>
+        <tr><td class="k">5</td><td>R3 · R6</td><td>Tracking verified with a real test conversion, screenshotted</td><td class="r">10</td><td>"So it's actually measurable"</td></tr>
+        <tr><td class="k">7</td><td>R2–R5</td><td>First quick win shipped + reported</td><td class="r">10</td><td>Month-1 retention is decided here</td></tr>
+        <tr><td class="k">8–90</td><td>the line</td><td>Weekly quota: 3 articles, 6 creatives, 3 optimisations, 12 social, 1 email, digest</td><td class="r">15 / wk</td><td>"There's always something new"</td></tr>
+        <tr><td class="k">30/60/90</td><td>R6 → you</td><td>Monthly review = a decision meeting. Promise → result → gap → why → next bet → 2 asks → money</td><td class="r">45 each</td><td>Renewals are won in these 45 minutes</td></tr>
+        <tr><td class="k">90</td><td>R9</td><td>Case study drafted from their files; consent requested, anonymised if refused</td><td class="r">20</td><td>"Can we publish this?" — the best compliment</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="gate" style="margin-top:26px">
+    <div class="gauge">
+      <div class="num">THE ONLY QUALITY CONTROL THAT MATTERS</div>
+      <div class="score">92<span>/100</span></div>
+      <div class="meter"><i></i><b></b></div>
+      <p class="small" style="margin-top:12px">Nothing ships below 90. Draft and judgement are never the same pass:
+      brief → draft → <em>leave it cold overnight</em> → hostile critique ("find me 5 reasons a CFO rejects this")
+      → fix → re-score → you glance at page 1 and the recommendation only.</p>
+    </div>
+    <div class="ledger">
+      <div>Truth — every number traceable to a dated source <b>25</b></div>
+      <div>Specificity — a competitor couldn't send it unchanged <b>20</b></div>
+      <div>Client fit — ≥3 facts from <span class="mono">00-account/</span> <b>15</b></div>
+      <div>Actionability — next step owned + dated <b>15</b></div>
+      <div>Craft — no clichés, correct exports <b>10</b></div>
+      <div>Risk &amp; honesty — assumptions + failure modes named <b>10</b></div>
+      <div class="bad">Deductions — −25 per unsourced number <b>−8</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENT VIEW -->
+<section id="client">
+  <div class="head wide">
+    <div class="eyebrow">Part 4 · the interface</div>
+    <h2>What the client sees —<br/>and what they never will.</h2>
+    <p class="lead">You are not hiding the machine. You're not performing it either. The story you tell out loud is
+    one sentence, and it turns your size from an apology into the reason to hire you.</p>
+  </div>
+  <div class="split">
+    <div class="yes"><h3>Always visible</h3><ul>
+      <li>A private portal per client — rebuilt from the repo on every commit, access-keyed, no login software to buy</li>
+      <li>A weekly digest, Friday 16:00, five blocks, ≤400 words, readable in 90 seconds</li>
+      <li>A request form: 4 fields, "answered within 24 hours, shipped within 5 days"</li>
+      <li>A frozen baseline from day 3 — every claim measured against a file, not a feeling</li>
+      <li>Invoices with terms, UPI link, and a written pause clause they saw before signing</li>
+      <li>You, on a call, knowing their numbers cold — because a machine read 400 files for you at 5am</li>
+    </ul></div>
+    <div class="no"><h3>Never visible</h3><ul>
+      <li>The repo itself, other clients, your pipeline and your margins</li>
+      <li>Gate scores, ticket churn, internal notes, bench rates</li>
+      <li>Chat logs, prompts, "AI-generated" hedging language</li>
+      <li>Any sentence beginning "as an AI" or "we're a small team so"</li>
+      <li>The fact that a request took 9 minutes instead of a week — <em>especially</em> that one. Never sell speed as cheapness. Fast is the standard at ₹2.5L/month, not the discount.</li>
+    </ul></div>
+  </div>
+  <div class="truth" style="margin-top:1px;border-top:0">
+    <h3>The sentence you use when they ask how one person does all this.</h3>
+    <p>"We run a documented operating system instead of a big team. Strategy, judgement and accountability are
+    human — that's me, and you'll speak to me every week. Everything between the decision and the deliverable is
+    manufactured by a system that's been written down, tested and improved for twelve months. That's why you get
+    department output at a third of the cost, and why every single thing we do is in writing." Then stop talking.
+    <br/><br/>It is not a trick: it is a literal description of the repo. Which is the only kind of positioning a
+    one-person shop can hold for years.</p>
+  </div>
+</section>
+
+<!-- FAILURE -->
+<section id="break">
+  <div class="head wide">
+    <div class="eyebrow">Part 5 · failure modes</div>
+    <h2>When it breaks — and it will,<br/>probably this month.</h2>
+    <p class="lead">The difference between a system and a hobby is not that the system doesn't fail. It's that every
+    failure ends in a <em>document</em> instead of an effort — and one of the two makes you richer.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Failure</th><th>What you see</th><th>What you do</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td class="k">A daemon errors</td><td><span class="mono" style="color:var(--rose)">❌ D07 · 429 · parked 2 items</span></td><td>Nothing today. Two days running → execute PB-07 by hand (it's written). Then read the one-line fix</td><td class="r">≈0</td></tr>
+        <tr><td class="k">A free tier dies</td><td>stack row stops working; quota blown</td><td>Take the fallback in <span class="mono">FREE-STACK.md</span>; log for D13; never retry a 429</td><td class="r">&lt;1 h once</td></tr>
+        <tr><td class="k">Output goes sloppy</td><td>gate &lt;75, or a client flags something you missed</td><td>Don't fix the output — fix the playbook line that permitted it. Same mistake twice = a defect report</td><td class="r">10 min, permanent</td></tr>
+        <tr><td class="k">Client goes quiet</td><td>D04 amber: no requests 2 weeks, approvals slowing</td><td>Send a <em>new insight they didn't ask for</em>, sized in money. Never a reassurance email</td><td class="r">20 min</td></tr>
+        <tr><td class="k">Tracking breaks mid-spend</td><td>anomaly + attribution missing</td><td>Pause (L1 allows pause-and-notify), fix, report same day. Never <em>increase</em> spend blind</td><td class="r">hours, not days</td></tr>
+        <tr><td class="k">Client demands a guarantee</td><td>"can you promise page 1?"</td><td>Refuse, in writing, and offer the stop rule instead. Law II has no exceptions — that's what makes it a law</td><td class="r">1 msg</td></tr>
+        <tr><td class="k">You get sick / travel</td><td>—</td><td>Everything is a file: a bench partner with read access keeps publishes and digests alive. Approvals from your phone</td><td class="r">the system breathes</td></tr>
+        <tr><td class="k">Capacity hits 8</td><td>D01 says <span class="mono" style="color:var(--rose)">🔴 RED · governor engaged</span></td><td>Refuse politely with a queue date. Offer Sprints. Activate bench. <em>Do not</em> hire a manager yet</td><td class="r">revenue deferred</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note-line">AFTER 40 INCIDENTS YOU OWN 40 RULES. NO COMPETITOR CAN COPY THEM BECAUSE THEY'D HAVE TO MAKE YOUR 40 MISTAKES FIRST. THAT IS THE MOAT — NOT THE PROMPTS.</p>
+</section>
+
+<!-- OPERATING RULES -->
+<section id="rules">
+  <div class="head wide">
+    <div class="eyebrow">Part 6 · discipline</div>
+    <h2>Eight rules that keep it running<br/>after the excitement wears off.</h2>
+  </div>
+  <div class="engines">
+    <div class="engine"><div class="id">01</div><h3>Judge, don't edit</h3><p>You approve and dispatch. The second you start rewriting prose yourself, you've become a copywriter with a dashboard. If it happens twice in a week, the fix is a playbook line, not more effort.</p></div>
+    <div class="engine"><div class="id">02</div><h3>Nothing lands in your head</h3><p>Any task, decision or promise that isn't in a file does not exist. This is the entire reason a fresh chat works as well as a trained employee — and the reason "I'll remember that" is the beginning of a churn story.</p></div>
+    <div class="engine"><div class="id">03</div><h3>Approve in bulk, once a day</h3><p>Twelve items, one message, "yes / 2 / 5". Never twelve approval threads, never approval while on a client call — context switching is the only tax a solo operator actually pays.</p></div>
+    <div class="engine"><div class="id">04</div><h3>The 30-minute system hour, every Friday</h3><p>One defect fixed. One automation extended to one more client. One manual task turned into a ticket. 52 weeks × 1 = a machine nobody else has.</p></div>
+    <div class="engine"><div class="id">05</div><h3>Automate last, never first</h3><p>Do a process by hand three times. Write it as a playbook. Then schedule it. A daemon built on an unwritten process just makes broken faster and invisible.</p></div>
+    <div class="engine"><div class="id">06</div><h3>Protect the floor like cash</h3><p>Every "small quick project at ₹40k" is a bribe to your future self to stay mediocre. The audit and the Sprint exist precisely so you never have to choose between money and dignity.</p></div>
+    <div class="engine"><div class="id">07</div><h3>Talk to people daily</h3><p>The machine must never become an excuse to stop calling. Your reputation in a market this size is a series of 15-minute calls, and no automation has ever been recommended to a friend.</p></div>
+    <div class="engine"><div class="id">08</div><h3>Read your own numbers weekly</h3><p>Five in Part 8. If calls booked is the weak column for two weeks, fix Engine 01 — not your work ethic. The design tells you where the leak is; that's what it's for.</p></div>
+  </div>
+  <div class="kv">
+    <div><b>≥ 5</b><span>calls booked / week</span></div>
+    <div><b>≤ 72 h</b><span>call → proposal out</span></div>
+    <div><b>≥ 80 %</b><span>first-pass gate rate</span></div>
+    <div><b>100 %</b><span>digests on time</span></div>
+  </div>
+  <p class="small" style="margin-top:22px;max-width:76ch">Two more, from the constitution, because they're the ones people break first:
+  <b class="gold">no message leaves the building without you pressing send</b>, and <b class="gold">no number is written that
+  can't be traced to a dated source</b>. The first is what prevents a ₹10L account becoming a refund. The second is
+  what makes a one-person shop trusted at all.</p>
+</section>
+
+<section class="cta" style="border-top:1px solid var(--line)">
+  <div class="eyebrow" style="justify-content:center">Now</div>
+  <h2>The design is done.<br/>Week 1 is <em>four</em> hours of wiring.</h2>
+  <p class="lead" style="margin:0 auto 30px;text-align:center">Say the word and I'll build, in this order:
+  the scaffold script, the two Tally forms wired to <span class="mono" style="color:var(--gold-bright)">pipeline/leads.yml</span>,
+  the first three daemons, then the public price-card page.</p>
+  <div>
+    <a class="btn" href="index.html#build">Back to the build plan</a>
+    <a class="btn ghost" href="#setup">Re-read the wiring</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fgrid">
+    <div class="brand" style="font-size:14px"><a href="index.html" style="color:inherit;text-decoration:none">Smart Pursuit Agency</a> <i>AI OS</i></div>
+    <div class="num">OPERATING MANUAL · design/04-HOW-IT-WORKS.md · 2026</div>
+    <div class="num">THE REPO IS THE PRODUCT · THE CLIENTS ARE THE PROOF</div>
+  </div>
+</footer>
+
+<script>
+var DAY=[
+{t:"05:00",h:"D06 metric-pull",who:"system",you:false,
+ f:["clients/*/04-analytics/2026-09-09_pull.md","clients/apex-realty/04-analytics/sources.md","STATEBOARD.md"],
+ out:'<span class="dim">$</span> <span class="g">D06</span> · GA4 GSC Ads · 6 clients · 41 metrics\n  <span class="ok">✓</span> nova-edtech    sessions 18,240 <span class="ok">+9.4%</span>   CPL ₹3,100→<span class="ok">₹2,480</span>\n  <span class="ok">✓</span> apex-realty     leads 61 <span class="wn">-18%</span>   CPA ₹2,200→<span class="er">₹2,900 ⚠</span>\n  <span class="er">⚠</span> anomaly: 2 creatives expired 4d ago · spend continuing · <span class="dim">proposed action queued to outbox (L0)</span>\n  <span class="ok">✓</span> 5 clients nominal · baseline files diffed, provenance written\n\n<span class="dim">git commit -m</span> "D06: metric pull 6 clients · 1 anomaly (apex-realty paid -24%)"',
+ note:"You are asleep. The pull writes files with a provenance line — source, date range, method — so nothing in tomorrow's report is unsourced. That provenance habit is why the gate can score Truth at all.",
+ tick:{k:"YOU",v:"nothing. This is the point."}},
+
+{t:"05:20",h:"D02 lead-sweep",who:"system",you:false,
+ f:["os/pipeline/leads.yml","clients/…/10-outbox/","engines/00-triage/scoring.yml"],
+ out:'<span class="dim">$</span> <span class="g">D02</span> · 3 new · scored · drafted · <span class="ok">0 sent</span>\n  L-2026-048  real estate, Vizag   budget 3L/mo   <span class="g">93 → TIER A</span>  reply drafted\n  L-2026-049  D2C skincare          budget 40k    <span class="wn">58 → TIER B</span>  audit offer drafted\n  L-2026-050  salon, "just Insta"   budget 12k    <span class="er">21 → TIER C</span>  polite no + bench intro drafted\n  <span class="dim">→ all three sit in 10-outbox awaiting a human. Nothing auto-sends (Law IV).</span>',
+ note:"Triage is what protects a 'general' positioning from becoming a freelancer inbox. Tier C costs you 30 seconds instead of 6 days of persuasion, and the polite no — with one genuinely useful fix inside it — is how Tier C leads send you their richer friends.",
+ tick:{k:"YOU",v:"nothing yet. 3 drafts waiting."}},
+
+{t:"07:30",h:"D01 morning-brief",who:"system → you",you:false,
+ f:["STATEBOARD.md","memory/log/2026-09-09.md"],
+ out:'<span class="g">✅ D01 · Tue 09 Sep</span> · 6 clients · 41 items produced overnight, 6 gated ≥90\n<span class="wn">⚠</span> apex-realty: paid −24% WoW · CPA ₹2,900 vs ₹2,200 target\n     hypothesis: 2 expired creatives · <span class="dim">fix drafted, needs approval</span>\n<span class="er">🔴</span> L-048 scored 93 (Tier A · ₹2.5L/mo fit) · asked for "just Instagram" → reframe needed\n<span class="g">📌</span> today: 1) send L-048  2) 11:00 Nova MBR  3) glance 6 gated  4) 3 invoices due\n     estimated time: <span class="ok">2 h 05 m</span>',
+ note:"This arrives on your phone. You do not open a dashboard in the morning to find out what to look at — the machine reads the state and hands you a summary. That inversion is most of what makes 2h15m possible.",
+ tick:{k:"YOU",v:"2 minutes, reading, on a phone."}},
+
+{t:"08:00",h:"Window 1 · Pipeline",who:"you + R7",you:true,
+ f:["clients/nova-edtech/10-outbox/","os/pipeline/leads.yml"],
+ out:'<span class="dim"># 10-outbox/L-048_reply.md (drafted by R7 at 05:20)</span>\n\nHi Kiran — the site loads in 5.1s on mobile and the enquiry form is\nbelow the fold on every page. That combination is why 3L/mo of\npaid spend shows up as "just Instagram" requests.\n\nTwo slots if a 45-minute working session is useful: today 11:00 or 16:00 IST.\nIf not, here are the two fixes to hand a developer — no charge, no pitch.\n\n<span class="g">YOU</span> <span class="dim">edit first line → send → they reply in 3 min → 11:00 booked</span>\n<span class="g">YOU</span> <span class="dim">D02\'s 40 outbound notes: delete 6 off-target, send 34 (22 min)</span>',
+ note:"The draft includes a specific, checkable observation about their business, and offers the fixes free. That is the shape of selling at this price: prove you understand before you propose. The 6 you delete matter as much as the 34 you send.",
+ tick:{k:"YOU",v:"40 minutes. Total, all clients, all day."}},
+
+{t:"08:40",h:"Triage overnight output",who:"you",you:true,
+ f:["clients/nova-edtech/03-delivery/content/…_v01.md","kernel/quality-gate.md"],
+ out:'<span class="dim"># needs-review · gate scores</span>\n\nnov  article study-abroad-consult   <span class="ok">93</span> <span class="dim">approve</span>\nnov  landing hero v02              <span class="ok">91</span>\napex carousel frames 1–6           <span class="ok">90</span>\napex paid refresh + stop rule       <span class="ok">94</span>\nmeera email #1                     <span class="ok">92</span>\n<span class="wn">nov  CPC figures cited             88</span> <span class="dim">flag: client CSV, not Ads UI</span>\n\n<span class="g">YOU</span> <span class="dim">reply: "revise: cross-check CPC vs Aug Ads export, re-score" → done in 4 min</span>',
+ note:"You read the summary and the flag, not the document. You never edit prose — you judge and dispatch. If the same kind of flag appears three weeks running, the answer isn't more attention, it's a new line in PB-07.",
+ tick:{k:"YOU",v:"20 minutes. Five approved, one dispatched."}},
+
+{t:"11:00",h:"The call — Nova EdTech, month 4",who:"you, alone",you:true,
+ f:["clients/nova-edtech/12-reviews/2026-09_prep-mbr.md","clients/nova-edtech/MANIFEST.yml"],
+ out:'<span class="dim"># 1-page prep brief, generated last night by R1 — read in 4 minutes</span>\n\npromise  CPL ₹3,100 → ₹2,500 by Sept 30\nresult   <span class="ok">₹2,480</span> · 214 leads · 41 demos · 12 enrolments\nbet      add WhatsApp re-engagement; ₹40k/mo → est. +18 enrolments\nasks     1) feed access   2) sign off the 3 new LPs by Fri\n<span class="er">unspoken</span> new marketing manager has stopped replying to digests (<span class="wn">D04 amber</span>)\n\n<span class="g">YOU</span> <span class="dim">45 min: confirm the gap · clarify who actually signs · agree the channel</span>',
+ note:"No slides — the portal already showed them. The valuable half of this call isn't the numbers, it's discovering that the person replying to digests isn't the person who renews. Retention lives in authority, not in charts.",
+ tick:{k:"YOU",v:"45 minutes, of the best in the calendar."}},
+
+{t:"11:50",h:"Post-call capture",who:"R8 + you",you:true,
+ f:["clients/nova-edtech/06-comms/log.md","05-tasks/","MANIFEST.yml"],
+ out:'<span class="g">YOU</span> <span class="dim">dictate 90 seconds into the phone, while walking to get water</span>\n\n<span class="dim">→ R8 writes:</span>\n  06-comms/2026-09-09_mbr.md      decisions · who-does-what-by-when\n  05-tasks/2140-wa-engagement.md  P2 · owner R3 · due Thu\n  05-tasks/2141-manager-intro.md  P1 · owner you · due today\n  MANIFEST.yml                    health amber → <span class="ok">green</span> · MRR unchanged\n  10-outbox/note-to-kiran.md      <span class="dim">not this client — the referral</span>',
+ note:"The most important 15 minutes of the day, and the one everyone skips. Every downstream automation — digest, ticket, renewal radar, case study — reads this file. Skip it and the machine goes blind on exactly the client you just spent 45 minutes with.",
+ tick:{k:"YOU",v:"15 minutes. Dictate, don't type."}},
+
+{t:"14:00",h:"Window 2 · Approvals + ship",who:"you",you:true,
+ f:["clients/*/07-calendar/","clients/*/10-outbox/bulk-approval.md"],
+ out:'<span class="dim"># one message per client, not twelve threads:</span>\n\n"This week\'s 12 items for approval — reply yes, or number the ones to hold.\nAnything unanswered by Thu 18:00 auto-approves per §4 of our agreement."\n\n<span class="g">D09</span> portal rebuilt on push → client already sees next week\'s calendar\n<span class="g">→</span> 5 approved items scheduled to publish 18:00 · <span class="ok">0 need you again</span>',
+ note:"The 48-hour auto-approve clause is worth more than any automation in the stack: it removes roughly 40% of the delay in every solo agency, silently, and it's a line in the contract, not a favour you beg for.",
+ tick:{k:"YOU",v:"20 minutes."}},
+
+{t:"14:20",h:"Money",who:"R8 + D10 → you send",you:true,
+ f:["os/ops/finance/ledger.yml","clients/*/11-finance/","10-outbox/"],
+ out:'<span class="dim">$</span> <span class="g">D10</span> · finance · 6 clients\n  3 invoices due <span class="g">₹4,50,000</span> · drafts ready (UPI link, terms, 1-line note)\n  2 reminders due (day+2) · warm, exact, no apology\n  <span class="er">1 client at day+19</span> → pause notice per §7 · <span class="dim">policy, not personality</span>\n\n<span class="g">YOU</span> send 6 in 4 min · one lands 14:31 → ledger: collected <span class="ok">₹1,50,000</span>\nSTATEBOARD money block rewrites itself · runway recalculated',
+ note:"Never a 'sorry to bother you about payment'. State the amount, the link and the consequence, and let the contract be the bad guy. Dunning is a process you built once, and it's why cash arrives without you spending evenings being awkward.",
+ tick:{k:"YOU",v:"25 minutes, and the day's ₹1.5L."}},
+
+{t:"16:00",h:"Client time — the real kind",who:"you, only",you:true,
+ f:["clients/apex-realty/03-delivery/ads/2026-09-09_fix.md","clients/apex-realty/00-account/"],
+ out:'<span class="dim"># the 05:00 anomaly, as a decision — R3 already drafted it</span>\n\nad set "proj-sunset-render"  ₹61k/mo · CPA ₹2,900 · <span class="er">pause</span>\n2 expired creatives → replace with site-photo variants\nmove ₹18k to "localities-2bhk" (CPA ₹1,410)\nstop rule: if CPA &gt; ₹2,600 at ₹40k → kill the test\n\n<span class="g">YOU</span> <span class="dim">change the angle: the owner prefers project photos over renders\n— from 00-account/. The system optimised for what performs. You know what\nhe\'ll actually approve.</span>\n\n→ then 15 min to the referral source. No deliverable. All revenue.',
+ note:"This is the job. Not the publishing, not the spreadsheet — knowing that a client will reject a better-performing creative because it doesn't match how he sees his own buildings. A model can't read a man; a partner can. That's the row you never automate.",
+ tick:{k:"YOU",v:"40 minutes, including a call nobody scheduled."}},
+
+{t:"17:00",h:"Window 3 · Learn",who:"R9 + you",you:true,
+ f:["playbooks/PB-09-weekly-optimisation.md","memory/lessons.md"],
+ out:'<span class="dim"># D12 posted the week. You do one of three things. Today: a patch.</span>\n\ninsight   expired creatives should have been caught Monday, not Tuesday 05:00\n<span class="g">PATCH</span>   PB-09 → "on every Monday run: check creative expiry +\n          funding dates; flag anything within 5 days of lapse"\nlogged    memory/lessons.md · 1 line · commit "PB-09: expiry check added"\n\n<span class="dim">tomorrow\'s focus written into the ticket, so morning-you starts from a file,</span>\n<span class="dim">never from memory.</span>',
+ note:"One improvement a week is the whole compounding strategy: 52 a year, each one making a class of failure impossible. It also keeps the system's scope honest — you only ever build one thing per Friday, so you actually finish it.",
+ tick:{k:"YOU",v:"30 minutes, three days a week. Then closed."}},
+
+{t:"19:00",h:"Protected",who:"nobody",you:false,
+ f:["memory/STATEBOARD.md"],
+ out:'<span class="dim">STATEBOARD · end of Tuesday</span>\n\ncapacity   <span class="ok">🟢 6/8</span> · committed delivery hrs 71% · <span class="dim">amber at 5</span>\npipeline   leads 9 · scored 9 (100%) · calls 2 · proposals 1 out · signed ₹0 today\nmoney      collected ₹1,50,000 · due this week ₹4,50,000 · fixed outflow ₹0\ndelivered  41 items · 39 gated ≥90 · 0 client-flagged · 2 publishes scheduled\nescalations <span class="ok">0</span> · your time <span class="g">2 h 06 m</span> · client-facing <span class="g">1 h 40 m</span>\n\n<span class="dim">nothing pending in your head. tomorrow knows what to tell you.</span>',
+ note:"'I should be busy with clients, not free and bored.' This is what that looks like on a Tuesday: under two hours of operating work, most of it spent with people, and every open loop living in a file instead of your nervous system.",
+ tick:{k:"YOU",v:"closed. The machine keeps the ledger."}}
+];
+
+var slots=document.querySelector('.slots'), stage=document.getElementById('stage');
+DAY.forEach(function(d,i){
+  var b=document.createElement('button');
+  b.className='slot-btn'+(d.you?' you':'')+(i===0?' on':'');
+  b.setAttribute('role','tab');
+  b.innerHTML='<time>'+d.t+'</time><span><b>'+d.h+'</b><span class="sub">'+d.who+'</span></span>';
+  b.onclick=function(){
+    slots.querySelectorAll('.on').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on'); render(i);
+  };
+  slots.appendChild(b);
+});
+function render(i){
+  var d=DAY[i];
+  var files=d.f.map(function(f){return '<span>'+f+'</span>'}).join('');
+  stage.innerHTML='<div class="hd"><h3>'+d.t+' · '+d.h+'</h3><div class="who">'+(d.you?'human window':'automated')+'</div></div>'+
+    '<div class="term"><pre>'+d.out+'</pre></div>'+
+    '<div class="files">'+files+'</div>'+
+    '<p class="note">'+d.note+'</p>'+
+    '<div class="tick"><i>'+d.tick.k+'</i><div>'+d.tick.v+'</div></div>'+
+    '<div class="counter"><div>DAY SO FAR<b>'+(i<3?'0 h 02 m':i<5?'0 h 52 m':i<7?'1 h 52 m':i<9?'2 h 17 m':i<10?'2 h 57 m':'2 h 06 m')+'</b></div>'+
+    '<div>ITEMS SHIPPED<b>41</b></div><div>SENT WITHOUT YOU<b>0</b></div></div>';
+}
+render(0);
+/* reveal — shared behaviour with the blueprint page */
+document.documentElement.classList.add('js');
+var reveal=function(){document.querySelectorAll('.rv:not(.in)').forEach(function(e){e.classList.add('in')})};
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'-40px 0px -6% 0px',threshold:.04});
+  document.querySelectorAll('.head, .tw, .player, .chain, .split, .engines, .kv, .gate, .truth, .cta > *')
+    .forEach(function(el){el.classList.add('rv');io.observe(el)});
+  setTimeout(reveal,1600); addEventListener('beforeprint',reveal);
+}else{
+  document.querySelectorAll('.head, .tw, .player, .chain, .split, .engines, .kv, .gate, .truth, .cta > *')
+    .forEach(function(el){el.classList.add('rv','in')});
+}
+</script>
+</body>
+</html>

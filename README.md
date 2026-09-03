@@ -26,8 +26,12 @@ Three layers:
 | 3 | [`design/01-MASTER-BLUEPRINT.md`](design/01-MASTER-BLUEPRINT.md) | The whole architecture in 6 sections |
 | 4 | [`design/02-90-DAY-BUILD-PLAN.md`](design/02-90-DAY-BUILD-PLAN.md) | Week-by-week build, with ship tests |
 | 5 | [`design/03-RISKS-AND-REALITY.md`](design/03-RISKS-AND-REALITY.md) | How it fails, and what's already mitigated |
-| 6 | [`os/pricing/RATES.md`](os/pricing/RATES.md) | The price card that makes ₹10L the normal answer |
-| 7 | [`os/stack/FREE-STACK.md`](os/stack/FREE-STACK.md) | Every tool, every free limit, every fallback |
+| 6 | [`design/04-HOW-IT-WORKS.md`](design/04-HOW-IT-WORKS.md) | **The operating manual: day minus 7, one Tuesday hour by hour** |
+| 7 | [`os/pricing/RATES.md`](os/pricing/RATES.md) | The price card that makes ₹10L the normal answer |
+| 8 | [`os/stack/FREE-STACK.md`](os/stack/FREE-STACK.md) | Every tool, every free limit, every fallback |
+
+**Visual:** `site/index.html` (the blueprint, printable to PDF) and `site/how-it-works.html`
+(the interactive day-in-the-life — every hour, the files it writes, the minutes it costs you).
 
 ## 🏗 The five engines
 
