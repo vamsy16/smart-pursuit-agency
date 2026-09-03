@@ -30,7 +30,7 @@ CONTROL PLANE  · Vamsi (CEO, in person)
 INTELLIGENCE PLANE · Agent + roles R1–R9 + playbooks + quality gate
   strategy · research · drafts · builds · analysis · QA scoring
         ▲                                   │
-        │ tickets, briefs, state            ▼ files, portals, reports
+        │ tickets, briefs, state            ▼ files, reports, proof
 EXECUTION PLANE · Daemons D01–D14 + free infra + client systems
   publishes, invoices, pulls data, updates dashboards, reminds, records
 ```
@@ -56,10 +56,10 @@ no vendor lock, no hostage data.
 | 01 Demand | `os/engines/01-leadgen/` | weekly signature work + search + outbound + authority → conversations |
 | 02 Sales | `os/engines/02-sales/` | conversation → diagnosis → 8-page proposal → signature + advance |
 | 03 Delivery | `os/engines/03-delivery/` | signed SOW → 47 production items/week through a 6-station line |
-| 04 Reporting | `os/engines/04-reporting/` | data → portal, weekly digest, monthly MBR, public case study |
+| 04 Reporting | `os/engines/04-reporting/` | data → the weekly report file, digest, monthly MBR, public case study |
 | 05 Retention | `os/engines/05-retention/` | signals → save the account, expand the fee, activate the bench |
 
-Engines are **independent**. Engine 01 can run with no clients; 03 can run with 8; 04's portal can run
+Engines are **independent**. Engine 01 can run with no clients; 03 can run with 8; 04's report generator can run
 before a single line of code exists. Build them in dependency order, ship each in a week, never "in parallel".
 
 ## 3. The one thing that makes the ₹10L claim survivable
@@ -112,6 +112,6 @@ Full sequencing: `02-90-DAY-BUILD-PLAN.md`. Constraints and failure modes: `03-R
 
 There is no paid tool in this design and no reason there should be — except a domain (₹700/yr) and a
 lawyer-reviewed contract (₹8–15k once). What makes the thing feel premium is entirely non-monetary:
-a public floor price, an audit with real numbers, a portal that updates itself, a digest that arrives the
+a public floor price, an audit with real numbers, a report that rebuilds itself, a digest that arrives the
 same hour every Friday, a 10-slide review that ends in a decision, and work that never leaves the building
 below 90/100. **None of that costs money. All of it costs discipline.**

@@ -14,7 +14,7 @@
 > | D06 metric-pull | `ingest` (paste CSV / screenshot) | You, 8 min/client/wk |
 > | D07 content-factory | `produce` ritual | Arena session, 3×/week |
 > | D08 weekly-digest | `report` ritual + Actions **A2** | You + free CI |
-> | D09 portal-build | Actions **A3** → public repo Pages; client artefact = one HTML/PDF file | free CI |
+> | D09 report-build | Actions **A3** → public repo Pages; client artefact = one HTML/PDF file | free CI |
 > | D10 finance-check | `money` ritual | Arena session, Mon/Fri |
 > | D11 renewal-radar | folded into `money` + `retro` | Arena session |
 > | D12 retrospective | `retro` ritual | Arena session, Sun |
@@ -33,7 +33,7 @@ Every daemon: one YAML file in `os/daemons/`, reads state → does work → comm
 **Full-auto mode only.** Each row's *output contract* is unchanged; what changes is who runs it — the ritual
 in `os/sessions/RITUALS.md`, or the free CI below. D01 brief · D02 lead sweep+score · D03 competitor watch ·
 D04 sentiment/amber-red · D05 pipeline orphans · D06 metric pull · D07 content factory (Sun) · D08 weekly
-digest (Fri) · D09 portal/build → **replaced by the report file** · D10 finance+dunning · D11 renewal radar ·
+digest (Fri) · D09 portal/build (report) → **replaced by the report file** · D10 finance+dunning · D11 renewal radar ·
 D12 retro · D13 AI/stack radar · D14 backup+audit.
 
 ## Non-negotiable engineering rules

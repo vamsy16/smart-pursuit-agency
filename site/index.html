@@ -145,10 +145,10 @@
       <div class="meta"><span class="chip g">47 items / week</span><span class="chip">bulk approve 10 min</span><span class="chip">≤45 min/day</span></div>
     </div>
     <div class="engine"><div class="id">04</div>
-      <h3>Reporting &amp; Portal</h3>
-      <p>The client-facing surface, built from the repo itself — a static, access-keyed portal per client that rebuilds
-      on every commit. Weekly digest in five blocks, monthly review that ends in a decision, case study every 90 days.</p>
-      <div class="meta"><span class="chip g">₹0 portal</span><span class="chip">frozen baseline</span><span class="chip">400 words / week</span></div>
+      <h3>Reporting &amp; Proof</h3>
+      <p>One self-contained file per client per week, generated from the repo: opens on a phone, prints to PDF, no login and
+      nothing to host. Weekly digest in five blocks, monthly review that ends in a decision, case study every 90 days.</p>
+      <div class="meta"><span class="chip g">₹0 · one file, no login</span><span class="chip">frozen baseline</span><span class="chip">400 words / week</span></div>
     </div>
     <div class="engine"><div class="id">05</div>
       <h3>Retention &amp; Bench</h3>
@@ -178,7 +178,7 @@
         <tr><td class="k">D06 metric-pull</td><td class="mono">05:00 daily</td><td>GA4, Search Console, ads, CRM → each client's analytics folder</td><td class="r">0</td></tr>
         <tr><td class="k">D07 content-factory</td><td class="mono">Sun 20:00</td><td>Next week's briefs, drafts and gate scores for every SEO slot on every calendar</td><td class="r">approve</td></tr>
         <tr><td class="k">D08 weekly-digest</td><td class="mono">Fri 16:00</td><td>Each client's five-block digest, built from real files</td><td class="r">glance</td></tr>
-        <tr><td class="k">D09 portal-build</td><td class="mono">on push</td><td>Client portals and public site rebuild and deploy</td><td class="r">0</td></tr>
+        <tr><td class="k">D09 report-build</td><td class="mono">on push</td><td>Each client's weekly report file and the public site rebuild from the repo</td><td class="r">0</td></tr>
         <tr><td class="k">D10 finance-check</td><td class="mono">Mon + Fri</td><td>Invoices, dunning ladder, cash runway, GST and advance-tax calendar</td><td class="r">5 min</td></tr>
         <tr><td class="k">D11 renewal-radar</td><td class="mono">monthly</td><td>Day-45 / day-135 check-ins, renewal paperwork 60 days out</td><td class="r">10 min</td></tr>
         <tr><td class="k">D03 competitor-watch</td><td class="mono">weekly</td><td>What the top five competitors shipped, spent and changed, per client</td><td class="r">0</td></tr>
@@ -269,7 +269,7 @@
     </div>
     <div class="tier rec"><div class="name">Growth Department</div>
       <div class="price">₹2,50,000<small>PER MONTH · 6-MO MIN</small></div>
-      <ul><li>SEO + paid + content + email + CRO</li><li>~47 items / week, itemised</li><li>Private always-on portal</li><li>Quarterly business review</li><li>Bench overflow, invisible to you</li></ul>
+      <ul><li>SEO + paid + content + email + CRO</li><li>~47 items / week, itemised</li><li>Report file weekly · optional read-only repo for your team</li><li>Quarterly business review</li><li>Bench overflow, invisible to you</li></ul>
       <div class="foot">₹30L/year against a ₹65L–1.1Cr in-house department.</div>
     </div>
     <div class="tier"><div class="name">Market Entry</div>
@@ -329,7 +329,7 @@
       <div class="big">₹30L <span class="small" style="font-family:var(--mono);font-size:10px">/ year</span></div>
       <ul>
         <li>Starts next week, not after a 3-month search <b>✓</b></li>
-        <li>Every action documented in your portal <b>✓</b></li>
+        <li>Every action documented in a dated file you keep <b>✓</b></li>
         <li>Survives holidays, mood and Monday mornings <b>✓</b></li>
         <li>240–520 production items a month <b>✓</b></li>
         <li>You can fire the system, not the person <b>✓</b></li>
@@ -487,7 +487,7 @@
   <div class="weeks">
     <div class="week"><div class="w">WEEK 1–2 · THE SPINE</div><h3>Law, kernel, scaffold</h3><p>Constitution + agent rules + nine roles + gate. Domain, DNS, custom email. Secrets and quota ledger. Client scaffold script. Proposal, audit, MSA, invoice templates.</p><div class="ship">SHIP TEST — fake client scaffolded, proposal drafted, gate-scored ≥90</div></div>
     <div class="week"><div class="w">WEEK 3–4 · THE SHOP WINDOW</div><h3>Site, price card, autopsies</h3><p>Public static site. Price floor stated in public. Two real Growth Autopsies with numbers. Booking page wired to intake. First three daemons: morning brief, lead sweep, pipeline health.</p><div class="ship">SHIP TEST — a stranger finds you, reads a teardown, sees the floor, books a call</div></div>
-    <div class="week"><div class="w">WEEK 5 · PROOF SURFACE</div><h3>Portal &amp; metrics</h3><p>Repo-to-portal builder, access-keyed per client. Metric pulls into analytics folders with provenance. Looker template. Rebuild on commit.</p><div class="ship">SHIP TEST — paste real data → portal renders → digest drafts itself</div></div>
+    <div class="week"><div class="w">WEEK 5 · PROOF SURFACE</div><h3>The report file &amp; metrics</h3><p>Repo-to-report generator: one self-contained HTML per client per week, printable, zero external requests. Pasted exports land in analytics folders with a provenance line. Rebuilds on commit.</p><div class="ship">SHIP TEST — paste real data → report renders → digest drafts itself</div></div>
     <div class="week"><div class="w">WEEK 6 · FIRST MONEY</div><h3>Two pilots</h3><p>Audits at ₹25k and Sprints at ₹1L — never a discounted retainer. The floor holds while proof is manufactured. Every friction point becomes a playbook line that week.</p><div class="ship">SHIP TEST — a client pays ₹25k, receives 25 pages in 72h, books the Sprint</div></div>
     <div class="week"><div class="w">WEEK 7–8 · THE LINE</div><h3>Delivery at quota</h3><p>Six stations wired end to end. Content factory on Sundays. Ads build + optimisation log, design batch day, tracking verification. Digests and renewal radar live.</p><div class="ship">SHIP TEST — 47 items/week per client on ≤45 min/day of approvals</div></div>
     <div class="week"><div class="w">WEEK 9 · MONEY &amp; COMPLIANCE</div><h3>Books, GST, bench</h3><p>Invoicing and dunning ladder, runway maths, CA and GST decisions (registration gates international invoicing). Line up 8–12 vetted freelancers now, not at crunch.</p><div class="ship">SHIP TEST — invoice → reminder → pause clause, all automatic, all warm</div></div>
@@ -556,7 +556,7 @@
     <div class="engine"><div class="id">!</div><h3>The honest weakness</h3><p>A cron job runs whether you feel like it or not; a ritual doesn't. So sessions are <em>additive, never dependent</em> — miss three and nothing breaks, the work just queues, and Sunday's retro tells you the cost in one line.</p><div class="meta"><span class="chip" style="color:var(--rose)">you are the scheduler</span><span class="chip">40-min cap</span><span class="chip">Thu kept empty</span></div></div>
   </div>
   <p class="small" style="margin-top:20px;max-width:78ch"><b class="gold">Upgrade ladder, in order — and only revenue buys it:</b>
-  ① the domain (₹700/yr) · ② GitHub Pro $4/mo, only if you want a hosted portal on a <em>private</em> repo (Pages is free here because this one is public) · ③ a paid AI
+  ① the domain (₹700/yr) · ② GitHub Pro $4/mo, only if you want an always-on portal on a <em>private</em> repo (Pages is free here because this one is public) · ③ a paid AI
   tier, which is the day the fourteen daemons above switch on, unchanged, because the playbooks are already written ·
   ④ 5 hours a month of a video editor · ⑤ Zoho Standard at ₹25L turnover.
   Nothing on that list is a launch requirement. Which was the point of the whole design.</p>

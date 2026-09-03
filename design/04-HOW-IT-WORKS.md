@@ -108,7 +108,7 @@ the only place where "AI remembers everything" is *actually* true — because yo
 
 ### 14:00–14:20 · Window 2 — Approvals (20 min)
 - Bulk-approve today's ship list: one message per client, 12 items at once, "reply yes / 1 / 2".
-- D09 rebuilt their portals on each commit; the client side now shows the new week's calendar.
+- D09 rebuilt each client's report file on commit; the week's calendar is already inside it.
 - Two publishes were scheduled automatically for 18:00 (approved content only).
 
 ### 14:20–14:45 · Money (25 min)
