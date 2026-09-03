@@ -72,7 +72,7 @@
   <div class="in">
     <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none">Smart Pursuit</a> <i>OS</i></div>
     <div class="links">
-      <a href="index.html">Blueprint</a><a href="#setup">Setup</a><a href="#day">The day</a>
+      <a href="index.html">Blueprint</a><a href="index.html#semi">Semi-auto mode</a><a href="#setup">Setup</a><a href="#day">The day</a>
       <a href="#lead">A lead</a><a href="#project">A ₹10L project</a><a href="#client">The client</a>
       <a href="#break">When it breaks</a>
     </div>
@@ -136,6 +136,11 @@
     <h2>What actually happens,<br/>hour by hour.</h2>
     <p class="lead">Select a slot. On the right: the job that fired, the files it wrote, the terminal truth of it,
     and your action — with a time cost, because the whole point of the design is that your minutes are the scarce currency.</p>
+    <p class="small" style="max-width:78ch"><b style="color:var(--gold-bright)">As you run it today — semi-auto mode:</b> the 05:00 and 05:20 rows
+    are not cron jobs with API keys. The <span class="mono">ingest</span> and <span class="mono">morning</span> rituals are those two slots,
+    and <b>you</b> are the scheduler: open the chat, type the trigger, and the agent does exactly what is shown. The 14-daemon
+    version is the spec we switch on when a paid AI tier becomes affordable — same playbooks, different runner.
+    See <a href="index.html#semi" style="color:var(--gold-bright)">Semi-auto mode</a>.</p>
   </div>
 
   <div class="player">
@@ -340,13 +345,13 @@
 
 <script>
 var DAY=[
-{t:"05:00",h:"D06 metric-pull",who:"system",you:false,
+{t:"05:00",h:"metric pull → `ingest`",who:"you paste, agent files",you:false,
  f:["clients/*/04-analytics/2026-09-09_pull.md","clients/apex-realty/04-analytics/sources.md","STATEBOARD.md"],
  out:'<span class="dim">$</span> <span class="g">D06</span> · GA4 GSC Ads · 6 clients · 41 metrics\n  <span class="ok">✓</span> nova-edtech    sessions 18,240 <span class="ok">+9.4%</span>   CPL ₹3,100→<span class="ok">₹2,480</span>\n  <span class="ok">✓</span> apex-realty     leads 61 <span class="wn">-18%</span>   CPA ₹2,200→<span class="er">₹2,900 ⚠</span>\n  <span class="er">⚠</span> anomaly: 2 creatives expired 4d ago · spend continuing · <span class="dim">proposed action queued to outbox (L0)</span>\n  <span class="ok">✓</span> 5 clients nominal · baseline files diffed, provenance written\n\n<span class="dim">git commit -m</span> "D06: metric pull 6 clients · 1 anomaly (apex-realty paid -24%)"',
  note:"You are asleep. The pull writes files with a provenance line — source, date range, method — so nothing in tomorrow's report is unsourced. That provenance habit is why the gate can score Truth at all.",
  tick:{k:"YOU",v:"nothing. This is the point."}},
 
-{t:"05:20",h:"D02 lead-sweep",who:"system",you:false,
+{t:"05:20",h:"lead sweep → `morning`",who:"agent, on session open",you:true,
  f:["os/pipeline/leads.yml","clients/…/10-outbox/","engines/00-triage/scoring.yml"],
  out:'<span class="dim">$</span> <span class="g">D02</span> · 3 new · scored · drafted · <span class="ok">0 sent</span>\n  L-2026-048  real estate, Vizag   budget 3L/mo   <span class="g">93 → TIER A</span>  reply drafted\n  L-2026-049  D2C skincare          budget 40k    <span class="wn">58 → TIER B</span>  audit offer drafted\n  L-2026-050  salon, "just Insta"   budget 12k    <span class="er">21 → TIER C</span>  polite no + bench intro drafted\n  <span class="dim">→ all three sit in 10-outbox awaiting a human. Nothing auto-sends (Law IV).</span>',
  note:"Triage is what protects a 'general' positioning from becoming a freelancer inbox. Tier C costs you 30 seconds instead of 6 days of persuasion, and the polite no — with one genuinely useful fix inside it — is how Tier C leads send you their richer friends.",

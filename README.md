@@ -27,8 +27,10 @@ Three layers:
 | 4 | [`design/02-90-DAY-BUILD-PLAN.md`](design/02-90-DAY-BUILD-PLAN.md) | Week-by-week build, with ship tests |
 | 5 | [`design/03-RISKS-AND-REALITY.md`](design/03-RISKS-AND-REALITY.md) | How it fails, and what's already mitigated |
 | 6 | [`design/04-HOW-IT-WORKS.md`](design/04-HOW-IT-WORKS.md) | **The operating manual: day minus 7, one Tuesday hour by hour** |
-| 7 | [`os/pricing/RATES.md`](os/pricing/RATES.md) | The price card that makes ₹10L the normal answer |
-| 8 | [`os/stack/FREE-STACK.md`](os/stack/FREE-STACK.md) | Every tool, every free limit, every fallback |
+| 7 | [`design/05-SEMI-AUTO-3-ACTOR.md`](design/05-SEMI-AUTO-3-ACTOR.md) | **Active mode: you + Arena + GitHub. What was deleted and what replaced it** |
+| 8 | [`os/sessions/RITUALS.md`](os/sessions/RITUALS.md) | The 8 rituals with the exact trigger text to type |
+| 9 | [`os/pricing/RATES.md`](os/pricing/RATES.md) | The price card that makes ₹10L the normal answer |
+| 10 | [`os/stack/FREE-STACK.md`](os/stack/FREE-STACK.md) | Every tool, every free limit, every fallback |
 
 **Visual:** `site/index.html` (the blueprint, printable to PDF) and `site/how-it-works.html`
 (the interactive day-in-the-life — every hour, the files it writes, the minutes it costs you).
@@ -43,7 +45,9 @@ Three layers:
 04 REPORTING   portal + weekly digest + monthly MBR + public case study
 05 RETENTION   early-warning → save → expand the fee → activate the bench
 ```
-Twelve to fourteen **daemons** (GitHub Actions cron, free) run these on schedule; the founder approves.
+**Active mode = semi-automatic.** Eight human-triggered rituals (`os/sessions/RITUALS.md`) run these engines with
+the Arena agent as the daemon, plus three key-free GitHub Actions (A1 week-start, A2 friday-pack, A3 validate-publish).
+The 14-daemon full-auto spec stays written and switches on the day a paid AI tier is affordable.
 Nothing is ever sent to a client without a human pressing send. That is the design, not a limitation.
 
 ## 🤝 How this agency works (in one paragraph)

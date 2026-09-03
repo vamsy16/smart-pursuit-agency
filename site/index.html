@@ -18,7 +18,7 @@
     <div class="links">
       <a href="how-it-works.html">How it works</a><a href="#thesis">Thesis</a><a href="#arch">Architecture</a>
       <a href="#engines">Engines</a><a href="#line">Delivery</a><a href="#pricing">Price</a>
-      <a href="#gate">The Gate</a><a href="#stack">₹0 Stack</a><a href="#build">Build</a>
+      <a href="#gate">The Gate</a><a href="#semi">Semi-auto</a><a href="#stack">₹0 Stack</a><a href="#build">Build</a>
     </div>
     <div class="stamp">BLUEPRINT · v1 · 2026</div>
   </div>
@@ -50,6 +50,7 @@
         <dl>
           <dt>Founder</dt><dd>Vamsi</dd>
           <dt>Model</dt><dd>Growth Dept-as-a-Service</dd>
+          <dt>Mode</dt><dd style="color:var(--gold-bright)">Semi-auto · 3 actors</dd>
           <dt>Engine</dt><dd>Full Growth Partner</dd>
           <dt>Markets</dt><dd>IN + US/UK/DXB/SG</dd>
           <dt>Niche</dt><dd>Open door, tuned inside</dd>
@@ -161,8 +162,8 @@
 <!-- DAEMONS -->
 <section id="line">
   <div class="head wide">
-    <div class="eyebrow">03 · What runs without you</div>
-    <h2>Fourteen scheduled jobs.<br/>One line to your phone.</h2>
+    <div class="eyebrow">03 · Full-auto spec · <a href="#semi" style="color:var(--gold-bright)">active mode is semi-auto ↓</a></div>
+    <h2>Fourteen scheduled jobs —<br/><em>the mode we're not using yet.</em></h2>
     <p class="lead">This is what "automatic" honestly means at solo scale: <em>batch jobs on free infrastructure, writing
     results back into the repo</em> — not a swarm of bots pretending to be employees. Idempotent, non-destructive,
     quota-aware, and never sending anything outside.</p>
@@ -504,6 +505,64 @@
   do two autopsies have real numbers in them. The fix is always one of those four, and never "more tools".</p>
 </section>
 
+
+<!-- SEMI-AUTO -->
+<section id="semi">
+  <div class="head wide">
+    <div class="eyebrow">12 · Active operating mode</div>
+    <h2>Semi-automatic, on purpose:<br/><em>you + Arena + GitHub.</em></h2>
+    <p class="lead">No paid AI tier, no API keys, no servers, no scheduler talking to anything. The agent becomes the
+    daemon — and it runs on <b style="color:var(--text);font-weight:400">your calendar</b> instead of cron. Cost: about 20 minutes a client
+    a week more than full automation. Rupees: none. Reliability: higher, because there is no free tier left to break.</p>
+  </div>
+  <div class="planes">
+    <div class="plane" style="--pc:var(--gold)">
+      <div class="tag">Actor 1</div>
+      <h3>You</h3>
+      <ul><li>Decide, talk, press send</li><li>Paste numbers once a week</li><li>Approve diffs on your phone</li><li>Start the rituals</li></ul>
+      <div class="file">7–8 h / week at six clients · ~2.5 h of it with people</div>
+    </div>
+    <div class="plane" style="--pc:var(--blue)">
+      <div class="tag">Actor 2</div>
+      <h3>Arena agent</h3>
+      <ul><li>Reads constitution → playbook → state</li><li>Researches, drafts, critiques, gates</li><li>Writes every file, opens the PR</li><li>Zero API keys, zero quotas</li></ul>
+      <div class="file">os/sessions/RITUALS.md · os/kernel/*</div>
+    </div>
+    <div class="plane" style="--pc:var(--sage)">
+      <div class="tag">Actor 3</div>
+      <h3>GitHub</h3>
+      <ul><li>Repo = brain, ledger, archive</li><li>Issues = board · PR = the approval gate</li><li>Actions = 3 mechanical jobs, ~60 min of 2,000</li><li>Pages (public repo) = the site</li></ul>
+      <div class="file">₹0 · unlimited private repos · Pages on private needs $4/mo</div>
+    </div>
+  </div>
+  <div class="tw" style="margin-top:1px;border-top:0">
+    <table>
+      <thead><tr><th>Ritual</th><th>When</th><th>You type</th><th>What the agent does</th><th>Your minutes</th></tr></thead>
+      <tbody>
+        <tr><td class="k">MORNING</td><td class="mono">Mon · Wed · Fri 08:00</td><td class="mono">morning</td><td>Due tickets, unanswered leads, anomalies — every reply drafted into the outbox</td><td class="r">10</td></tr>
+        <tr><td class="k">INTAKE</td><td class="mono">on any enquiry</td><td class="mono">intake + paste</td><td>Scores it, writes the lead row, builds the call prep brief, drafts the reply</td><td class="r">5</td></tr>
+        <tr class="hot"><td class="k">PRODUCE</td><td class="mono">Mon seo · Tue ads · Wed design</td><td class="mono">produce all seo</td><td>Brief → draft → cold → hostile critique → fix → gate-score → PR</td><td class="r">20–30 /day</td></tr>
+        <tr><td class="k">REPORT</td><td class="mono">Fri 16:00</td><td class="mono">report wk37</td><td>Five-block digests + a self-contained HTML/PDF client report built from the week's commits</td><td class="r">45</td></tr>
+        <tr><td class="k">CALL</td><td class="mono">before / after</td><td class="mono">prep · log:</td><td>1-page prep, then notes → decisions, tickets, health, stage</td><td class="r">5 + 15</td></tr>
+        <tr><td class="k">INGEST</td><td class="mono">Mon, per client</td><td class="mono">ingest &lt;slug&gt;</td><td>Parses the CSV or the screenshot into an analytics file with provenance; flags ±20%</td><td class="r">8</td></tr>
+        <tr><td class="k">MONEY</td><td class="mono">Mon · Fri</td><td class="mono">money</td><td>Invoices as files, reminder and pause drafts, renewal watch</td><td class="r">10</td></tr>
+        <tr><td class="k">RETRO</td><td class="mono">Sun 20:00</td><td class="mono">retro</td><td>Week vs targets, one playbook patch, capacity check, next week's tickets</td><td class="r">20</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="engines" style="margin-top:1px;border-top:0">
+    <div class="engine"><div class="id">A1</div><h3>week-start</h3><p>Monday 06:00. Creates the week's ticket stubs from each client calendar, opens the day log. If it's skipped, <span class="mono">produce</span> regenerates the list. Nothing depends on it.</p><div class="meta"><span class="chip g">cron</span><span class="chip">no keys</span><span class="chip">~2 min</span></div></div>
+    <div class="engine"><div class="id">A2</div><h3>friday-pack</h3><p>Friday 12:00. Collects the week's commits per client, then <b style="color:#d8d4cb;font-weight:400">fails the build</b> if any merged deliverable has no gate score or any lead has no dated next action. The checklist enforces itself.</p><div class="meta"><span class="chip g">cron</span><span class="chip">no keys</span><span class="chip">~3 min</span></div></div>
+    <div class="engine"><div class="id">A3</div><h3>validate-publish</h3><p>On push. Lints markdown and paths, blocks the red lines (an unsourced number, a client-facing file outside the outbox, a string that looks like a secret), builds the public site → Pages.</p><div class="meta"><span class="chip g">on push</span><span class="chip">public repo = unmetered</span></div></div>
+    <div class="engine"><div class="id">!</div><h3>The honest weakness</h3><p>A cron job runs whether you feel like it or not; a ritual doesn't. So sessions are <em>additive, never dependent</em> — miss three and nothing breaks, the work just queues, and Sunday's retro tells you the cost in one line.</p><div class="meta"><span class="chip" style="color:var(--rose)">you are the scheduler</span><span class="chip">40-min cap</span><span class="chip">Thu kept empty</span></div></div>
+  </div>
+  <p class="small" style="margin-top:20px;max-width:78ch"><b class="gold">Upgrade ladder, in order — and only revenue buys it:</b>
+  ① the domain (₹700/yr) · ② GitHub Pro $4/mo, which is what unlocks a real hosted client portal · ③ a paid AI
+  tier, which is the day the fourteen daemons above switch on, unchanged, because the playbooks are already written ·
+  ④ 5 hours a month of a video editor · ⑤ Zoho Standard at ₹25L turnover.
+  Nothing on that list is a launch requirement. Which was the point of the whole design.</p>
+</section>
+
 <!-- CTA -->
 <section class="cta" style="border-top:1px solid var(--line)">
   <div class="eyebrow" style="justify-content:center">Next</div>
@@ -515,6 +574,7 @@
     ③ publish the price card and the public site · ④ wire D01/D02/D05 · ⑤ write Autopsy #1 together.</p>
   <div>
     <a class="btn" href="how-it-works.html">See it run — hour by hour</a>
+    <a class="btn ghost" href="#semi">Semi-auto: you + Arena + GitHub</a>
     <a class="btn ghost" href="#build">Begin Week 1</a>
     <a class="btn ghost" href="#gate">Re-read the four laws</a>
     <p class="small" style="margin:26px auto 0;max-width:56ch">The written specification lives in the repo beside this page:
@@ -537,7 +597,7 @@ document.documentElement.classList.add('js');
 var reveal=function(){document.querySelectorAll('.rv:not(.in)').forEach(function(e){e.classList.add('in')})};
 if('IntersectionObserver' in window){
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'-40px 0px -6% 0px',threshold:.04});
-  document.querySelectorAll('.head, .planes, .engines, .tw, .roles, .flow, .tiers, .bridge, .daygrid, .gate, .laws, .weeks, .kv, .truth, .hero .grid, .hero .floors, .cta > *')
+  document.querySelectorAll(.head, .planes, .engines, .tw, .roles, .flow, .tiers, .bridge, .daygrid, .gate, .laws, .weeks, .kv, .truth, .hero .grid, .hero .floors, .cta > *')
     .forEach(function(el){el.classList.add('rv');io.observe(el)});
   setTimeout(reveal,1600); // safety: never leave content invisible
   addEventListener('beforeprint',reveal);
