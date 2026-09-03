@@ -14,6 +14,11 @@ in Arena behave like a trained employee instead of a stranger.
 Never start client work without steps 1–2 and 4–5. Never answer a business question from memory
 when a file holds the truth.
 
+**Session protocol.** Every working conversation opens with a ritual trigger (`morning`, `intake`,
+`produce <slug> <type>`, `report wkNN`, `prep <slug>`, `log:`, `money`, `ingest <slug>`, `retro`) and closes
+with a commit or PR plus one line in `memory/log/`. Deliverables go to a branch → PR (that is the approval
+gate); internal files commit directly. See `os/sessions/RITUALS.md` and `design/05-SEMI-AUTO-3-ACTOR.md`.
+
 ## 2. The 10 OS rules for agents
 
 | # | Rule |
@@ -25,7 +30,9 @@ when a file holds the truth.
 | A5 | **Never send externally.** Produce a draft into `os/clients/<slug>/10-outbox/`; a human sends. |
 | A6 | **Run the gate.** No deliverable is "done" until `kernel/quality-gate.md` scores ≥90. |
 | A7 | **Log it.** Append to `os/memory/log/YYYY-MM-DD.md` — one line per action, per client. |
-| A8 | **Batch, don't poll.** Engines run on schedule, not continuously. Respect the daemon times. |
+| A8 | **Batch, don't poll.** Work happens inside a named ritual (`os/sessions/RITUALS.md`), not scattered chat. One ritual, one output set. |
+| A8b | **Semi-auto mode is active.** No AI API keys, no external schedulers. The Arena session *is* the daemon; the three key-free Actions (A1/A2/A3) are the only automation. Client artefacts ship as files (HTML/PDF), not hosted portals. |
+| A8c | **Checkpoint every sub-step.** Commit before moving on — a session that dies at minute 3 must not lose 25 minutes. |
 | A9 | **Respect the free tier.** Check `os/stack/limits.yml` before using a metered service. If near a limit, say so — don't blow the month. |
 | A10 | **Escalate early, escalate small.** Unknowns get flagged in one line, not buried in a 400-word summary. |
 
