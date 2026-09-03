@@ -45,13 +45,16 @@ gate); internal files commit directly. See `os/sessions/RITUALS.md` and `design/
 
 ## 3. Task intake
 
-Every unit of work starts from a **ticket** in `os/pipeline/tickets/`.
+Every unit of work starts from a **ticket**. Two homes, one format: internal build work is a public file in
+`os/pipeline/tickets/`; **any ticket that names a client lives inside that client's sealed folder**
+(`05-tasks/tickets/`), because a client slug in the public zone is a leak even with no other detail.
+The guard refuses `client: <anything but internal>` in `os/pipeline/**` and `os/ops/**`.
 Format: `NNNN-slug.md` with YAML frontmatter:
 
 ```yaml
 ---
 id: 1042
-client: apex-realty
+client: internal            # a real client ⇒ vault, never this path
 engine: delivery            # leadgen | sales | delivery | reporting | retention | ops
 playbook: PB-07-content-factory
 priority: P1                # P1 revenue-blocking, P2 this week, P3 housekeeping

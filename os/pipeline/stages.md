@@ -25,7 +25,8 @@ WON ─→ ONBOARDING ─→ DELIVERING ─→ (monthly reviews) ─→ RENEWED 
 
 ## Files
 - `pipeline/leads.yml` — one line per lead: id, name, company, vertical, score, tier, stage, owner, next_action, next_action_due, value ₹, source rail.
-- `pipeline/tickets/NNNN-slug.md` — the work unit (see `os/AGENTS.md`).
+- `pipeline/tickets/NNNN-slug.md` — the work unit (see `os/AGENTS.md`). Internal only in the public zone:
+  a client's tickets live in `clients/<slug>/05-tasks/tickets/`, inside the vault.
 - `pipeline/lost.md`, `pipeline/won.md` — the two files that make you smarter: reasons, sizes, and what to change.
 
 ## Targets (measured weekly, D12)

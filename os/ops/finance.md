@@ -4,11 +4,12 @@ Revenue ≠ cash. A solo agency with ₹40L on paper and ₹0 in the bank dies i
 successful. This file is the minimum viable finance system: **₹0 of software, one hour a week.**
 
 ## The ledger (single file, updated forever)
-`ops/finance/ledger.yml`
+`vault/finance.age` → `finance/ledger.yml` inside it. **Never a public path:** one row names a client and an amount.
+Decrypt, edit, re-seal in the same session — the `money` ritual does this and nothing else.
 ```yaml
 - date: 2026-09-14
   type: retainer          # retainer | project | audit | refund | expense | tax
-  client: apex-realty
+  client: <slug>
   gross: 150000
   tax: 0                  # GST if registered
   collected: 150000       # actual cash, not promise

@@ -11,13 +11,16 @@ public:                     # ✅ readable by the world, on purpose — this is 
 
 sealed:                     # 🔒 in this repo, but ciphertext only — the ledger stays in the same place
   - vault/pipeline.age      # leads, scores, won/lost, cash
-  - vault/<client-slug>.age # the entire client folder: strategy, deliverables, comms, invoices, contracts
+  - vault/<client-slug>.age # the entire client folder: strategy, deliverables, comms, invoices, contracts,
+                            # and its own tickets under 05-tasks/tickets/ — that is where a client's work lives
 
 never:                      # ⛔ nothing below may exist as plaintext anywhere in this repo
   - any plaintext file under vault/            # guard: *.age only
   - .vault-work/**  tracked in git             # the decrypted working copy is gitignored
   - os/clients/<real-slug>/**                  # real client folders do not exist here
   - invoices, contracts, exports, PDFs, CSVs, account screenshots  # into the vault or off GitHub
+  - os/ops/finance/ledger.yml                                      # books are sealed data, guard rule 2
+  - any public ticket or ledger row naming a client                # guard rule 3c: client: internal only in os/pipeline/**
   - secrets, tokens, API keys                    # none exist in this design; keep it that way
   - client names, phone numbers, GSTIN, PAN, card numbers in any committed file
   - LICENSE                                      # no open-source licence = competitors may not copy the OS

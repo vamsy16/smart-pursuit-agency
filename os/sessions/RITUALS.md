@@ -75,7 +75,7 @@ whole system depends on — never skip it.**
 ```
 money
 ```
-**I do:** check `ops/finance/ledger.yml` vs what you tell me landed → generate invoices as HTML/PDF with
+**I do:** open `vault/finance.age`, check `finance/ledger.yml` against what you tell me landed → generate invoices as HTML/PDF with
 your UPI details → draft due reminders (D+2 warm, D+5 pause per §7 of the MSA) → update the money block
 in `STATEBOARD.md` → flag any client whose term ends within 60 days (Engine 05).
 **You do:** send. Record `collected` when cash actually arrives. Never from `gross`.

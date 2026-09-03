@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Smart Pursuit OS — The Growth Department</title>
-<meta name="description" content="A one-person AI operating system that manufactures agency output at ₹10,00,000 project scale. Design blueprint." />
+<meta name="description" content="A one-person AI operating system that manufactures team-scale agency output. ₹1,00,000 floor, ₹8–14L flagship projects. Design blueprint." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -16,7 +16,7 @@
   <div class="in">
     <div class="brand">Smart Pursuit <i>OS</i></div>
     <div class="links">
-      <a href="how-it-works.html">How it works</a><a href="#thesis">Thesis</a><a href="#arch">Architecture</a>
+      <a href="functional.html">Functional</a><a href="technical.html">Technical</a><a href="how-it-works.html">How it works</a><a href="functional.html">Functional</a><a href="technical.html">Technical</a><a href="#thesis">Thesis</a><a href="#arch">Architecture</a>
       <a href="#engines">Engines</a><a href="#line">Delivery</a><a href="#pricing">Price</a>
       <a href="#gate">The Gate</a><a href="#semi">Semi-auto</a><a href="#stack">₹0 Stack</a><a href="#build">Build</a>
     </div>
@@ -38,8 +38,8 @@
         reporting and money-chasing are made by a machine that never sleeps and never forgets a file.
       </p>
       <div class="floors">
-        <div><b>₹10,00,000</b><span>Minimum project.<br/>Published. Non-negotiable.</span></div>
-        <div><b>₹1,00,000 / month</b><span>Minimum retainer.<br/>6-month term, auto-invoiced.</span></div>
+        <div><b>₹1,00,000</b><span>Minimum project <em>and</em> minimum retainer.<br/>Published. Non-negotiable.</span></div>
+        <div><b>₹8–14L</b><span>The usual full growth build.<br/>Flagship project, 8–12 weeks.</span></div>
         <div><b>₹0 / month</b><span>Software subscriptions.<br/>Domain: ₹700/yr.</span></div>
       </div>
       <div class="scrollhint">The full design, eleven sections down</div>
@@ -257,7 +257,7 @@
 <section id="pricing">
   <div class="head wide">
     <div class="eyebrow">06 · Price</div>
-    <h2>₹10,00,000 is not a goal.<br/>It's the <em>floor</em>.</h2>
+    <h2>₹1,00,000 is the floor.<br/>₹8,00,000 is the <em>usual</em>.</h2>
     <p class="lead">Price comes from positioning, not tooling — so the card below is a <b style="color:var(--text);font-weight:400">published page</b>,
     with the minimum stated in public. That one page repels the wrong 80% in four seconds and makes the right 20% assume you're worth it.</p>
   </div>
@@ -446,7 +446,7 @@
         <tr><td class="k">Research on client documents</td><td>NotebookLM</td><td>per-notebook source cap</td><td>free chat long-context</td></tr>
         <tr><td class="k">Scheduling &amp; jobs</td><td>GitHub Actions cron</td><td>same 2,000 minutes</td><td>n8n on the free box</td></tr>
         <tr><td class="k">Webhooks, chat flows, bots</td><td>n8n on Oracle Always Free</td><td>2 OCPU / 12 GB ARM (halved Jun 2026)</td><td>Docker on same box</td></tr>
-        <tr><td class="k">Site + client portals</td><td>Cloudflare Pages</td><td>500 builds/mo · free bandwidth</td><td>Vercel / Netlify / GH Pages</td></tr>
+        <tr><td class="k">Public site</td><td>GitHub Pages (this repo)</td><td>unmetered on a public repo · HTTPS · CDN</td><td>Cloudflare Pages / Netlify if a build step ever appears</td></tr>
         <tr><td class="k">Custom-domain email — in</td><td>Cloudflare Email Routing</td><td>genuinely unlimited inbound</td><td>—</td></tr>
         <tr><td class="k">Email — out, as your domain</td><td>SMTP2Go free / Brevo</td><td>1,000/mo · ⚠️ Gmail send-as dies Jan 2027</td><td>Zoho Mail Lite (paid)</td></tr>
         <tr><td class="k">CRM &amp; pipeline</td><td>leads.yml in the repo</td><td>none — this is the advantage</td><td>HubSpot free</td></tr>
@@ -504,7 +504,6 @@
   Four checks, in order — are forty outbound going out, is the first response inside five minutes, does the price card page exist,
   do two autopsies have real numbers in them. The fix is always one of those four, and never "more tools".</p>
 </section>
-
 
 <!-- SEMI-AUTO -->
 <section id="semi">
@@ -588,23 +587,11 @@
   <div class="wrap fgrid">
     <div class="brand" style="font-size:14px">Smart Pursuit Agency <i>AI OS</i></div>
     <div class="num">DESIGN BLUEPRINT v1 · GROWTH DEPARTMENT-AS-A-SERVICE · VIZIANAGARAM, IN</div>
-    <div class="num">₹10,00,000 FLOOR · ₹0/MO RUN COST · 2026</div>
+    <div class="num">₹1,00,000 FLOOR · ₹8–14L USUAL PROJECT · ₹0/MO RUN COST · 2026</div>
   </div>
 </footer>
 
-<script>
-document.documentElement.classList.add('js');
-var reveal=function(){document.querySelectorAll('.rv:not(.in)').forEach(function(e){e.classList.add('in')})};
-if('IntersectionObserver' in window){
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'-40px 0px -6% 0px',threshold:.04});
-  document.querySelectorAll(.head, .planes, .engines, .tw, .roles, .flow, .tiers, .bridge, .daygrid, .gate, .laws, .weeks, .kv, .truth, .hero .grid, .hero .floors, .cta > *')
-    .forEach(function(el){el.classList.add('rv');io.observe(el)});
-  setTimeout(reveal,1600); // safety: never leave content invisible
-  addEventListener('beforeprint',reveal);
-}else{
-  document.querySelectorAll('.head, .planes, .engines, .tw, .roles, .flow, .tiers, .bridge, .daygrid, .gate, .laws, .weeks, .kv, .truth, .hero .grid, .hero .floors, .cta > *')
-    .forEach(function(el){el.classList.add('rv','in')});
-}
-</script>
+<script src="reveal.js" defer></script>
+
 </body>
 </html>

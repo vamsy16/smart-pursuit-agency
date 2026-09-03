@@ -3,14 +3,14 @@
 A deliverable is not "done" when it exists. It is done when it scores ≥90 here and the score is
 written into the ticket. This single file is why a solo shop can charge ₹10L and not get embarrassed.
 
-## Scoring (100 points)
+## Scoring (100 points — the six weights sum to exactly 100; re-check the arithmetic whenever one is edited)
 
 | Dimension | Pts | Pass test |
 |---|---|---|
 | **Truth** | 25 | Every number traceable to a source file/export with a date. Zero invented figures. |
 | **Specificity** | 20 | Could a competitor send this unchanged? If yes → 0. Names, numbers, dates, named pages/ads. |
 | **Client fit** | 15 | Uses their words, their product, their constraints, their data. References ≥3 client-specific facts from `00-account/`. |
-| **Actionability** | 15 | Next step is unambiguous, owned, dated. A reader who does nothing after reading has failed — the doc's fault, not theirs. |
+| **Actionability** | 20 | Next step is unambiguous, owned, dated. A reader who does nothing after reading has failed — the doc's fault, not theirs. |
 | **Craft** | 10 | Formatting, no typos, no banned vocabulary, correct brand kit, exports sized right. |
 | **Risk & honesty** | 10 | Assumptions listed. Unknowns named. "What could make this fail" included. |
 | **Deductions** | − | −5 per banned word/phrase · −25 for any unsourced number · −15 for a broken link/path · auto-fail for scope creep beyond the SOW |

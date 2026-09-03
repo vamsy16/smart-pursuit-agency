@@ -13,7 +13,7 @@ site job fails with "Pages not enabled"). From then on every push runs the guard
 |---|---|---|---|
 | `A0-public-guard.yml` | `public-guard` | every push + PR | **Refuses client data in this public repo**: any real client folder, a lead row, an invoice/PDF/CSV, secret-shaped strings, an Indian mobile/GSTIN/PAN/card pattern, a file >1 MB, or an open-source LICENSE. Also checks internal links and paths. |
 | `A3-site-publish.yml` | `site` | push touching `site/**` | Builds and publishes `site/` to GitHub Pages — free, because this repo is public. |
-| `RUNBOOK.md` → A1/A2 | `week-start`, `friday-pack` | cron | Mechanical file jobs. **Put these in the private repo** — they read client calendars and commits. Budget ~60 of your 2,000 private minutes. |
+| `RUNBOOK.md` → A1/A2 | `week-start`, `friday-pack` | cron | **Specified, not installable**: both would read client calendars and commits, which now live sealed, and a scheduled job has no passphrase. Their public half (no merged ticket without a gate score) is enforced by A0. |
 
 Local pre-flight, no CI required:
 ```bash

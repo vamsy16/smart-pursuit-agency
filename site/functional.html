@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Functional design — Smart Pursuit OS</title>
+<meta name="description" content="What the agency does, who does it, what a client receives, and what the business promises. No code." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="system.css" />
+<style>
+  .badge{display:inline-flex;gap:9px;align-items:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+    text-transform:uppercase;border:1px solid var(--line);padding:6px 11px;color:var(--gold-dim)}
+  .badge.ok{color:var(--sage);border-color:rgba(159,184,163,.35)}
+  .badge.no{color:var(--muted2)}
+  /* swimlane */
+  .lane{border:1px solid var(--line);background:var(--ink2);display:grid;grid-template-columns:150px 1fr}
+  @media(max-width:760px){.lane{grid-template-columns:1fr}}
+  .lane>header{padding:20px;border-right:1px solid var(--line-soft);background:rgba(0,0,0,.22)}
+  .lane>header .n{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase}
+  .lane>header h3{font-size:19px;margin-top:9px}
+  .lane>header p{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr)}
+  @media(max-width:1050px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.steps{grid-template-columns:1fr}}
+  .stg{padding:20px;border-right:1px solid var(--line-soft);position:relative}
+  .stg:last-child{border-right:0}
+  .stg .s{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--muted2)}
+  .stg h4{font-family:var(--serif);font-weight:400;font-size:16.5px;margin:8px 0 9px;line-height:1.3}
+  .stg ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .stg li{font-size:12px;color:#b0aca3;line-height:1.5;display:flex;gap:9px}
+  .stg li::before{content:"›";color:var(--gold-dim);flex:none}
+  .stg .out{margin-top:14px;padding-top:11px;border-top:1px solid var(--line-soft);font-family:var(--mono);font-size:9.5px;color:var(--gold-dim);letter-spacing:.06em;line-height:1.6}
+  .lane+.lane{margin-top:1px}
+  /* who does what */
+  .who3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:820px){.who3{grid-template-columns:1fr}}
+  .who3>div{background:var(--ink2);padding:clamp(22px,2.6vw,30px)}
+  .who3 h3{font-size:18px;margin-bottom:6px}
+  .who3 .sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--muted2);text-transform:uppercase}
+  .who3 ul{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:9px}
+  .who3 li{font-size:12.5px;color:#b3afa6;display:flex;gap:10px;line-height:1.5}
+  .who3 li::before{content:"◆";font-size:7px;color:var(--gold-dim);flex:none;transform:translateY(5px)}
+  .who3 div.human{background:linear-gradient(170deg,#171309,#101319)}
+  .who3 div.human li::before{color:var(--gold)}
+  /* function card */
+  .fn{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:840px){.fn{grid-template-columns:1fr}}
+  .f{background:var(--ink2);padding:clamp(22px,2.6vw,30px)}
+  .f .io{margin-top:18px;display:grid;gap:9px}
+  .f .io div{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:baseline}
+  .f .io b{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--gold-dim);text-transform:uppercase;font-weight:400}
+  .f .io span{font-size:12.5px;color:#b6b2a9;line-height:1.5}
+  .promise{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:760px){.promise{grid-template-columns:1fr}}
+  .promise div{background:var(--ink2);padding:20px 22px;display:flex;gap:18px;align-items:baseline}
+  .promise b{font-family:var(--serif);font-size:clamp(17px,2vw,23px);color:var(--gold-bright);white-space:nowrap;font-weight:400}
+  .promise span{font-size:12.5px;color:#b3afa6;line-height:1.5}
+  .qa{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:760px){.qa{grid-template-columns:1fr}}
+  .qa>div{background:var(--ink2);padding:22px 24px}
+  .qa h3{font-size:15.5px;margin-bottom:9px;color:var(--gold-bright)}
+  .qa p{font-size:12.5px;color:#aca89f;line-height:1.6}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px}
+  .toc a{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted);text-decoration:none;border:1px solid var(--line-soft);padding:8px 12px;transition:.3s}
+  .toc a:hover{color:var(--gold-bright);border-color:var(--line)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,44px);align-items:start}
+  @media(max-width:880px){.two{grid-template-columns:1fr}}
+  .f h3{margin-top:14px}
+  .badge.no::before{content:"○"} .badge.ok::before{content:"●"}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="in">
+    <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none">Smart Pursuit</a> <i>OS</i></div>
+    <div class="links">
+      <a href="functional.html"><b class="gold">Functional</b></a><a href="technical.html">Technical</a>
+      <a href="index.html">Blueprint</a><a href="how-it-works.html">A day</a><a href="#offer">The offer</a>
+      <a href="#journey">Journey</a><a href="#functions">Functions</a><a href="#promises">Promises</a><a href="#money">Money</a>
+    </div>
+    <div class="stamp">FUNCTIONAL DESIGN · v1</div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="hero">
+  <div class="grid">
+    <div>
+      <div class="eyebrow">Document 1 of 2 · what it does, who does it</div>
+      <h1><span>The functional</span><span>design of a <em>one-person</em></span><span class="thin">growth company.</span>
+        <span class="sm" style="font-size:16px;color:var(--muted);margin-top:24px;max-width:46ch">No code on this page. This is the business: what a client buys, what arrives each week, who is responsible for each function, and what the company promises. The machine's internals are on the <a href="technical.html" style="color:var(--gold-bright)">technical design</a>.</span></h1>
+      <div class="floors" style="margin-top:34px">
+        <div><b>What we sell</b><span>A growth department, not a list of deliverables. One senior person plus a documented system.</span></div>
+        <div><b>What you get weekly</b><span>~47 production items at the Growth Dept tier, a digest every Friday, one decision meeting a month.</span></div>
+        <div><b>What you never get</b><span>Anonymous account managers, silence between reports, or a number we cannot trace to a source.</span></div>
+      </div>
+    </div>
+    <aside class="hero-side">
+      <div class="spec">
+        <h4>Read this if you are</h4>
+        <dl>
+          <dt>A client</dt><dd>Journey, Promises, Money</dd>
+          <dt>A prospect</dt><dd>Offer, Functions, the FAQ</dd>
+          <dt>Vamsi</dt><dd>Everything, then the technical doc</dd>
+          <dt>Hiring us</dt><dd>Out of scope, first</dd>
+        </dl>
+      </div>
+      <div class="spec">
+        <h4>Status of the business</h4>
+        <dl>
+          <dt>Design</dt><dd style="color:var(--gold-bright)">complete</dd>
+          <dt>Operations</dt><dd>not started</dd>
+          <dt>Clients live</dt><dd>0 of 8 capacity</dd>
+          <dt>Pricing</dt><dd>floor ₹1,00,000</dd>
+          <dt>Setup cost</dt><dd>domain + one lawyer</dd>
+        </dl>
+      </div>
+      <blockquote class="quote">We are not a marketing team with software. We are a system with a senior person in it, and you get both.</blockquote>
+    </aside>
+  </div>
+  <div class="toc">
+    <a href="#offer">01 The offer</a><a href="#actors">02 Who does what</a><a href="#journey">03 The client journey</a>
+    <a href="#functions">04 The eight functions</a><a href="#rhythm">05 The weekly rhythm</a>
+    <a href="#human">06 What stays human</a><a href="#promises">07 Promises &amp; standards</a>
+    <a href="#money">08 Commercials</a><a href="#limits">09 Assumptions &amp; out of scope</a><a href="#faq">10 Questions</a>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section id="offer">
+  <div class="head wide">
+    <div class="eyebrow">01 · The offer</div>
+    <h2>One engagement.<br/>A department's <em>output.</em></h2>
+    <p class="lead">Most businesses choose between an in-house team (expensive, slow to build, leaves when
+    someone better comes along) and a freelancer (cheap, inconsistent, gone when it gets busy). Smart Pursuit
+    sells the third option: the output of a team, with the accountability of one named person, documented so
+    it survives anything.</p>
+  </div>
+  <div class="tiers">
+    <div class="tier"><div class="name">Audit · entry</div>
+      <div class="price">₹25,000<small>ONE OFF · 5 WORKING DAYS</small></div>
+      <ul><li>25-page findings on your own data</li><li>Tracking and funnel review</li><li>Competitor and market scan</li><li>A 90-day plan you could run yourself</li><li>3 things to stop doing this week</li></ul>
+      <div class="foot">Paid, not free. It converts because it is useful either way.</div>
+    </div>
+    <div class="tier rec"><div class="name">Growth Department</div>
+      <div class="price">₹2,50,000<small>PER MONTH · 6-MONTH MINIMUM</small></div>
+      <ul><li>SEO, content, paid media, email, CRO</li><li>~47 production items every week</li><li>Private report file weekly</li><li>Monthly decision meeting with the owner</li><li>Quarterly business review and case study</li><li>Bench specialists for overflow, invisible to you</li></ul>
+      <div class="foot">Against ₹65L–1.1Cr a year for the same capability in-house.</div>
+    </div>
+    <div class="tier"><div class="name">Projects · fixed</div>
+      <div class="price">₹3L – ₹14L<small>WEBSITE · FUNNEL · AI OPS</small></div>
+      <ul><li>Premium website and funnel, 3–5 weeks</li><li>Full growth build, 8–12 weeks</li><li>Brand and performance system</li><li>Measurement and dashboard build</li><li>Client-side AI operations</li></ul>
+      <div class="foot">You own every file and the repository at final payment.</div>
+    </div>
+  </div>
+  <p class="small" style="margin-top:20px;max-width:74ch">A Foundation tier exists at ₹1,00,000/month (one channel, run properly) and a Market
+  Entry tier at ₹4,00,000 (new geography or product line, ~70 items a week). The floor is the floor: we reduce scope before we
+  reduce price, because a discounted retainer is a relationship where both sides quietly resent each other.</p>
+</section>
+
+<!-- ACTORS -->
+<section id="actors">
+  <div class="head wide">
+    <div class="eyebrow">02 · Who does what</div>
+    <h2>Three actors, and one of them<br/>is the reason you hire us.</h2>
+  </div>
+  <div class="who3">
+    <div class="human">
+      <div class="sub">Human · Vamsi</div>
+      <h3>Owner &amp; strategist</h3>
+      <ul><li>Takes every discovery and review call personally</li><li>Decides what we will not do</li><li>Judges work against your business, not a checklist</li><li>Presses send on anything involving money or relationships</li><li>Answers for a miss, in writing, the same day</li></ul>
+    </div>
+    <div>
+      <div class="sub">Machine · the system</div>
+      <h3>Production &amp; memory</h3>
+      <ul><li>Researches your market, competitors, keywords</li><li>Writes briefs, drafts, variants, analyses</li><li>Scores every deliverable before it can be shown to you</li><li>Assembles the weekly report from real files</li><li>Remembers everything: every decision, date, number</li></ul>
+    </div>
+    <div>
+      <div class="sub">Shared surface</div>
+      <h3>You, the client</h3>
+      <ul><li>Answer two or three questions a week at most</li><li>Approve a batch, not twelve separate threads</li><li>Read one 400-word digest, in 90 seconds</li><li>Open one report file. No login, no new tool</li><li>Audit any week of our work, years later</li></ul>
+    </div>
+  </div>
+  <p class="small" style="margin-top:20px;max-width:74ch">The bench matters here too. When a client needs video volume or a build beyond our
+  weekly quota, specialised freelancers are briefed and quality-checked by the same system. You never meet them and never pay
+  them. That is how one person holds a capacity a team would need, without a payroll that would break the price.</p>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="head wide">
+    <div class="eyebrow">03 · The client journey</div>
+    <h2>From first message<br/>to renewal, in four lanes.</h2>
+    <p class="lead">Every stage has an owner and a clock. If a stage has no next action with a date, it counts as a defect
+    and gets fixed that day, which is why nothing here can quietly go stale.</p>
+  </div>
+
+  <div class="lane">
+    <header><div class="n">Lane 1 · before you buy</div><h3>Finding us, and being found suitable</h3><p>We answer in minutes and we screen ourselves out fast when we are wrong for you.</p></header>
+    <div class="steps">
+      <div class="stg"><div class="s">STEP 1</div><h4>You enquire</h4><ul><li>Website form, WhatsApp, referral or a reply to a published teardown</li><li>Nine short questions, not a sales call yet</li></ul><div class="out">OUTPUT · a scored record, same hour</div></div>
+      <div class="stg"><div class="s">STEP 2</div><h4>We assess fit</h4><ul><li>Budget, unit economics, decision access, urgency</li><li>Under ₹1L/month, we say no and point you somewhere useful</li></ul><div class="out">OUTPUT · tier A, B or C · never a discount</div></div>
+      <div class="stg"><div class="s">STEP 3</div><h4>45-minute working session</h4><ul><li>Diagnosis, not a pitch. We name the constraint</li><li>Floor price said out loud, early</li><li>Next step booked before the call ends</li></ul><div class="out">OUTPUT · proposal within 72 hours</div></div>
+      <div class="stg"><div class="s">STEP 4</div><h4>Proposal, three options</h4><ul><li>What we heard · the bet · scope in and out</li><li>Dated 90-day plan, stop rule, validity 14 days</li></ul><div class="out">OUTPUT · signature + advance, then work starts</div></div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <header><div class="n">Lane 2 · first 30 days</div><h3>Onboarding that earns the fee</h3><p>Month one is decided in week one by evidence of motion, not by promises.</p></header>
+    <div class="steps">
+      <div class="stg"><div class="s">DAY 0</div><h4>Access and calendar</h4><ul><li>Account access requested, never passwords by chat</li><li>Six review dates booked now</li><li>Response times and channels agreed in writing</li></ul><div class="out">OUTPUT · a 3-minute personal welcome</div></div>
+      <div class="stg"><div class="s">DAY 1–3</div><h4>Audit on your data</h4><ul><li>Search, paid, traffic, funnel, tracking, offer</li><li>Your assumptions replaced with numbers</li></ul><div class="out">OUTPUT · findings deck, 12 slides</div></div>
+      <div class="stg"><div class="s">DAY 5</div><h4>Measurement switched on</h4><ul><li>Conversions tested end to end, not just configured</li><li>Baseline frozen and saved</li></ul><div class="out">OUTPUT · proof, or a broken-tracking fix</div></div>
+      <div class="stg"><div class="s">DAY 7–30</div><h4>First win, then the line</h4><ul><li>One quick win shipped and reported</li><li>Full weekly quota begins</li><li>Day 30 review: what moved, what changed</li></ul><div class="out">OUTPUT · the habit that keeps retainers</div></div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <header><div class="n">Lane 3 · steady state</div><h3>The week, every week</h3><p>Manufactured on a line: requested, briefed, produced, checked, approved, shipped, measured.</p></header>
+    <div class="steps">
+      <div class="stg"><div class="s">REQUEST</div><h4>You ask, in four fields</h4><ul><li>Email, WhatsApp or a form</li><li>Acknowledged within a working day</li></ul><div class="out">OUTPUT · a ticket with an owner and a date</div></div>
+      <div class="stg"><div class="s">PRODUCTION</div><h4>Batched by craft</h4><ul><li>Mon search · Tue paid · Wed design</li><li>Brief first, draft second, critique third</li></ul><div class="out">OUTPUT · items scored before you see them</div></div>
+      <div class="stg"><div class="s">CHECK</div><h4>The standard is numeric</h4><ul><li>Nothing ships below 90 of 100</li><li>Any unsourced number is an instant fail</li></ul><div class="out">OUTPUT · revise once, or it does not leave</div></div>
+      <div class="stg"><div class="s">APPROVE</div><h4>One message, one reply</h4><ul><li>"yes", or numbers to hold back</li><li>48 hours of silence counts as approval</li></ul><div class="out">OUTPUT · scheduled publishing</div></div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <header><div class="n">Lane 4 · keeping it</div><h3>Proof, renewal, exit</h3><p>Retention is a rhythm, not a feeling. Churn is usually boredom, not disappointment.</p></header>
+    <div class="steps">
+      <div class="stg"><div class="s">WEEKLY</div><h4>The report file</h4><ul><li>Did · Moved · So what · Need from you · Next</li><li>400 words, one source per figure</li></ul><div class="out">OUTPUT · nothing to log in to</div></div>
+      <div class="stg"><div class="s">MONTHLY</div><h4>A decision meeting</h4><ul><li>Promise, result, gap, cause, next bet</li><li>What this cost, what it returned</li></ul><div class="out">OUTPUT · two asks, one decision</div></div>
+      <div class="stg"><div class="s">DAY 45 · 135</div><h4>Are we on track?</h4><ul><li>The two moments quiet cancellations happen</li><li>Warning signs trigger a new insight, not a reassurance</li></ul><div class="out">OUTPUT · the save, before the storming</div></div>
+      <div class="stg"><div class="s">RENEWAL / EXIT</div><h4>Both handled well</h4><ul><li>Renewal: results, next 90 days, new rate</li><li>Exit: assets, history, and a free 90-day plan</li></ul><div class="out">OUTPUT · a case study or a referral</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNCTIONS -->
+<section id="functions">
+  <div class="head wide">
+    <div class="eyebrow">04 · The eight functions</div>
+    <h2>What the company does,<br/>as functions, with inputs.</h2>
+    <p class="lead">A normal agency names services. This names functions: what goes in, what happens, what comes out, who is
+    accountable. The list is the contract. If a need is not in it, it becomes a change request with a price rather than an unpaid favour.</p>
+  </div>
+  <div class="fn">
+    <div class="f"><div class="badge ok">1 · Demand</div><h3>Getting enough right conversations</h3>
+      <div class="io"><div><b>In</b><span>Our published teardowns, search visibility, a researched prospect list, referrals</span></div>
+      <div><b>Does</b><span>One public teardown a week, 40 researched and personalised outreaches a day, search and local pages, a partner loop</span></div>
+      <div><b>Out</b><span>Qualified conversations booked. Five or more a week</span></div>
+      <div><b>Owner</b><span>Vamsi for the voice, system for everything else</span></div></div></div>
+
+    <div class="f"><div class="badge ok">2 · Triage</div><h3>Deciding who we can serve well</h3>
+      <div class="io"><div><b>In</b><span>Nine intake answers from every enquiry</span></div>
+      <div><b>Does</b><span>Score to 100 on budget, unit economics, decision access, clarity, urgency, fit. Hard fails end it regardless of score</span></div>
+      <div><b>Out</b><span>A gets a call, B gets the audit or sprint, C gets a useful, polite no</span></div>
+      <div><b>Owner</b><span>System scores, Vamsi refuses</span></div></div></div>
+
+    <div class="f"><div class="badge ok">3 · Strategy</div><h3>Naming the constraint</h3>
+      <div class="io"><div><b>In</b><span>Your numbers, your offer, your market, your history with agencies</span></div>
+      <div><b>Does</b><span>Finds the one thing actually limiting growth and designs a 90-day bet around it. States what we deliberately will not do</span></div>
+      <div><b>Out</b><span>A 90-day plan with a falsifiable success test and a date</span></div>
+      <div><b>Owner</b><span>Vamsi signs it. A plan with no named constraint is rejected</span></div></div></div>
+
+    <div class="f"><div class="badge ok">4 · Production</div><h3>Manufacturing the work</h3>
+      <div class="io"><div><b>In</b><span>The plan, your brand kit, product facts, approved briefs</span></div>
+      <div><b>Does</b><span>Articles and clusters, campaign builds and weekly optimisation, creatives and specs, email, landing pages, short-form scripts</span></div>
+      <div><b>Out</b><span>~20 items (Foundation) to ~47 (Growth Dept) to ~70 (Market Entry), every week</span></div>
+      <div><b>Owner</b><span>System produces, gate checks, Vamsi approves</span></div></div></div>
+
+    <div class="f"><div class="badge ok">5 · Measurement</div><h3>Knowing whether it worked</h3>
+      <div class="io"><div><b>In</b><span>Your analytics exports and ad accounts, once a week, supplied by you or by access</span></div>
+      <div><b>Does</b><span>Baselines, week-on-week movement, anomaly detection at ±20%, cost per outcome, contribution not last-click vanity</span></div>
+      <div><b>Out</b><span>A dated number with a source, and one interpretation a non-marketer can act on</span></div>
+      <div><b>Owner</b><span>System compiles, Vamsi decides what it means</span></div></div></div>
+
+    <div class="f"><div class="badge ok">6 · Reporting</div><h3>Making the work visible</h3>
+      <div class="io"><div><b>In</b><span>Everything shipped and measured that week</span></div>
+      <div><b>Does</b><span>Assembles the five-block digest and a designed report file; keeps a monthly review deck honest to the promise made</span></div>
+      <div><b>Out</b><span>Friday, same hour, every week. Nothing to log into</span></div>
+      <div><b>Owner</b><span>System drafts, Vamsi sends</span></div></div></div>
+
+    <div class="f"><div class="badge ok">7 · Client care</div><h3>Owning your experience of time</h3>
+      <div class="io"><div><b>In</b><span>Requests, approvals, meeting notes, contract terms</span></div>
+      <div><b>Does</b><span>Tracks every promise against its date, chases only what is blocking work, flags scope creep before it becomes resentment</span></div>
+      <div><b>Out</b><span>No question unanswered past a working day, no surprise in a bill</span></div>
+      <div><b>Owner</b><span>Vamsi for anything relational</span></div></div></div>
+
+    <div class="f"><div class="badge ok">8 · Commercial</div><h3>Being paid and staying solvent</h3>
+      <div class="io"><div><b>In</b><span>Contracts, invoices, payment dates, our own costs</span></div>
+      <div><b>Does</b><span>Issues invoices on the 1st, runs a polite three-step chase, pauses work at day five, keeps a weekly cash view</span></div>
+      <div><b>Out</b><span>Cash collected, not promises. Never our money on your ad spend</span></div>
+      <div><b>Owner</b><span>System prepares, Vamsi decides on money</span></div></div></div>
+  </div>
+</section>
+
+<!-- RHYTHM -->
+<section id="rhythm">
+  <div class="head wide">
+    <div class="eyebrow">05 · The rhythm</div>
+    <h2>What arrives, and when.<br/>Predictability is the product.</h2>
+    <p class="lead">A client does not experience strategy. They experience timing. So the timetable is fixed and published, and
+    we would rather be two hours late on an idea than a day late on a report.</p>
+  </div>
+  <div class="promise">
+    <div><b>Fri 16:00</b><span>Your weekly report file, four hundred words, five blocks. Same hour, every week, including the bad ones.</span></div>
+    <div><b>Within 1 day</b><span>Any request you send is acknowledged with a date. Anything needing a decision says so explicitly.</span></div>
+    <div><b>Within 48 hours</b><span>Approvals left alone are treated as approved, per our agreement, so your holiday never stalls your campaign.</span></div>
+    <div><b>Monthly, booked</b><span>A thirty to forty-five minute review with the decision-maker. A decision meeting, never a status update.</span></div>
+    <div><b>Within 4 hours</b><span>Anything broken that costs you money. We tell you first, even when it is our fault.</span></div>
+    <div><b>Quarterly</b><span>A business review, an updated 90-day plan, and a written case study of your own results.</span></div>
+  </div>
+  <div class="tw" style="margin-top:1px;border-top:0">
+    <table>
+      <thead><tr><th>Day</th><th>Focus</th><th>What you receive</th><th>What we need from you</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Monday</td><td>Search, content, and this week's production batch</td><td>Briefs and drafts gated and ready for a glance</td><td class="r">nothing</td></tr>
+        <tr><td class="k">Tuesday</td><td>Paid media: builds, budget moves, optimisation log</td><td>Actions taken, why, what to watch, when to stop</td><td class="r">budget approval if spend changes</td></tr>
+        <tr><td class="k">Wednesday</td><td>Design and creative production</td><td>Assets with export specs, sized per placement</td><td class="r">product photos or access, once</td></tr>
+        <tr><td class="k">Thursday</td><td>Client reviews and calls. Deliberately unclogged so overruns land here</td><td>Revisions resolved, decisions recorded</td><td class="r">45 minutes if scheduled</td></tr>
+        <tr><td class="k">Friday</td><td>Reports, invoices, new business</td><td class="r">The weekly report file</td><td class="r">reply to "need from you"</td></tr>
+        <tr><td class="k">Sat–Sun</td><td>The system catches up. Emergencies only</td><td class="r">silence, by design</td><td class="r">nothing</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small" style="margin-top:20px;max-width:74ch">Why the boundaries matter commercially: an agency that replies at midnight for one client
+  cannot reply at midnight for eight. Published timing beats a promise of unlimited availability, because unlimited availability
+  is the thing that eventually fails, and it fails on your account.</p>
+</section>
+
+<!-- HUMAN -->
+<section id="human">
+  <div class="head wide">
+    <div class="eyebrow">06 · What stays human</div>
+    <h2>Four things this company<br/>will never automate.</h2>
+    <p class="lead">Publishing this list is a positioning move, not a confession. Automation is why the price works. The human is
+    why it is safe. Agencies that automate the left column are the ones who end up in refunds and screenshots.</p>
+  </div>
+  <div class="split">
+    <div class="yes"><h3>Always a person</h3><ul>
+      <li><b style="color:var(--text)">Money.</b> Every invoice, refund, discount, scope concession and budget change. The system prepares, Vamsi decides.</li>
+      <li><b style="color:var(--text)">Anything said to you.</b> No message leaves this building unsent by a human. Not a complaint, not a "sorry for the delay", not a congratulations.</li>
+      <li><b style="color:var(--text)">Judgement about your business.</b> What to stop, which opportunity is worth the next ninety days, whether a number matters.</li>
+      <li><b style="color:var(--text)">Bad news.</b> You hear it from a person, fast, with a fix and a date attached.</li>
+      <li><b style="color:var(--text)">Saying no.</b> When a tactic would hurt you, or when we are the wrong agency, someone with a name tells you.</li>
+    </ul></div>
+    <div class="no"><h3>Always the system</h3><ul>
+      <li>Research, keyword mapping, competitor and market scans</li>
+      <li>First drafts, variants, briefs, calendars, file naming</li>
+      <li>Measuring, baselining, anomaly detection, chart-building</li>
+      <li>Quality scoring, checklist enforcement, SLA tracking</li>
+      <li>Filing, versioning, and remembering what was decided on which day</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- PROMISES -->
+<section id="promises">
+  <div class="head wide">
+    <div class="eyebrow">07 · Standards you can hold us to</div>
+    <h2>Six promises, each one<br/>checkable by you.</h2>
+    <p class="lead">We will not promise you a ranking, a ROAS figure or a lead count. Anyone who does has priced the
+    risk to you at zero. These six are the ones that actually decide whether an engagement works, and every one is written
+    into the agreement.</p>
+  </div>
+  <div class="engines">
+    <div class="engine"><div class="id">P1</div><h3>Nothing ships below 90 of 100</h3><p>Truth, specificity, fit to your business, actionability, craft, honesty. An unsourced number fails it automatically. You can ask to see a score for any deliverable.</p></div>
+    <div class="engine"><div class="id">P2</div><h3>Volume, itemised</h3><p>The weekly quota is in your scope table. If we ship less, it is visible in the report without you having to ask. Countable beats impressive.</p></div>
+    <div class="engine"><div class="id">P3</div><h3>A stop rule, written before launch</h3><p>For any paid test: the spend level and the metric that kills it. If we miss two named indicators by day 90, the next ninety days of that work is reworked at our cost.</p></div>
+    <div class="engine"><div class="id">P4</div><h3>Every figure traceable</h3><p>Source system, date range, how it was pulled. Your baseline is frozen in week one and never moved to flatter us.</p></div>
+    <div class="engine"><div class="id">P5</div><h3>Your money stays yours</h3><p>Ad accounts, cards and spend in your name, funded five days ahead. We never front money for a client, and never bill through a personal account.</p></div>
+    <div class="engine"><div class="id">P6</div><h3>Your records are yours</h3><p>Files, credentials, history and IP transfer on full payment. On exit you get everything plus a free 90-day plan for whoever replaces us.</p></div>
+  </div>
+  <div class="gate" style="margin-top:1px;border-top:0">
+    <div class="gauge">
+      <div class="num">THE STANDARD, MEASURED THE SAME WAY EVERY TIME</div>
+      <div class="score">90<span>/100 minimum</span></div>
+      <div class="meter"><i></i><b></b></div>
+      <p class="small" style="margin-top:12px">Below 75, the work is not returned to the writer. It is returned to the <em>process</em>: the rule that failed gets written down so the same failure is not possible for the next client either. You benefit from our mistakes long after they stop happening.</p>
+    </div>
+    <div class="ledger">
+      <div>Truth: every number traceable to a dated source <b>25</b></div>
+      <div>Specificity: could a competitor send this unchanged <b>20</b></div>
+      <div>Fit: uses your words, your product, your constraints <b>15</b></div>
+      <div>Actionability: next step named, owned, dated <b>15</b></div>
+      <div>Craft: formatting, tone, correct sizes <b>10</b></div>
+      <div>Honesty: assumptions and failure modes stated <b>10</b></div>
+      <div class="bad">Any unsourced number <b>−25, fails</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- MONEY -->
+<section id="money">
+  <div class="head wide">
+    <div class="eyebrow">08 · Commercials</div>
+    <h2>The boring clauses that<br/>protect both sides.</h2>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Term</th><th>What it means in practice</th><th>Why it exists</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Minimum</td><td>₹1,00,000 per project and per month. Published, not hidden behind a call.</td><td>A floor is the only thing that keeps quality and pricing aligned at one-person scale.</td></tr>
+        <tr><td class="k">Advance</td><td>50% to start a project, 100% for month one of a retainer, then the 1st of each month.</td><td>We are not your bank. Work that starts unpaid ends disputed.</td></tr>
+        <tr><td class="k">Term</td><td>Six months minimum, then month-to-month with 30 days' notice. You may leave; the fee does not change mid-term.</td><td>Growth systems need ninety days to be measurable, and six months to be trusted.</td></tr>
+        <tr><td class="k">Scope</td><td>A scope table with inclusions and exclusions. Two revision rounds included; after that, a change request with an estimate.</td><td>Scope creep is what turns a good client into a loss. Naming it keeps the friendship.</td></tr>
+        <tr><td class="k">Approvals</td><td>48 hours of silence counts as approval. Bulk approvals, one message a week.</td><td>Solo delivery dies of waiting, not of working.</td></tr>
+        <tr><td class="k">Ad spend</td><td>Your account, your card, funded five days ahead. Budgets only change with your written yes.</td><td>No agency should hold a client's financial risk, and no client should have to.</td></tr>
+        <tr><td class="k">Late payment</td><td>Day 2 a friendly check, day 5 work pauses, day 14 formal hold. No emotion, no apology.</td><td>The clause is the bad guy, so the relationship does not have to be.</td></tr>
+        <tr><td class="k">Validity</td><td>A proposal is priced for 14 days. Capacity is published as a start date, not an excuse.</td><td>Capacity honesty reads as competence, and it protects the other clients.</td></tr>
+        <tr><td class="k">IP and data</td><td>Ownership transfers on final payment. Records kept for you, encrypted, retrievable for years.</td><td>You should be able to leave with everything and nothing.</td></tr>
+        <tr><td class="k">Confidentiality</td><td>Mutual. Your numbers never appear publicly without written consent, and our methods never appear with your name.</td><td>Case studies are the agency's oxygen; they are useless if they cost you anything.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="kv">
+    <div><b>50%+</b><span>of a project, before work starts</span></div>
+    <div><b>≤ 5 days</b><span>average collection after due date</span></div>
+    <div><b>₹0</b><span>of your budget spent on our software</span></div>
+    <div><b>85%+</b><span>target gross margin, so we never need you to be small</span></div>
+  </div>
+  <p class="small" style="margin-top:20px;max-width:74ch">One number we keep on the wall: <b class="gold">no client may exceed 30% of monthly revenue.</b>
+  It sounds like it hurts. It is the reason we can decline an unreasonable request from a large account without the company
+  ending, and a business that cannot say no is not a premium business, whatever it charges.</p>
+</section>
+
+<!-- LIMITS -->
+<section id="limits">
+  <div class="head wide">
+    <div class="eyebrow">09 · Assumptions &amp; out of scope</div>
+    <h2>Where this model stops.<br/>Read it before you sign.</h2>
+    <p class="lead">A functional design that hides its limits is a sales deck. These are the conditions the service needs,
+    and the things it will not do, however much you pay.</p>
+  </div>
+  <div class="two">
+    <div>
+      <h3 style="font-size:17px;margin-bottom:14px">What we need from you to work well</h3>
+      <div class="ledger" style="border-top:0">
+        <div>Access to analytics, search console, ad accounts, the site <b>week 1</b></div>
+        <div>One decision-maker who answers within 48 hours <b>always</b></div>
+        <div>Product facts, prices, policies, and what you cannot claim <b>week 1</b></div>
+        <div>Weekly numbers, or standing access to pull them <b>Mon, 30 sec</b></div>
+        <div>A funded media budget if the plan includes paid <b>your account</b></div>
+        <div>Creative material: photos, video, brand files <b>once</b></div>
+        <div>Permission to measure what matters, not only what is easy <b>day 5</b></div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:17px;margin-bottom:14px">Out of scope, deliberately</h3>
+      <div class="ledger" style="border-top:0">
+        <div>24/7 community management and reply duty <b>no</b></div>
+        <div>Bought followers, reviews, links, or engagement pods <b>never</b></div>
+        <div>Guaranteed rankings, ROAS or lead counts <b>never</b></div>
+        <div>Fronting your ad spend or payroll <b>never</b></div>
+        <div>Photography, printing, influencer fees <b>pass-through</b></div>
+        <div>Legal, tax or medical claims advice <b>your professionals</b></div>
+        <div>Work below ₹1,00,000, however small the ask <b>no</b></div>
+      </div>
+      <p class="small" style="margin-top:18px">Each refusal is capability protection, not attitude. The 8-client ceiling, the no-black-hat rule and the
+      floor price are what allow the things above the line to be delivered at all.</p>
+    </div>
+  </div>
+  <div class="truth">
+    <h3>And one limit about us: we are eight clients, on purpose.</h3>
+    <p>Capacity is capped at eight concurrent retainers. At five, prices for new clients rise and a start-date queue is
+    published. At eight, retainer sales stop and we offer sprints or a waitlist. This is not scarcity theatre and it is
+    not laziness: beyond eight, the senior person stops being in the room and becomes an operations manager, and you paid
+    for the strategist. When you need more than one senior person can carry, we tell you honestly and, if useful, help you
+    build the in-house team that should replace us.</p>
+    <p style="margin-top:14px">If your needs are genuinely 24/7, or you require a named account director, a procurement-grade vendor register, or
+    a support SLA measured in hours, we are the wrong company for you and a good local full-service agency will serve you
+    better. We will say this on the first call rather than at month three.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="head wide">
+    <div class="eyebrow">10 · Questions clients actually ask</div>
+    <h2>Answered the way we<br/>would answer your CFO.</h2>
+  </div>
+  <div class="qa">
+    <div><h3>Is the work machine-made? Should I care?</h3><p>Yes to the first, no to the second. Machine-made is how ~47 items a week exist at this price instead of six. What is human is the strategy, the judgement about your business, and accountability. You can ask what was drafted by the system on any deliverable; we will tell you. What you will never get is unaudited output, because everything passes the same numeric gate before you see it.</p></div>
+    <div><h3>What happens when you are sick or on holiday?</h3><p>The system continues producing from the approved calendar, your report still arrives, and emergency contact details are in your folder. Nothing about your account lives in one person's memory: every decision, credential reference and open item is in your file, which is exactly why we can promise continuity better than a team with high turnover can.</p></div>
+    <div><h3>Why should I trust one person with ₹10L?</h3><p>Don't trust the person; read the process. Everything is written, dated and retrievable: the scope, the weekly counts, the source of every number, the reason behind every pause. You can audit any week years later. Trust that survives an audit is worth more than trust that survives a charm offensive.</p></div>
+    <div><h3>Can you start smaller and grow if it works?</h3><p>Yes, and it is the honest path: ₹25,000 for the audit and the 90-day plan, or ₹1,00,000 for a thirty-day sprint on one channel. What we will not do is a discounted retainer, because a discounted engagement teaches both of us the wrong lessons about commitment.</p></div>
+    <div><h3>Who owns the work?</h3><p>You do, on final payment: files, accounts, creatives, copy, code, the repository. On day one you own everything we send you. There is no proprietary dashboard holding your history hostage, which is why leaving is cheap for you and why we have to earn staying every month.</p></div>
+    <div><h3>How do you compare to a big agency?</h3><p>You get more output per rupee, faster decisions, one throat to choke, and less of what agencies actually charge for: layers, account management, decks about work instead of work. You get fewer bodies in a room, no overnight emergency response, and no brand-production team. If the requirement is a room of bodies, hire the room.</p></div>
+  </div>
+</section>
+
+<section class="cta" style="border-top:1px solid var(--line)">
+  <div class="eyebrow" style="justify-content:center">Continue</div>
+  <h2>Now the <em>other</em> half:<br/>how the machine is built.</h2>
+  <p class="lead" style="margin:0 auto 30px;text-align:center">Files, formats, the encrypted ledger, the gate as a function, the CI that enforces
+  it, and the honest build status of every part.</p>
+  <div>
+    <a class="btn" href="technical.html">Read the technical design</a>
+    <a class="btn ghost" href="how-it-works.html">See one Tuesday run</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fgrid">
+    <div class="brand" style="font-size:14px"><a href="index.html" style="color:inherit;text-decoration:none">Smart Pursuit Agency</a> <i>AI OS</i></div>
+    <div class="num">FUNCTIONAL DESIGN · document 1 of 2 · 2026</div>
+    <div class="num">FLOOR ₹1,00,000 · 8 CLIENTS MAX · VIZIANAGARAM, IN</div>
+  </div>
+</footer>
+
+<script src="reveal.js"></script>
+</body>
+</html>

@@ -40,7 +40,9 @@ gate, autonomy matrix.
 **Filesystem** = `os/` itself. Clients, pipeline, playbooks, memory. Git is the audit trail; a commit
 message is the timesheet.
 **Daemons** = GitHub Actions cron + n8n (heavy flows) — scheduled, idempotent, non-destructive, never send.
-**Interface** = client portals built from the repo + a public site + WhatsApp/email (drafts).
+**Interface** = a public site, one self-contained weekly report file per client, and WhatsApp/email (drafts only).
+A hosted per-client portal is not in the zero-budget design: see `design/07-ONE-REPO-AI-OS.md`. A read-only
+private repo is the opt-in upgrade for a client who asks for always-on access.
 
 Why this shape: it costs ₹0, it degrades gracefully (a daemon's manual version is already the playbook),
 and every artefact is a file that any future model, freelancer or auditor can pick up. No subscription,

@@ -13,7 +13,7 @@ than if we'd built nothing.
 - [ ] Domain purchase + Cloudflare DNS + Email Routing (inbound) + SPF/DKIM via SMTP2Go/Brevo (outbound)
 - [ ] GitHub secrets: SMTP creds, AI API keys, client-account tokens. `ops/secrets.index.md` = names only
 - [ ] Free AI layer configured: Gemini key (free tier), `limits.yml` wired into the agent's pre-flight check
-- [ ] Client folder scaffold script: `ops/tools/scaffold-client.mjs` (makes the 14 folders + MANIFEST)
+- [ ] Client folder scaffold script: `ops/tools/scaffold-client.mjs` (makes the 15 folders + MANIFEST)
 - [ ] Templates: proposal, discovery, audit, MSA/SOW (draft → **book the lawyer call now**), invoice, digest
 - **Ship test:** create a fake client, scaffold, draft a proposal from template, gate-score it ≥90.
 

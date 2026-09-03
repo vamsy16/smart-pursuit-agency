@@ -11,7 +11,7 @@ in the country still gets cancelled at month 3.
 The portal idea is **superseded by `design/07`**: in a single public repo we never publish a client surface,
 and a designed document out-impresses an empty dashboard. So the artefact is a file.
 
-`13-report/<week>_report.html` — one file, CSS inlined, zero external requests, opens on a phone, prints to
+`14-report/<week>_report.html` — one file, CSS inlined, zero external requests, opens on a phone, prints to
 PDF. Contents: Overview (live numbers + status) · This week · Deliverables & files · Next 14 days ·
 Invoices & payments · What we need from you. Generated in the `report` ritual from the week's real files,
 sealed into the vault, **sent by you**.

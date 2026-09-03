@@ -30,6 +30,27 @@ git ls-files --error-unmatch .vault-work >/dev/null 2>&1 && err ".vault-work is 
 grep -q '.vault-work' .gitignore 2>/dev/null || err ".gitignore missing .vault-work/ (the plaintext working copy)"
 echo "$FILES" | grep -qE '^vault/[a-z0-9-]+\.age$' && printf '::notice::vault present — confirm the passphrase is stored outside this machine\n'
 
+# 3c · a client named in the public zone: tickets, ledger lines and won/lost rows all carry a client key.
+# Client identity is the confidential part of a case study, not the method — so it is refused by rule, not by taste.
+# Anonymise the line ("a Vizag D2C dental brand") or move the file into the vault. `internal` is allowed on purpose.
+named=$(printf '%s\n' "$FILES" | grep -E '^os/(pipeline|ops)/.*\.(md|yml)$' \
+  | xargs -d '\n' grep -IlE '^[[:space:]]*[-*]?[[:space:]]*client:[[:space:]]*[a-z]' 2>/dev/null \
+  | xargs -d '\n' grep -InE '^[[:space:]]*[-*]?[[:space:]]*client:[[:space:]]*[a-z0-9-]+' 2>/dev/null \
+  | grep -viE 'client:[[:space:]]*(internal|none|null|<|the )' || true)
+[ -n "$named" ] && { err "a real client is named in a public file — that belongs in the vault:"; printf '  %s\n' "$named" | head -10; }
+
+# 3d · a public ticket may not reach `done` without a gate score of 90+.
+# This is A2's one check that can run on public files; keeping it here means one workflow, not two.
+for t in $(find os/pipeline/tickets -name '*.md' 2>/dev/null); do
+  st=$(grep -m1 -E '^status:' "$t" | sed 's/^status:[[:space:]]*//' | tr -d '[:space:]')
+  sc=$(grep -m1 -E '^score:'  "$t" | sed 's/^score:[[:space:]]*//' | tr -d '[:space:]')
+  [ "$st" != "done" ] && continue
+  case "$sc" in
+    ""|*[!0-9]*) err "$t is done with no numeric gate score (score='$sc') — ≥90 or it does not merge";;
+    *) [ "$sc" -lt 90 ] && err "$t shipped at $sc — below the 90 gate";;
+  esac
+done
+
 # 4 · Indian PII (mobile / GSTIN / PAN / card)
 pii=$(printf '%s\n' "$FILES" | grep -E '\.(md|yml|html|txt)$' | xargs -d '\n' grep -InE \
   '(^|[^0-9])[6-9][0-9]{9}([^0-9]|$)|[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{3}|[A-Za-z]{5}[0-9]{4}[A-Za-z]{4}|[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}' 2>/dev/null \

@@ -21,7 +21,7 @@
 | Tier | ₹ / month | Weekly output (Engine 03) | Channels | Best fit |
 |---|---|---|---|---|
 | **Foundation** | **₹1,00,000** | ~20 items | 1 channel + tracking + reports | first serious marketing hire replacement |
-| **Growth Dept** ⭐ | **₹2,50,000** | ~47 items | SEO + Paid + Content + Email + CRO | the ₹10L/year story; recommended |
+| **Growth Dept** ⭐ | **₹2,50,000** | ~47 items | SEO + Paid + Content + Email + CRO | the ₹30L/year story; recommended |
 | **Market Entry** | **₹4,00,000** | ~70 items | above + new geography/vertical, 2 languages | launches, expansions, funded teams |
 
 ⭐ = default. Show 3 options, high → low, and put "most clients choose" on the middle. Anchoring is not

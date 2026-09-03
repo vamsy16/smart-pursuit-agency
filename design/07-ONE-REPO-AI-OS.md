@@ -99,6 +99,28 @@ and in the chat with me, and `vault/pipeline.age` starts the day the first advan
 cryptography for an empty drawer — but do wire the guard now, because the mistake it prevents happens later,
 in a hurry, at 11pm, when there is a client.
 
+## A consequence worth naming: nothing client-shaped can be a cron job
+
+Encryption has a cost beyond the passphrase — **CI can no longer read client state**. `week-start` and
+`friday-pack` were designed to walk `clients/*/07-calendar/` and pack the week's commits. Both of those now
+live inside a `.age` archive, and no scheduled job holds the key; putting the key in a repository secret
+would mean the sealed zone is sealed against nobody. So A1 and A2 stay specifications, and their work is
+done by rituals R-03 and R-04 — which is what the ritual table was always for. See `os/daemons/RUNBOOK.md`.
+
+The same logic moved two checks *into* A0, because they only ever needed to see public files:
+
+1. **no public ticket may reach `done` without a gate score ≥ 90** — A2's one enforceable half, now rule 3d;
+2. **no public file may name a client** — under `os/pipeline/**` and `os/ops/**`, `client:` may only be
+   `internal` (rule 3c). A ticket, a ledger row or a won/lost line naming a client is a leak even with no
+   other detail: the *relationship* is the confidential part, not our method.
+
+Client tickets therefore live at `clients/<slug>/05-tasks/tickets/`, inside the vault, in the same format;
+finance lives at `finance/ledger.yml` inside `vault/finance.age`; `pipeline/won.md` and `lost.md` stay public
+but are written anonymised ("a Vizag D2C dental brand"), which is still proof and still sells.
+
+Both rules were tested the way every guard rule must be — clean tree exits 0, planted violation exits 1,
+removed violation exits 0 again. A check that has never been seen failing is not a check.
+
 ## What changed from the two-repo plan (that draft was `design/06`; removed as redundant, kept in git history)
 | 06 said | 07 says |
 |---|---|

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Technical design — Smart Pursuit OS</title>
+<meta name="description" content="Architecture, data model, rituals as jobs, security model of the sealed ledger, CI, gate as a function, and the true build status of every part." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="system.css" />
+<style>
+  .st{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;
+    text-transform:uppercase;padding:4px 9px;border:1px solid var(--line);white-space:nowrap}
+  .st.b{color:var(--sage);border-color:rgba(159,184,163,.34);background:rgba(159,184,163,.06)}
+  .st.p{color:#d9b56a;border-color:rgba(217,181,106,.3);background:rgba(217,181,106,.05)}
+  .st.n{color:var(--muted2)} .st.r{color:var(--rose);border-color:rgba(199,154,146,.3);background:rgba(199,154,146,.05)}
+  .code{border:1px solid var(--line);background:#06070a;padding:16px 18px;overflow-x:auto}
+  .code pre{margin:0;font-family:var(--mono);font-size:11.5px;line-height:1.72;color:#a8b6ab;white-space:pre}
+  .code .c{color:#5f5c55}.code .k{color:var(--gold-bright)}.code .s{color:#9fb8a3}.code .n{color:#c79a92}.code .u{text-decoration:underline dotted rgba(255,255,255,.25)}
+  .tree{border:1px solid var(--line);background:#06070a;padding:18px 20px;overflow-x:auto}
+  .tree pre{margin:0;font-family:var(--mono);font-size:11px;line-height:1.8;color:#9aa18f;white-space:pre}
+  .tree .pub{color:#9fb8a3}.tree .vit{color:var(--gold-bright)}.tree .cm{color:#5f5c55}
+  .legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px}
+  .legend i{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;display:flex;gap:8px;align-items:center;color:var(--muted)}
+  .legend b{width:8px;height:8px;display:inline-block}
+  .cols{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,3.4vw,40px);align-items:start}
+  @media(max-width:900px){.cols{grid-template-columns:1fr}}
+  .stack{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line)}
+  .stack>div{background:var(--ink2);padding:16px 20px}
+  .stack h4{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);font-weight:400}
+  .stack p{font-size:12.5px;color:#b0aca3;margin-top:7px;line-height:1.55}
+  .arch{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+  .arch .row{background:var(--ink2);padding:18px 22px;display:grid;grid-template-columns:170px 1fr auto;gap:20px;align-items:center}
+  @media(max-width:820px){.arch .row{grid-template-columns:1fr;gap:9px}}
+  .arch .row b{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--gold-bright);font-weight:400}
+  .arch .row span{font-size:12.5px;color:#b6b2a9;line-height:1.5}
+  .arch .row.pubrow{background:linear-gradient(100deg,rgba(159,184,163,.05),transparent)}
+  .arch .row.vitrow{background:linear-gradient(100deg,rgba(220,195,137,.06),transparent)}
+  .flowh{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .flowh .n{border:1px solid var(--line);background:var(--ink2);padding:11px 14px;font-family:var(--mono);font-size:10.5px;color:#c1bdb4;letter-spacing:.06em}
+  .flowh .n em{display:block;font-family:var(--sans);font-style:normal;font-size:10px;color:var(--muted2);letter-spacing:.1em;margin-top:5px;text-transform:uppercase}
+  .flowh .a{color:var(--gold-dim)}
+  .spec td:first-child{font-family:var(--mono);font-size:11px;color:var(--gold-bright);white-space:nowrap}
+  .spec td:nth-child(2){font-family:var(--mono);font-size:10.5px;color:var(--muted);white-space:nowrap}
+  .note{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--muted2);line-height:1.8;margin-top:16px}
+  .note.warn{color:var(--rose)}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px}
+  .toc a{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted);text-decoration:none;border:1px solid var(--line-soft);padding:8px 12px;transition:.3s}
+  .toc a:hover{color:var(--gold-bright);border-color:var(--line)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="in">
+    <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none">Smart Pursuit</a> <i>OS</i></div>
+    <div class="links">
+      <a href="technical.html"><b class="gold">Technical</b></a><a href="functional.html">Functional</a>
+      <a href="#arch">Architecture</a><a href="#repo">Repo</a><a href="#data">Data</a><a href="#runtime">Runtime</a>
+      <a href="#security">Security</a><a href="#ci">CI</a><a href="#build">Build status</a>
+    </div>
+    <div class="stamp">TECHNICAL DESIGN · v1</div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">Document 2 of 2 · how the machine is built</div>
+    <h1><span>One repository,</span><span>two zones, <em>zero</em> servers.</span>
+      <span class="sm">Files are the database. The agent is the process scheduler. Git is the audit log. Encryption is the access control list.
+      Everything on this page is either <b>running today</b> or explicitly marked as <b>not built</b> — the same honesty the design gate demands of client work.</span></h1>
+    <div class="kv" style="margin-top:40px">
+      <div><b>2</b><span>programs built &amp; tested</span></div>
+      <div><b>60</b><span>files in the system</span></div>
+      <div><b>0</b><span>servers, databases, API keys</span></div>
+      <div><b>₹0</b><span>monthly run cost, public repo</span></div>
+    </div>
+    <div class="toc">
+      <a href="#arch">01 Architecture</a><a href="#repo">02 Repository</a><a href="#data">03 Data model</a>
+      <a href="#state">04 State machines</a><a href="#runtime">05 Runtime &amp; rituals</a><a href="#security">06 Security</a>
+      <a href="#ci">07 CI/CD</a><a href="#gate">08 Gate as a function</a><a href="#integ">09 Integrations</a>
+      <a href="#build">10 Build status</a><a href="#nfr">11 Non-functional</a><a href="#test">12 Test plan</a>
+    </div>
+  </div>
+</section>
+
+<!-- ARCH -->
+<section id="arch">
+  <div class="head wide">
+    <div class="eyebrow">01 · Architecture</div>
+    <h2>Public method.<br/>Sealed memory.</h2>
+    <p class="lead">The entire runtime fits in one sentence: an agent reads contract-shaped files, produces
+    contract-shaped files, and a CI check refuses any output that violates them. No service holds state, because state
+    in a service is state you cannot clone, grep, encrypt or hand to a successor.</p>
+  </div>
+  <div class="arch">
+    <div class="row pubrow"><b>CLIENT / BROWSER</b><span>GitHub Pages (public repo, free, HTTPS, CDN). Receives the weekly report as one self-contained HTML file. Never authenticates, never logs in, never installs anything.</span><span class="st b">site workflow ready</span></div>
+    <div class="row"><b>FOUNDER</b><span>Approves via a git branch and a pull request on a phone. Owns every decision involving money, promises, scope or relationship repair (autonomy level L0 by constitutional rule).</span><span class="st p">design final</span></div>
+    <div class="row"><b>AGENT RUNTIME</b><span>Arena agent in a sandbox with the repo checked out. Nine roles, one kernel, eight rituals. The only compute; the only throughput ceiling.</span><span class="st b">active</span></div>
+    <div class="row pubrow"><b>os/ · design/ · site/</b><span>Constitution, kernel, engines, playbooks, templates, sessions, stack, memory and the published site. Read by the agent on every session boot; the file set <em>is</em> the programme.</span><span class="st b">live</span></div>
+    <div class="row vitrow"><b>vault/*.age</b><span>Every client folder, the lead ledger, finance and contracts. tar.gz → AES-256-CBC · PBKDF2 200k · salted. Committed as ciphertext; plaintext exists only in gitignored <span class="mono">.vault-work/</span>.</span><span class="st b">built + tested</span></div>
+    <div class="row"><b>.github/workflows</b><span>A0 public-guard (refuses leaks, PII, licences, oversized files, broken links) and A3 site publish. Both currently ship as paste-in files: agent tokens cannot write that directory.</span><span class="st p">paste to enable</span></div>
+    <div class="row"><b>GITHUB ISSUES</b><span>Ticket queue and the approval surface. One PR per client per week; merged means shipped. A tech-literate client may be given a read-only private repo of their own.</span><span class="st n">optional</span></div>
+  </div>
+  <div class="cols" style="margin-top:26px">
+    <div class="code"><pre><span class="c"># the whole runtime, expressed as a loop</span>
+for ritual in [<span class="s">"morning"</span>, <span class="s">"intake"</span>, <span class="s">"produce"</span>, <span class="s">"report"</span>,
+               <span class="s">"prep"</span>, <span class="s">"log"</span>, <span class="s">"ingest"</span>, <span class="s">"money"</span>, <span class="s">"retro"</span>]:
+    open vault(slugs)                       <span class="c"># decrypt → .vault-work/</span>
+    state  = read(<span class="s">"SOVEREIGN"</span>, <span class="s">"AGENTS"</span>, <span class="s">"STATEBOARD"</span>, playbook)
+    out    = roles.execute(ritual, state)   <span class="c"># 9 roles, file-to-file handoff</span>
+    score  = gate(out)                      <span class="c"># 100 pt rubric, hard fails</span>
+    <span class="k">if</span> score &lt; <span class="n">90</span>: out = critique(out); <span class="k">continue</span>
+    branch, commit, open_pr(out)            <span class="c"># nothing client-facing is sent</span>
+    seal vault(slugs)                        <span class="c"># gzip → encrypt → stage .age</span>
+    append(<span class="s">"memory/log/&lt;date&gt;.md"</span>, one_line)
+    <span class="k">await</span> founder                           <span class="c"># merge == shipped</span></pre></div>
+    <div class="stack">
+      <div><h4>What was deleted, and why it matters</h4><p>No n8n, no Oracle VM, no Cloudflare email, no Tally, no HubSpot, no GA4 API
+      pulls, no AI API keys, no hosted client portal, no scheduler. Each removal deleted a failure class: a quota, a leaked
+      credential, a reclaimed VM, a free-tier terms change, a vendor lock-in.</p></div>
+      <div><h4>Why files, not a database</h4><p>Portability (clone + passphrase restores the company), inspectability (grep beats a query),
+      auditability (git blame on a decision), reviewability (a diff is the approval UI), and degradability: every automation has a
+      documented manual twin in its playbook.</p></div>
+      <div><h4>The only throughput ceiling</h4><p>Agent session capacity, not compute minutes. Public-repo Actions are unmetered; a private
+      repo would be capped at 2,000 minutes. Mitigation is discipline, not infrastructure: one ritual per session, batch by role,
+      40-minute cap, commit after every sub-step.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REPO -->
+<section id="repo">
+  <div class="head wide">
+    <div class="eyebrow">02 · Repository layout</div>
+    <h2>The tree, annotated<br/>by zone and status.</h2>
+    <p class="lead">Path stability is load-bearing: agents, the report generator and the CI guard all navigate by these names.
+    Renumbering or renaming a folder after a client signs is treated as a breaking change.</p>
+  </div>
+  <div class="tree"><pre>smart-pursuit-agency/                  <span class="cm"># public · one repo · 60 files</span>
+├── <span class="vit">PUBLIC-SCOPE.yml</span>                    <span class="cm">the public / sealed / never contract, machine-readable</span>
+├── <span class="pub">README.md</span>                          <span class="cm">front door: index, how-it-works, one-line pitch</span>
+│
+├── <span class="pub">design/</span>                            <span class="cm">specification docs (7), read once, referenced forever</span>
+│   ├── 01-MASTER-BLUEPRINT.md  02-90-DAY-BUILD-PLAN.md  03-RISKS-AND-REALITY.md
+│   ├── 04-HOW-IT-WORKS.md      05-SEMI-AUTO-3-ACTOR.md  <span class="vit">07-ONE-REPO-AI-OS.md</span>
+│
+├── <span class="pub">os/</span>                                <span class="cm">the running system</span>
+│   ├── <span class="vit">SOVEREIGN.md</span>                    <span class="cm">constitution: 4 laws, red lines, capacity, money rules</span>
+│   ├── <span class="vit">AGENTS.md</span>                       <span class="cm">boot order, 10 agent rules, ticket format, vault protocol</span>
+│   ├── kernel/  <span class="pub">roles.md voice.md quality-gate.md escalation.md</span>
+│   ├── engines/ <span class="pub">00-triage(playbook+scoring.yml) 01-leadgen 02-sales(+objections) 03-delivery 04-reporting 05-retention</span>
+│   ├── playbooks/INDEX.md   <span class="cm">24 PB-NN specs · numbering scheme, files split out on demand</span>
+│   ├── templates/INDEX.md   <span class="cm">21 artefact specs · <span class="n">no files exist yet</span></span>
+│   ├── sessions/RITUALS.md  <span class="cm">the 9 rituals: trigger text, inputs, outputs, cap, owner</span>
+│   ├── daemons/  <span class="pub">A0-public-guard.yml A3-site-publish.yml</span> <span class="cm">+ RUNBOOK.md (full-auto spec)</span>
+│   ├── pipeline/ <span class="pub">stages.md leads.yml lost.md won.md tickets/</span>  <span class="cm">leads.yml is empty by design</span>
+│   ├── clients/_template/  <span class="pub">README.md MANIFEST.yml</span>   <span class="cm">layout created <span class="n">inside the vault</span></span>
+│   ├── memory/     <span class="pub">STATEBOARD.md decisions.md lessons.md QUESTIONS.md log/</span>
+│   ├── stack/      <span class="pub">FREE-STACK.md limits.yml verticals.yml</span>
+│   ├── pricing/RATES.md      <span class="cm">the public price card, single source of truth for proposals</span>
+│   └── ops/        <span class="pub">cadence.md capacity.md finance.md secrets.index.md</span>
+│       ├── bench/README.md   <span class="cm">freelancer roster: rates, turnaround, quality score</span>
+│       └── <span class="vit">tools/public-guard.sh</span>  <span class="vit">tools/vault.sh</span>   <span class="cm">● the only executable code</span>
+│
+├── <span class="pub">vault/</span>                             <span class="cm">sealed ledger · *.age only · plaintext refused</span>
+│   └── <span class="n">(empty: Tier 0, no clients yet)</span>
+├── <span class="n">.vault-work/</span>   <span class="cm">decrypted working copy · gitignored · never staged</span>
+└── <span class="pub">site/</span> index · functional · technical · how-it-works · system.css · reveal.js</pre>
+    <div class="legend">
+      <i><b style="background:#9fb8a3"></b>public, readable on purpose</i>
+      <i><b style="background:var(--gold)"></b>load-bearing contract or sealed data</i>
+      <i><b style="background:#6e6a61"></b>not built / intentionally empty</i>
+    </div>
+  </div>
+  <div class="note">NAMING · clients: lowercase kebab slug, never changed after signing · deliverables: YYYY-MM-DD_type_topic_vNN.ext
+  inside the numbered client folder · playbooks: PB-NN-name.md, numbered, never renumbered · rituals: R-01…R-08 · jobs: A0/A3 (installed) A1/A2 (designed)</div>
+  <div class="cols" style="margin-top:26px">
+    <div>
+      <h3 style="font-size:17px;margin-bottom:14px">Conventions the CI enforces</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Rule</th><th>Mechanism</th></tr></thead>
+        <tbody>
+          <tr><td>No plaintext client folder in the tree</td><td class="mono">public-guard: clients/ except _template</td></tr>
+          <tr><td>No real lead record in leads.yml</td><td class="mono">counts id: L-YYYY-NNN shapes &gt; 0</td></tr>
+          <tr><td>vault/ contains only *.age</td><td class="mono">find vault -type f | grep -v '\.age$'</td></tr>
+          <tr><td>.vault-work/ untracked, gitignored</td><td class="mono">git ls-files --error-unmatch</td></tr>
+          <tr><td>No invoice / contract / PDF / CSV in repo</td><td class="mono">filename pattern match</td></tr>
+          <tr><td>No secret-shaped strings</td><td class="mono">AWS · ghp_ · AIza · rzp_ · JWT · PEM</td></tr>
+          <tr><td>No Indian PII shapes</td><td class="mono">mobile · GSTIN · PAN · card PAN-16</td></tr>
+          <tr><td>No open-source LICENSE</td><td class="mono">MIT/Apache/BSD/GPL ⇒ fail</td></tr>
+          <tr><td>No client named outside the vault</td><td class="mono">client: must be internal in os/pipeline + os/ops</td></tr>
+          <tr><td>No public ticket merged below the gate</td><td class="mono">status: done ⇒ score ≥ 90</td></tr>
+          <tr><td>No file over 1 MB</td><td class="mono">find -size +1M</td></tr>
+          <tr><td>No dead internal links</td><td class="mono">python resolver, same rules as the docs</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <h3 style="font-size:17px;margin-bottom:14px">Why these are CI and not memory</h3>
+      <p class="small">A rule that lives in a document is obeyed on careful days and violated on the day a client is angry at 11pm.
+      Every rule above is one that, once broken in a public repo, cannot be unbroken: history is indexed, cached, mirrored and
+      used for model training. So the guard runs on every push and PR, on public-repo Actions, which are unmetered, and it is a
+      plain shell script so it also runs locally before you push.</p>
+      <div class="code" style="margin-top:18px"><pre><span class="c"># pre-flight, before any push touching client work</span>
+$ bash os/ops/tools/public-guard.sh
+✅ public-guard clean — safe for a public repo.
+$ echo $?
+<span class="n">0</span></pre></div>
+      <p class="note warn">The guard was itself a source of a bug worth naming: see §07. A check that errors
+      is not a check that fails. It must fail loudly, and that behaviour is now tested, not assumed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DATA -->
+<section id="data">
+  <div class="head wide">
+    <div class="eyebrow">03 · Data model</div>
+    <h2>Six schemas.<br/>Everything else is prose.</h2>
+    <p class="lead">Structured files are contracts, so they must parse. All YAML in this repo is validated with a real parser, and the
+    fields below are the actual keys — not a wish list. Client-scoped files live in the vault; only the empty public files sit in the tree.</p>
+  </div>
+  <div class="cols">
+    <div>
+      <div class="code"><pre><span class="c"># os/pipeline/leads.yml   ⛔ real rows go to vault/pipeline.age</span>
+<span class="k">leads</span>: []            <span class="c"># - id: L-2026-001</span>
+  <span class="c">#   company: acme-dental        vertical: healthcare</span>
+  <span class="c">#   market: IN                 source: autopsy</span>
+  <span class="c">#   score: 93                  tier: A</span>
+  <span class="c">#   stage: QUALIFIED           value_est: 150000</span>
+  <span class="c">#   next_action: send slots    next_action_due: 2026-09-09</span>
+  <span class="c">#   owner: R7                  updated: 2026-09-03</span></pre></div>
+      <p class="note">Invariant: no stage without a dated next_action.
+      The morning ritual treats an undated stage as a defect, same as a red gate.</p>
+    </div>
+    <div>
+      <div class="code"><pre><span class="c"># a ticket · public: os/pipeline/tickets/ · client-scoped: vault/&lt;slug&gt;.age → 05-tasks/tickets/</span>
+---
+<span class="k">id</span>: 1042            <span class="k">client</span>: internal   <span class="c"># a real slug here = CI failure</span>
+<span class="k">engine</span>: delivery     <span class="k">playbook</span>: PB-07-content-factory
+<span class="k">priority</span>: P1         <span class="k">status</span>: needs-review
+<span class="k">sla_due</span>: 2026-09-05  <span class="k">score</span>: 93
+<span class="k">objective</span>: ...
+<span class="k">inputs</span>:  [paths]     <span class="k">output</span>: [exact paths to write]
+---</pre></div>
+      <p class="note">Handoff protocol: every role-to-role transfer writes what I did · what I
+      could not do · what you must check · where the files are. Missing a line gets bounced by R9.</p>
+    </div>
+  </div>
+
+  <div class="cols" style="margin-top:26px">
+    <div>
+      <h3 style="font-size:17px;margin-bottom:12px">clients/&lt;slug&gt;/MANIFEST.yml — the account record</h3>
+      <div class="tw"><table class="spec">
+        <thead><tr><th>Field</th><th>Type</th><th>Consumed by</th></tr></thead>
+        <tbody>
+          <tr><td>slug / display_name</td><td>string</td><td>everything</td></tr>
+          <tr><td>status</td><td>PROSPECT · WON · ONBOARDING · DELIVERING · AT_RISK · RENEWED · CHURNED</td><td>stateboard, reporting</td></tr>
+          <tr><td>tier</td><td>foundation · growth_dept · market_entry · sprint · audit · project</td><td>pricing, weekly quota</td></tr>
+          <tr><td>mrr_inr / project_value_inr</td><td>int</td><td>finance, capacity</td></tr>
+          <tr><td>start / term_months / renewal_watch</td><td>date · int · date</td><td>renewal radar</td></tr>
+          <tr><td>health</td><td>green · amber · red</td><td>sentiment scoring</td></tr>
+          <tr><td>decision_maker</td><td>name · role · email · whatsapp</td><td>prep brief, escalation</td></tr>
+          <tr><td>cap.ad_spend_monthly_max</td><td>int</td><td class="n">hard gate: no action beyond it</td></tr>
+          <tr><td>cap.approvals_required</td><td>list[budget_change · scope_change · publish · client_email]</td><td>autonomy matrix</td></tr>
+          <tr><td>access</td><td>ga4 · gsc · ads_bm · cms · crm (bool)</td><td>audit checklist</td></tr>
+          <tr><td>auto_approve_hours</td><td>int (48)</td><td>approval station</td></tr>
+          <tr><td>sla</td><td>first_reply_hours · digest · incident_notify_hours</td><td>client care</td></tr>
+          <tr><td>weekly_quota_items</td><td>int</td><td class="n">capacity governor</td></tr>
+          <tr><td>bench_used_inr_month</td><td>int</td><td>margin, P&amp;L</td></tr>
+          <tr><td>case_study</td><td>{consent, due}</td><td>demand engine</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <h3 style="font-size:17px;margin-bottom:12px">engines/00-triage/scoring.yml — 100 + 12</h3>
+      <div class="tw"><table class="spec">
+        <thead><tr><th>Dimension</th><th>Max</th><th>Zero when</th></tr></thead>
+        <tbody>
+          <tr><td>budget_fit</td><td>25</td><td>under ₹40k/mo or unknown</td></tr>
+          <tr><td>ltv_economics</td><td>15</td><td>unit economics unclear</td></tr>
+          <tr><td>decision_access</td><td>15</td><td>blocked from the owner</td></tr>
+          <tr><td>clarity_of_goal</td><td>10</td><td>no named metric</td></tr>
+          <tr><td>marketing_maturity</td><td>10</td><td>none ⇒ 3, not 0</td></tr>
+          <tr><td>urgency</td><td>10</td><td>exploring only</td></tr>
+          <tr><td>fit_for_us</td><td>10</td><td>24/7 or offline-heavy</td></tr>
+          <tr><td>source_quality</td><td>5</td><td>cold reply</td></tr>
+          <tr><td class="k">vertical_bonus</td><td>12</td><td>not in the preferred list</td></tr>
+        </tbody>
+      </table></div>
+      <div class="code" style="margin-top:16px"><pre><span class="c"># hard_fails ⇒ tier C regardless of total</span>
+black-hat, fake reviews, bought followers
+pay-only-after-results | free month then big budget
+abusive behaviour | murky terms after a past dispute
+needs &gt;40 hrs/month of human-only work
+competitor or spy enquiry
+asked to invoice via a personal account or front spend
+
+<span class="c"># routing</span>
+A   ≥80  call ≤24h · proposal ≤72h
+B+  60-79 productised only: Sprint ₹1L / Audit ₹25k
+B   40-59 nurture 90d · 8 touches · free teardown offer
+C   ≤39  polite no + useful fix · log reason · 3 min max</pre></div>
+      <p class="note">Fixed during the repo audit: these weights summed to 105 against a documented
+      100, which silently rescaled every tier threshold. Now exactly 100, bonus applied after and capped.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATE -->
+<section id="state">
+  <div class="head wide">
+    <div class="eyebrow">04 · State machines</div>
+    <h2>Four machines, one rule<br/>each: no state without a next move.</h2>
+  </div>
+  <div class="stack">
+    <div>
+      <h4>Ticket lifecycle</h4>
+      <div class="flowh" style="margin-top:12px">
+        <span class="n">todo<em>owner set</em></span><span class="a">→</span>
+        <span class="n">ai-doing<em>draft, ugly allowed</em></span><span class="a">→</span>
+        <span class="n">needs-review<em>cold + critiqued</em></span><span class="a">→</span>
+        <span class="n">human-doing<em>only Vamsi can</em></span><span class="a">→</span>
+        <span class="n">done<em>scheduled + measured</em></span>
+        <span class="n" style="border-color:rgba(199,154,146,.4)">blocked<em>reason + unblock date</em></span>
+      </div>
+      <p class="note">Hard rule: anything a client will see MUST pass through needs-review. ai-doing → done without a human is a policy violation,
+      not a shortcut. P1 = revenue-blocking · P2 = this week · P3 = housekeeping.</p>
+    </div>
+    <div>
+      <h4>Pipeline (lead)</h4>
+      <div class="flowh" style="margin-top:12px">
+        <span class="n">LEAD</span><span class="a">→</span><span class="n">QUALIFIED</span><span class="a">→</span>
+        <span class="n">DIAGNOSED</span><span class="a">→</span><span class="n">PROPOSED</span><span class="a">→</span>
+        <span class="n">NEGOTIATING</span><span class="a">→</span><span class="n">WON</span><span class="a">→</span><span class="n">ONBOARDING</span>
+        <span class="a">↘</span><span class="n">PARKED<em>90d nurture</em></span>
+        <span class="a">↘</span><span class="n">LOST<em>reason required</em></span>
+      </div>
+      <p class="note">Transitions are only legal forward or into PARKED / LOST, and every legal move writes next_action + due.
+      LOST without a reason is rejected by the retro ritual, because that file is how a solo agency compounds.</p>
+    </div>
+    <div>
+      <h4>Client status</h4>
+      <div class="flowh" style="margin-top:12px">
+        <span class="n">PROSPECT</span><span class="a">→</span><span class="n">WON<em>advance received</em></span><span class="a">→</span>
+        <span class="n">ONBOARDING<em>day 0–30</em></span><span class="a">→</span><span class="n">DELIVERING</span><span class="a">⇄</span>
+        <span class="n">AT_RISK<em>amber from sentiment</em></span><span class="a">→</span>
+        <span class="n">RENEWED · EXPANDED · CHURNED</span>
+      </div>
+      <p class="note">No work begins on a WON with an empty 01-authority/. AT_RISK is entered mechanically (3 ambers or 1 red), not by feeling,
+      and it is exited only by a decision recorded in the comms log.</p>
+    </div>
+    <div>
+      <h4>Deliverable quality</h4>
+      <div class="flowh" style="margin-top:12px">
+        <span class="n">BRIEF<em>falsifiable objective?</em></span><span class="a">→</span>
+        <span class="n">DRAFT<em>no self-editing</em></span><span class="a">→</span>
+        <span class="n">COLD<em>≥2h</em></span><span class="a">→</span>
+        <span class="n">CRITIQUE<em>5 rejection reasons</em></span><span class="a">→</span>
+        <span class="n">FIX</span><span class="a">→</span><span class="n">GATE ≥90</span><span class="a">→</span><span class="n">SHIP</span>
+      </div>
+      <p class="note">Below 75 the failure is attributed to the playbook, not the writer: R9 opens a patch in the same session.
+      Draft and judgement in one pass is what makes AI output look like AI output; the split is the fix.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RUNTIME -->
+<section id="runtime">
+  <div class="head wide">
+    <div class="eyebrow">05 · Runtime</div>
+    <h2>Rituals are jobs.<br/>Your calendar is cron.</h2>
+    <p class="lead">A ritual is a scheduled function with a stable trigger string, declared inputs, declared outputs, a time box and a
+    postcondition. That formality is what lets a session be handed to a different model, or a human, and still produce the same files.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>ID</th><th>Trigger</th><th>Schedule</th><th>Reads</th><th>Writes</th><th>Cap</th></tr></thead>
+      <tbody>
+        <tr><td class="k">R-01</td><td class="mono">morning</td><td class="mono">M/W/F 08:00</td><td>STATEBOARD · leads.yml · tickets · outbox</td><td>reply drafts · log stub</td><td class="r">10m</td></tr>
+        <tr><td class="k">R-02</td><td class="mono">intake + paste</td><td class="mono">on arrival</td><td>scoring.yml · verticals.yml</td><td>vault/pipeline.age · prep brief · outbox</td><td class="r">5m</td></tr>
+        <tr class="hot"><td class="k">R-03</td><td class="mono">produce all seo</td><td class="mono">Mon seo · Tue ads · Wed design</td><td>engine playbooks · 00-account · 07-calendar</td><td>briefs · drafts · gate scores · PR</td><td class="r">30m</td></tr>
+        <tr><td class="k">R-04</td><td class="mono">report wkNN</td><td class="mono">Fri 16:00</td><td>week's commits · 04-analytics</td><td>digests · 14-report/*.html · STATEBOARD</td><td class="r">45m</td></tr>
+        <tr><td class="k">R-05</td><td class="mono">prep &lt;slug&gt;</td><td class="mono">5 min before a call</td><td>MANIFEST · comms log · analytics</td><td>1-page prep brief</td><td class="r">5m</td></tr>
+        <tr><td class="k">R-06</td><td class="mono">log: dictation</td><td class="mono">15 min after a call</td><td>the dictation</td><td>comms entry · tickets · MANIFEST · stage</td><td class="r">15m</td></tr>
+        <tr><td class="k">R-07</td><td class="mono">ingest &lt;slug&gt;</td><td class="mono">Mon, per client</td><td>pasted CSV or screenshots</td><td>04-analytics pull · provenance · anomaly flags</td><td class="r">8m</td></tr>
+        <tr><td class="k">R-08</td><td class="mono">money</td><td class="mono">Mon · Fri</td><td>ledger · MANIFEST terms</td><td>invoice files · reminder drafts · renewals</td><td class="r">10m</td></tr>
+        <tr><td class="k">R-09</td><td class="mono">retro</td><td class="mono">Sun 20:00</td><td>week's files · 5 KPIs</td><td>playbook patch · next week's tickets</td><td class="r">20m</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cols" style="margin-top:26px">
+    <div class="stack">
+      <div><h4>Postconditions (checked, not hoped for)</h4><p>Every ritual ends with: files written at declared paths, one line in
+      <span class="mono">memory/log/&lt;date&gt;.md</span>, a commit or PR, and the daemon-style status line
+      <span class="mono">✅ R-03 · nova · 6 items · gate 93/91/90/94/92/88 · PR #12</span>. A ritual that ends without
+      those three is incomplete by definition.</p></div>
+      <div><h4>Checkpoint discipline</h4><p>Commit after each sub-step. A session interrupted at minute 3 must not lose 25 minutes of work.
+      Because git is the persistence layer, the recovery procedure is "start a new session and read the files", which is the same
+      recovery as a lost laptop, a dead vendor or a model change.</p></div>
+      <div><h4>Idempotency</h4><p>Re-running a ritual may not duplicate a deliverable, re-send an invoice or double-count a lead: writers key on
+      <span class="mono">slug + date + type</span> and overwrite a version, never append a twin. Versioned names
+      (<span class="mono">_v02</span>) instead of destructive edits.</p></div>
+      <div><h4>Escalation format</h4><p><span class="mono">ESCALATION · client · H/M/L</span> then situation · what was already done · the
+      exact rule that stopped it · A/B/C options with cost, risk, time · one-sentence recommendation · the deadline.
+      If it takes longer than 40 seconds to answer, the escalation is the defect.</p></div>
+    </div>
+    <div>
+      <h3 style="font-size:17px;margin-bottom:12px">Autonomy matrix (enforced by path, not by trust)</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Level</th><th>Meaning</th><th>Applies to</th></tr></thead>
+        <tbody>
+          <tr><td class="k">L2</td><td>Act freely, log it, flag anomalies</td><td>research, briefs, drafts, filing, gate scoring, internal docs</td></tr>
+          <tr><td class="k">L1</td><td>Act after a human yes, then report</td><td>publishing to a client site, invoice and reminder sending, pausing a campaign, adding a tool</td></tr>
+          <tr class="hot"><td class="k">L0</td><td>Propose only, draft into 10-outbox</td><td class="n">every client message · any ad budget increase · refunds, discounts, scope concessions · contract or legal wording · deleting client data</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">The mechanism, not the promise: a deliverable found outside a client's <span class="mono">10-outbox/</span> is a CI failure, and
+      an L1 action with nothing signed in <span class="mono">01-authority/</span> is blocked by the MANIFEST gate. Rules that only exist in prose
+      are the ones that break first.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section id="security">
+  <div class="head wide">
+    <div class="eyebrow">06 · Security model</div>
+    <h2>The public repo is not<br/>the trust boundary.</h2>
+    <p class="lead">Design statement: this repository is world-readable by choice, so confidentiality is provided entirely by
+    encryption at rest, and integrity of the boundary is provided by CI. "Public" is irrelevant for the vault zone; the key is everything.</p>
+  </div>
+  <div class="cols">
+    <div>
+      <div class="code"><pre><span class="c"># vault.sh — the sealed ledger, exactly as built</span>
+<span class="k">seal</span>  <span class="c">1</span> tar -czf  .vault-work/&lt;slug&gt;/        <span class="c"># gzip first: ~5x on markdown</span>
+      <span class="c">2</span> age -z -p                     <span class="k">if</span> age present   <span class="c"># authenticated</span>
+         <span class="k">else</span> openssl enc -aes-256-cbc -pbkdf2 -iter <span class="n">200000</span> -salt
+      <span class="c">3</span> → vault/&lt;slug&gt;.age            <span class="c"># staged; git sees ciphertext</span>
+<span class="k">open</span>  decrypt → .vault-work/&lt;slug&gt;/  <span class="c"># gitignored; never staged</span>
+<span class="k">cat</span>   decrypt to tmpfs, print, wipe   <span class="c"># read one file, no plaintext on disk</span>
+<span class="k">key</span>   open + re-seal every vault     <span class="c"># quarterly rotation</span>
+<span class="k">ls</span>    name · bytes · last-changed    <span class="c"># health at a glance</span>
+
+<span class="c"># passphrase: $SMARTPURSUIT_KEY if set, else prompt. Never stored in a file,</span>
+<span class="c"># never echoed, never in a commit message, log line or chat summary.</span></pre></div>
+      <p class="note warn">The openssl fallback is unauthenticated AES-256-CBC: it protects confidentiality,
+      not integrity (a public ciphertext can be tampered with, undetected). Installing <b>age</b> switches to
+      authenticated encryption with no config change; the script prefers it automatically. Recommended.</p>
+    </div>
+    <div class="stack">
+      <div><h4>Threat model · covered</h4><p>Repo made public or leaked · clone of history · a laptop shared or stolen (disk has ciphertext only) ·
+      an accidental plaintext commit (CI blocks it before merge) · a competitor reading the ledger · a former contractor after offboarding.</p></div>
+      <div><h4>Threat model · NOT covered</h4><p>Offline passphrase guessing, if weak (the ciphertext is public forever) · the last mile: a report
+      emailed or WhatsApped is plaintext · a compromised GitHub account without 2FA · shoulder-surfing a decrypted working copy ·
+      client-side storage after delivery · enterprise procurement requiring a named cloud and signed DPA.</p></div>
+      <div><h4>Key policy (the load-bearing part)</h4><p>Six or more random words, machine-generated · password manager plus one printed copy ·
+      never in the repo, the chat, or a filename · rotated with <span class="mono">vault key</span> each quarter and after any laptop
+      repair or shared screen · <b>loss is permanent</b>: no reset, no support. Mitigation: delivered artefacts (PDF, ad account, CMS) always
+      exist independently, so the vault is the memory, not the only copy.</p></div>
+      <div><h4>Size and history math</h4><p>gzip-then-encrypt keeps a 250 KB client-month around 45–60 KB. One seal per session, four sessions a
+      week, eight clients ≈ 10–20 MB/month, under 200 MB/year, against a 1 GB comfort limit. Exports, PDFs, CSVs and screenshots never
+      enter the tree: they are the files that eat repos.</p></div>
+      <div><h4>Incident: plaintext already in history</h4><p>Deleting the file is not enough. Sequence: revoke every credential the file touched →
+      <span class="mono">git filter-repo</span> → force-push → rotate the vault passphrase → log the incident in the client's sealed comms file,
+      and tell the client. Owning it in one paragraph, fast, is cheaper than being found out.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CI -->
+<section id="ci">
+  <div class="head wide">
+    <div class="eyebrow">07 · Continuous integration</div>
+    <h2>Two jobs installed in spirit,<br/>two more in the drawer.</h2>
+    <p class="lead">CI here is not build-and-deploy theatre. It is the mechanical enforcement of the rules the business cannot afford to
+    rely on memory for. Public repo means the minutes are unmetered, so there is no reason to run them rarely: every push.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Job</th><th>Trigger</th><th>Steps</th><th>Fails when</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="hot"><td class="k">A0 public-guard</td><td class="mono">push · PR</td><td class="mono">checkout → public-guard.sh → python link/path resolver</td><td>any leak class in §02, a ticket shipped under 90, or a dead internal reference</td><td><span class="st p">script built · paste to install</span></td></tr>
+        <tr><td class="k">A3 site-publish</td><td class="mono">push touching site/**</td><td class="mono">checkout → .nojekyll → configure-pages → upload-pages-artifact → deploy-pages · concurrency:pages · 3m timeout</td><td>Pages source not set to Actions (Settings → Pages)</td><td><span class="st p">script built · paste to install</span></td></tr>
+        <tr><td class="k">A1 week-start</td><td class="mono">was: cron Mon 06:00</td><td class="mono">read each client calendar → create ticket stubs → open the day log</td><td class="n">impossible as a job: the calendars are inside .age and no cron holds the passphrase</td><td><span class="st r">not installable</span></td></tr>
+        <tr><td class="k">A2 friday-pack</td><td class="mono">was: cron Fri 12:00</td><td class="mono">pack the week's commits per client (sealed ⇒ impossible) + assert a gate score on every merged ticket (public ⇒ moved into A0)</td><td>half of it survives, inside A0</td><td><span class="st r">split, not installed</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cols" style="margin-top:26px">
+    <div class="truth">
+      <h3>The bug that shaped this section</h3>
+      <p>While auditing the repo, the guard's lead check was written as <span class="mono">n=$(grep -c '^- id:' f || echo 0)</span>. On no match
+      <span class="mono">grep -c</span> prints <b>0</b> <em>and</em> exits non-zero, so <span class="mono">|| echo 0</span> appended a second
+      <b>0</b>. The integer test then errored, the <span class="mono">[ ]</span> returned failure inside a subshell, and the check <b>passed
+      silently</b>. A guard that can pass on error is worse than no guard, because it manufactures the confidence it exists to test.</p>
+      <p style="margin-top:14px">Rewritten with <span class="mono">grep | wc -l | tr -d '[:space:]'</span>, a digit-safety coercion, and a
+      <em>non-invertible</em> rule: any real lead id in the public tree fails, whether or not a vault exists. Then tested in four states, not
+      two: clean ⇒ 0 · one record ⇒ 1 · record with a vault present ⇒ still 1 · restored ⇒ 0. Two further false positives were found by
+      the same sweep (a documented schema example counted as a record), so the detector now matches the id shape, not the word.</p>
+    </div>
+    <div>
+      <h3 style="font-size:17px;margin-bottom:12px">Engineering rules for any job added here</h3>
+      <div class="ledger">
+        <div>Idempotent: re-run must not duplicate a deliverable or double-send <b>1</b></div>
+        <div>Never destructive: write new versions, never overwrite client data <b>2</b></div>
+        <div>Quota-aware: read stack/limits.yml, park at 80%, never retry a 429 <b>3</b></div>
+        <div>No external sends: everything client-facing lands in 10-outbox <b>4</b></div>
+        <div>Fail loud in one line, and never on a shell error <b>5</b></div>
+        <div>Linux runner only · under 2 min · concurrency group · small reviewable diff <b>6</b></div>
+        <div class="bad">Every job must have a documented manual twin in its playbook <b>7</b></div>
+      </div>
+      <p class="note">Rule 7 is what makes the whole "no servers" architecture acceptable: a dead job degrades to a
+      written routine, never to silence. If a job cannot be described in a playbook, it is not a job, it is a hack.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GATE -->
+<section id="gate">
+  <div class="head wide">
+    <div class="eyebrow">08 · The gate as a function</div>
+    <h2>score(out) → 0…100<br/>ship only when ≥90.</h2>
+    <p class="lead">The rubric is the load-bearing part of the whole design: it is the only reason one senior person can be trusted with
+    team-level pricing. So it is specified as a function with hard failures, not as advice.</p>
+  </div>
+  <div class="cols">
+    <div class="code"><pre><span class="k">def</span> gate(deliverable, client):
+    score  = <span class="n">25</span> * truth(deliverable)        <span class="c"># every number resolves to a</span>
+                                           <span class="c"># dated source in 04-analytics</span>
+    score += <span class="n">20</span> * (not generic(deliverable))  <span class="c"># a competitor could send it?</span>
+    score += <span class="n">15</span> * fit(client, ref_count=<span class="n">3</span>)   <span class="c"># ≥3 facts from 00-account</span>
+    score += <span class="n">20</span> * actionable(owner=<span class="k">True</span>, date=<span class="k">True</span>)
+    score += <span class="n">10</span> * craft(deliverable)         <span class="c"># format, tone, export specs</span>
+    score += <span class="n">10</span> * honest(assumptions, failure_modes)
+
+    score -= <span class="n">5</span> * banned_vocabulary(deliverable)   <span class="c"># unlock · elevate · seamless…</span>
+    score -= <span class="n">25</span> * unsourced_numbers               <span class="c"># hard fail at any total</span>
+    score -= <span class="n">15</span> * broken_paths_or_links
+
+    <span class="k">if</span> scope_exceeds(sow): <span class="k">return</span> FAIL(<span class="s">"change request first"</span>)
+    <span class="k">if</span> score &lt; <span class="n">75</span>: raise PlaybookDefect(playbook)   <span class="c"># patch the process</span>
+    <span class="k">return</span> SHIP <span class="k">if</span> score &gt;= <span class="n">90</span> <span class="k">else</span> REVISE(once)
+
+<span class="c"># the critique step is a separate role, never the writer's mood:</span>
+<span class="c"># "You are a hostile reviewer paid to find 5 reasons a CFO rejects this."</span>
+<span class="c"># output is a numbered list of weaknesses — not a rewrite.</span></pre></div>
+    <div class="stack">
+      <div><h4>Per-type required checks</h4><p><b>Content:</b> intent answered in the first 100 words · entities covered · 3+ internal links ·
+      meta within limits · no cannibalisation against the index · CTA specific · no padding to reach the band.
+      <b>Paid:</b> naming convention · conversion verified by test, not configuration · budgets sum to the cap · negatives loaded · a
+      stop rule per ad set · placement specs. <b>Report:</b> baseline column · three-sentence summary · anomaly with a hypothesis · one
+      ask · no chart without interpretation · dates on every figure.</p></div>
+      <div><h4>Storage</h4><p>The score is written into the ticket's frontmatter (<span class="mono">score:</span>) and into the PR
+      description as a per-item line, so the merge commit itself becomes the audit record. A2 exists to fail the build when a merged
+      deliverable has no score.</p></div>
+      <div><h4>Why 90 and not 100</h4><p>A perfect score is either unattainable or being faked, and a threshold nobody meets on the first pass
+      becomes a ritual that gets skipped. 90 with hard failures keeps judgement with the human while making the cheap,
+      embarrassing errors structurally impossible.</p></div>
+      <div><h4>The founder's three questions (30 seconds)</h4><p>Would I put my name on this in front of this owner · is there a number in here I
+      cannot trace · what will the client <em>do</em> after reading it. Failing any: back it goes. Never "fixed live" in the send box.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section id="integ">
+  <div class="head wide">
+    <div class="eyebrow">09 · Integration surface</div>
+    <h2>Deliberately manual:<br/>what touches nothing.</h2>
+    <p class="lead">Every integration is a decision to accept a credential, a quota and a vendor's right to change terms. In a zero-budget
+    build each one must be bought back in time saved. The default is therefore the human clipboard, and the exceptions are listed with their triggers.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Boundary</th><th>Today (zero integration)</th><th>Trigger to automate</th><th>Cost if automated</th><th>What the OS assumes</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Analytics input</td><td>R-07 ingest: CSV paste or account screenshot → parsed with a provenance line</td><td>≥4 clients, or a client sending Monday exports</td><td>GA4/GSC read scopes, an API key, quota</td><td>a dated export per client per week, baseline frozen day 3</td></tr>
+        <tr><td class="k">Publishing</td><td>Approved queue published by hand or the client's CMS scheduler</td><td>≥3 clients with blog access</td><td>CMS tokens, and an outage becomes your problem</td><td>publish is L1: approval exists in writing first</td></tr>
+        <tr><td class="k">Ad accounts</td><td>Client's account, human moves budget on an approved note</td><td>never for spend <em>increase</em>. Reporting reads only</td><td>regulatory and financial exposure</td><td>spend cap in MANIFEST · stop rule before launch</td></tr>
+        <tr><td class="k">Invoices, payments</td><td>Generated HTML/PDF from the repo + UPI or a payment link</td><td>≥10 invoices/month → Zoho Books</td><td>₹899/mo past ₹25L; GST filing needs paid</td><td>advance before work · due on receipt · pause at day 5</td></tr>
+        <tr><td class="k">Forms, intake</td><td>The enquiry text is pasted to the agent, which files and scores it</td><td>volume &gt; 15/week → a form posting to the vault</td><td>a hosted form + a webhook = a server</td><td>nine intake fields, always</td></tr>
+        <tr><td class="k">Email</td><td>Gmail, sent by a human. Domain aliases when the first invoice clears</td><td>never automated for client mail</td><td>relays, SPF/DKIM, deliverability tuning</td><td>nothing is sent without a person (Law IV)</td></tr>
+        <tr><td class="k">Client portal</td><td>One self-contained report file per week</td><td>a client asks for always-on → GitHub Pro ₹350, private Pages</td><td>the only paid upgrade in the stack</td><td>the file is the record; nothing needs a login</td></tr>
+        <tr><td class="k">Scheduling</td><td>Founder's calendar and the ritual triggers</td><td>a paid AI tier buys overnight batches (the 14 daemons)</td><td>₹1,500+/mo, plus privacy obligations</td><td>sessions are additive, so a missed one queues</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Principle applied everywhere above: automate the reading and the writing, never the promising.
+  An integration that can send, spend or sign is refused by rule, not reviewed by preference.</p>
+</section>
+
+<!-- BUILD STATUS -->
+<section id="build">
+  <div class="head wide">
+    <div class="eyebrow">10 · Build status, unembellished</div>
+    <h2>What runs, what is paper,<br/>what is next.</h2>
+    <p class="lead">Design completion is not build completion, and a spec that hides its own absence is how agencies end up with a
+    beautiful wiki and no operating system. This is the actual inventory.</p>
+  </div>
+  <div class="stack">
+    <div>
+      <h4>Built, and verified</h4>
+      <div class="tw" style="border:0;margin-top:12px"><table>
+        <thead><tr><th>Artefact</th><th>Verified how</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td class="k">os/ops/tools/vault.sh</td><td>seeded a fake client with phone, GSTIN, card digits → sealed, committed, round-tripped, wrong key, size check</td><td class="r">✅ 285 KB → 1.4 KB · 14 files restored · bad key exits 1 · no plaintext in git history</td></tr>
+          <tr><td class="k">os/ops/tools/public-guard.sh</td><td>every rule gets a planted violation, then a removal. Current matrix: clean · real lead row · lead row with a vault present · restored · ticket naming a client · ledger row in a public path · ticket <span class="mono">done</span> at 82 · at 93</td><td class="r">✅ 0 · 1 · 1 · 0 · 1 · 1 · 1 · 0 — after the silent-pass bug was fixed</td></tr>
+          <tr><td class="k">all YAML in the repo</td><td>parsed with a real parser, plus a scan for markdown fences inside .yml</td><td class="r">✅ 8 files parse · 3 were broken and rewritten</td></tr>
+          <tr><td class="k">internal references</td><td>every <span class="mono">`path/file.ext`</span> in markdown resolved against the tree</td><td class="r">✅ after 5 dangling refs were fixed or marked backlog</td></tr>
+          <tr><td class="k">site/ (4 pages)</td><td>tag balance, <span class="mono">node --check</span> on page JS, HTTP 200 on all assets</td><td class="r">✅ prints to PDF via the shared stylesheet</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <h4>Next, in dependency order</h4>
+      <div class="tw" style="border:0;margin-top:12px"><table>
+        <thead><tr><th>#</th><th>Build</th><th>Spec</th><th>Effort</th></tr></thead>
+        <tbody>
+          <tr><td class="k">01</td><td>install A0 + A3</td><td>paste the two files into .github/workflows · Settings → Pages → Source: GitHub Actions</td><td class="r">5 min</td></tr>
+          <tr><td class="k">02</td><td>scaffold-client.mjs</td><td>inputs: slug, tier · writes the 15 folders + MANIFEST inside .vault-work · <span class="mono">--dry-run</span> · refuses to overwrite · idempotent on re-run</td><td class="r">40 min</td></tr>
+          <tr><td class="k">03</td><td>report.mjs</td><td>client folder + this week's commits → one self-contained HTML, CSS inlined, no external requests, prints to PDF · refuses to render an unsourced number</td><td class="r">60 min</td></tr>
+          <tr><td class="k">04</td><td>gate.mjs</td><td>score a deliverable, write the number into the ticket frontmatter, exit non-zero under 90 so A2 can enforce it</td><td class="r">30 min</td></tr>
+          <tr><td class="k">05</td><td>pipeline.mjs</td><td>append/serve lead rows for the intake ritual: validates the nine intake fields, refuses a stage change without a dated next_action, writes to vault/pipeline.age only</td><td class="r">30 min</td></tr>
+          <tr><td class="k">06</td><td>21 templates</td><td>proposal, discovery, audit, MSA/SOW, invoice, welcome, digest, MBR, QBR, brief, case study, reject… from the specs in templates/INDEX.md</td><td class="r">2 h</td></tr>
+          <tr><td class="k">07</td><td>A1 + A2 jobs</td><td>week-start and friday-pack, per the spec above</td><td class="r">45 min</td></tr>
+          <tr><td class="k">08</td><td>public site rewrite</td><td>design deck → agency site: services, price card, autopsies, booking. <b>how-it-works.html must be rewritten first</b>: it currently describes internals (pricing strategy, the vault, tool costs) that a client page should not carry.</td><td class="r">3 h</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <h4>Intentionally absent</h4>
+      <p style="font-size:13px;color:#b3afa6;margin-top:8px;max-width:78ch;line-height:1.6">No database, queue, cache, server, container, build tool, framework, package.json,
+      CI secrets, API keys, auth, tests-as-a-suite, monitoring stack or IaC. A bespoke SaaS portal, an agent swarm, a scheduling tool
+      and a client mobile app are excluded until at least ten paying clients exist, because each would convert a company with no fixed
+      cost into one with an outage radius. Every tool here must be replaceable by a human holding the playbook in under 30 minutes;
+      if a tool cannot meet that bar, the tool is wrong, not the bar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NFR -->
+<section id="nfr">
+  <div class="head wide">
+    <div class="eyebrow">11 · Non-functional requirements</div>
+    <h2>What "good enough"<br/>means, in numbers.</h2>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Property</th><th>Requirement</th><th>How it is met</th><th>How it fails</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Latency</td><td>first response to an inbound lead &lt; 5 min · reply to a warm lead same day</td><td>the intake ritual drafts before the founder sees it</td><td>a session opened the next morning. The only cure is the alarm</td></tr>
+        <tr><td class="k">Throughput</td><td>~47 items/week per Growth Dept client</td><td>role-batched production: <span class="mono">produce all seo</span> across clients in one session</td><td>role switching inside one session · "just one more item" past the 40-min cap</td></tr>
+        <tr><td class="k">Capacity</td><td>8 concurrent retainers, ceiling enforced in code</td><td>capacity.md governs; the sales ritual refuses a retainer proposal at red without a written override</td><td>a founder overriding it for a friendly client, which is the same mistake as discounting</td></tr>
+        <tr><td class="k">Reliability</td><td>no single point of failure outside the human</td><td>every job has a documented manual twin; sessions are additive so a missed one queues</td><td>a ritual that has become a habit of skipping — visible in the retro, not in the moment</td></tr>
+        <tr><td class="k">Durability</td><td>lose the laptop, lose Arena, lose a tool: nothing is lost</td><td>git is the persistence layer: clone + passphrase restores everything</td><td>an uncommitted session, or a passphrase only in one person's head</td></tr>
+        <tr><td class="k">Integrity</td><td>no deliverable shipped under 90; no number without a source</td><td>gate + A2 assertion + the −25 hard fail</td><td>a skipped gate on an urgent day. Two skips on one client pauses their work to fix the process</td></tr>
+        <tr><td class="k">Confidentiality</td><td>client identity, contracts, finance and account data never in the public zone, plaintext or otherwise</td><td>sealed vault + CI refusal + a naming convention that never embeds a client's name in a public path</td><td>an emergency commit "just for now". There is no just for now in public history</td></tr>
+        <tr><td class="k">Auditability</td><td>any week, any client, provable years later</td><td>commits with dates and scores; the PR is the approval record; the digest is the ship record</td><td>work done outside the loop. If it is not committed, it did not happen</td></tr>
+        <tr><td class="k">Portability</td><td>a different model or a hired human can run this from the files alone</td><td>playbooks written as man pages: trigger, inputs, steps, outputs, SLA, gate, failure modes</td><td>knowledge that only lives in a chat thread. Hence rule A1</td></tr>
+        <tr><td class="k">Cost</td><td>fixed outflow ≤ ₹2,500/month and ≤ 5% of revenue</td><td>public repo, no paid tier by default, every paid tool must replace ≥10 hrs/month or bill to a client</td><td>the "we'll need X to scale" purchase at three clients. Growth is bought with margin, never with anxiety</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="kv">
+    <div><b>7–8 h</b><span>founder time per week at 6 clients</span></div>
+    <div><b>≤ 5 min</b><span>first response target, inbound</span></div>
+    <div><b>≥ 90</b><span>every gate score, no exceptions</span></div>
+    <div><b>≤ ₹2,500</b><span>fixed monthly outflow, hard limit</span></div>
+  </div>
+</section>
+
+<!-- TEST -->
+<section id="test">
+  <div class="head wide">
+    <div class="eyebrow">12 · Test plan</div>
+    <h2>Nothing in this system<br/>is "assumed to work".</h2>
+    <p class="lead">There is no test suite, because there is no application. What exists instead is a short list of adversarial checks,
+    each of which has already caught something real. Run them after any change to a script, a schema or a workflow.</p>
+  </div>
+  <div class="weeks">
+    <div class="week"><div class="w">T1 · GUARD</div><h3>Four states, not two</h3><p>Clean tree, one real lead, one lead with a vault present, restored — each must produce the expected exit code with nothing but its own message on stderr. Every rule added since gets the same treatment: plant it, expect 1, remove it, expect 0.</p><div class="ship">CAUGHT: the silent-pass integer bug · a schema example miscounted as a record · a finance doc that documented a public ledger path with a client name in it</div></div>
+    <div class="week"><div class="w">T2 · VAULT</div><h3>Leak and round-trip</h3><p>Plant phone, GSTIN, PAN and card digits inside a client folder, seal, commit, then search the entire history for the plaintext. Open, edit, re-seal, verify byte-identical restore, and confirm a wrong key exits 1 rather than producing garbage.</p><div class="ship">CAUGHT: verified no plaintext in history · verified size compression before encrypting</div></div>
+    <div class="week"><div class="w">T3 · SCHEMA</div><h3>Everything must parse</h3><p>All YAML through a real parser, and a scan for markdown fences inside data files. Then resolve every backticked path in every markdown file against the tree.</p><div class="ship">CAUGHT: 3 unparseable configs · 5 dangling references · 2 indexes posing as listings</div></div>
+    <div class="week"><div class="w">T4 · ARITHMETIC</div><h3>Every number must add up to what we claim</h3><p>Scoring weights total 100 before the capped bonus; the gate's six rubric weights total 100; every published rupee figure on the site must equal SOVEREIGN.md and RATES.md; folder numbers must be unique.</p><div class="ship">CAUGHT: lead weights summed to 105 · the gate summed to 95 against a stated 100 · the site still published the pre-revision ₹10L floor · two folders both claimed number 13</div></div>
+    <div class="week"><div class="w">T5 · SURFACE</div><h3>Pages render and print</h3><p>Tag balance, JS syntax check, HTTP 200 on every asset, and a print render for the client-facing PDF path. A page whose reveal script errors must never leave content invisible.</p><div class="ship">CAUGHT: a broken selector from a batch edit · shared reveal.js replaced four duplicated inline blocks</div></div>
+    <div class="week"><div class="w">T6 · RED TEAM</div><h3>The week 12 gate</h3><p>Run five hostile requests through the OS: a fake-review demand, a billing dispute, a "guarantee page 1" request, a scope bully, and a leaked-credential email. The pass condition is not polite answers, it is that each one ends as a rule in a file.</p><div class="ship">STATUS: not run · scheduled for week 12 of the build plan</div></div>
+  </div>
+  <div class="note">Reproduce in one line: <span class="mono">bash os/ops/tools/public-guard.sh; python3 -c "import yaml,glob;[yaml.safe_load(open(f)) for f in glob.glob('**/*.yml',recursive=True)]"</span></div>
+</section>
+
+<section class="cta" style="border-top:1px solid var(--line)">
+  <div class="eyebrow" style="justify-content:center">Both halves, together</div>
+  <h2>The function sells it.<br/>The <em>machine</em> makes it survivable.</h2>
+  <p class="lead" style="margin:0 auto 30px;text-align:center">Read the business view on the other page, then start with build item 01:
+  five minutes, and the site goes live with CI guarding it on every push.</p>
+  <div>
+    <a class="btn" href="functional.html">Read the functional design</a>
+    <a class="btn ghost" href="index.html">Blueprint &amp; price</a>
+    <a class="btn ghost" href="how-it-works.html">A Tuesday, hour by hour</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fgrid">
+    <div class="brand" style="font-size:14px"><a href="index.html" style="color:inherit;text-decoration:none">Smart Pursuit Agency</a> <i>AI OS</i></div>
+    <div class="num">TECHNICAL DESIGN · document 2 of 2 · 2026</div>
+    <div class="num">ONE PUBLIC REPO · SEALED LEDGER · TWO PROGRAMS BUILT</div>
+  </div>
+</footer>
+
+<script src="reveal.js" defer></script>
+</body>
+</html>

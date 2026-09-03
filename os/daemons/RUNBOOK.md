@@ -67,17 +67,27 @@ row are the ones that end up in refunds and screenshots.
 
 ---
 
-# The three jobs that ARE automated today (no keys, no AI, ~60 min/month of 2,000)
-These are the only workflows in `os/daemons/*.yml` while in semi-auto mode. All three are pure file
-operations — they cannot leak a secret, blow a quota, or make a client-facing decision.
+# CI jobs — what exists, what is a spec, and what can never be a job
 
-| ID | Trigger | File | Does | Manual twin |
+Two workflow files are written. Both need a five-minute paste by you, because an agent token cannot create
+files inside `.github/workflows/` unless the GitHub App is granted *Workflows: read & write*:
+
+| ID | Trigger | File here | Does | Status |
 |---|---|---|---|---|
-| **A1** `week-start` | cron Mon 06:00 IST | `A1-week-start.yml` | Reads each `clients/*/07-calendar/`, creates this week's ticket stubs, appends the week header to `STATEBOARD.md`, opens `memory/log/<monday>.md` | `produce` regenerates anything missing |
-| **A2** `friday-pack` | cron Fri 12:00 IST | `A2-friday-pack.yml` | Collects the week's commits per client into `12-reviews/<week>_raw.md`; fails if any merged deliverable has no gate score; checks every lead/ticket has a dated next action | `report` + `morning` cover it |
-| **A3** `validate-publish` | on push / PR | `A3-validate.yml` | Lints markdown + links + paths; blocks the red lines (unsourced number pattern, a client-facing file outside `10-outbox/`, secrets-looking strings); builds `site/` → deploys the **public** marketing repo to GitHub Pages | local `npm test` / just ignore, nothing internal is blocked |
+| **A0** `public-guard` | every push + PR | `A0-public-guard.yml` | refuses client data in the public zone: real client folders, a lead row, a `client:` value that isn't `internal`, invoices/PDFs/CSVs, secret and PII shapes, a >1 MB file, an open-source LICENSE, a ticket shipped without a gate score, dead internal links | ● script built and tested — **paste to install** |
+| **A3** `site` | push touching `site/**` | `A3-site-publish.yml` | `.nojekyll` → upload `site/` as the Pages artifact → deploy | ● script built — needs *Settings → Pages → Source: GitHub Actions* |
 
-Rules that keep these free: **Linux runners only** (Windows = 2× minutes, macOS = 10×), no large-runner
-labels, every job exits in under 2 minutes, `concurrency` group set, and no job may `workflow_dispatch`
-itself into a loop. Public repo Actions are unmetered — so **the site build lives on the public repo**, the
-private repo runs the 60 minutes.
+Two more are specified and deliberately **not** jobs. That is a consequence of the vault, not an oversight:
+
+| ID | Was designed as | Why it cannot be a cron job here | What actually does it |
+|---|---|---|---|
+| **A1** `week-start` | Mon 06:00 — read each `clients/*/07-calendar/`, open this week's ticket stubs | the client folders are inside `vault/<slug>.age`. A scheduled job has no passphrase, and a passphrase in a repo secret defeats the entire security model | ritual `produce` (R-03); stubs regenerate on demand, so a missing one costs nothing |
+| **A2** `friday-pack` | Fri 12:00 — pack the week's commits per client into `12-reviews/` | same reason: it reads sealed data | ritual `report` (R-04). Its one public half — *no deliverable merges without a gate score* — was moved into A0, where it is enforceable on files that are actually public |
+
+Rule A0 enforces instead of A2: a ticket under `os/pipeline/tickets/` with `status: done` must carry
+`score:` ≥ 90. One workflow, one place to look, no new cron, no new failure mode.
+
+Rules that keep CI free: **Linux runners only** (Windows 2× minutes, macOS 10×), no large-runner labels,
+every job under 2 minutes, a `concurrency` group, and no self-triggering `workflow_dispatch`. A public repo's
+Actions minutes are unmetered — the guard and the site build cost nothing. Paid Actions minutes only enter the
+picture if a *private* repo is ever used, which is the same ₹350/month GitHub Pro line as private Pages.
