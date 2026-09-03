@@ -1,0 +1,41 @@
+name: public-guard
+on:
+  push: {}
+  pull_request: {}
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  guard:
+    name: refuse client data, secrets and licences
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: guard
+        run: bash os/ops/tools/public-guard.sh
+      - name: markdown link + path check
+        run: |
+          python3 - <<'PY'
+          import os, re, sys
+          bad = []
+          pat = re.compile(r'\[([^\]]+)\]\((?!https?:|#|mailto:)([^)]+)\)')
+          for root, dirs, files in os.walk('.'):
+              dirs[:] = [d for d in dirs if d not in ('.git', 'node_modules')]
+              for f in files:
+                  if not f.endswith('.md'): continue
+                  p = os.path.join(root, f)
+                  for i, line in enumerate(open(p, encoding='utf-8', errors='ignore'), 1):
+                      for _, target in pat.findall(line):
+                          t = target.split('#')[0].strip()
+                          if not t: continue
+                          q = os.path.normpath(os.path.join(os.path.dirname(p), t))
+                          if not os.path.exists(q):
+                              bad.append(f"{p}:{i} dead link -> {t}")
+              if bad:
+                  print("::error::broken internal references")
+                  print("\n".join(bad[:40]))
+                  sys.exit(1)
+              print(f"✅ internal links ok")
+          PY

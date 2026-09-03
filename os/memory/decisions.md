@@ -17,3 +17,7 @@ Format: `YYYY-MM-DD · decision · why · reversible? (Y/N) · decided by`
 2026-09-03 · Client deliverable = self-contained HTML/PDF generated from the repo; no hosted portal until GitHub Pro ($4/mo) is bought with client money · Pages-on-private needs Pro; a designed document beats an empty dashboard anyway · Y · Vamsi
 2026-09-03 · Data ingestion = founder pastes CSV/screenshot weekly per client (~8 min/client/wk), never an API pull · removes credential risk and quota risk entirely · Y · Vamsi
 2026-09-03 · Approval mechanism = a PR per client per week; merged = shipped; rejected = reworked in-session · the diff is the audit trail and the phone is the office · N · Vamsi
+2026-09-03 · Repo stays PUBLIC as the shop window; client/lead/money data goes to a private sibling repo (`smart-pursuit-os`) at client #1 · public buys free Pages + unmetered Actions + proof-of-work marketing; costs confidentiality — so the split is the design · N (irreversible once indexed) · Vamsi
+2026-09-03 · PUBLIC-SCOPE.yml is the contract; CI (public-guard) enforces it rather than trusting memory · a leak in a public repo is permanent · N · Vamsi
+2026-09-03 · No LICENSE file, ever, unless deliberately open-sourcing the OS · default = all rights reserved · Y · Vamsi
+2026-09-03 · Optional per-client PRIVATE repo with the client as collaborator = the portal for tech-literate A-tier accounts (Issues for requests, commits as the audit trail) · ₹0 and differentiating; HTML/PDF report stays the default for non-technical owners · Y · Vamsi

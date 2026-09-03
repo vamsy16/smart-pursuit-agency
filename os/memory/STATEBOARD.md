@@ -2,7 +2,7 @@
 > Updated by daemons + founder. This is the first file any agent reads after the constitution.
 > Keep it under 60 lines. Brevity here is what makes it get updated.
 
-**As of:** 2026-09-03 · **Status:** Design complete · **Mode:** SEMI-AUTO (You + Arena + GitHub) · build not started
+**As of:** 2026-09-03 · **Status:** Design complete · **Mode:** SEMI-AUTO · **Repo:** PUBLIC (window) → client data goes to a private sibling · build not started
 
 ## Capacity
 `Green · 0 / 8 retainers · 0 sprints in flight`
@@ -35,7 +35,8 @@
 
 ## Operating mode
 `Rituals` morning Mon/Wed/Fri 08:00 · produce Mon seo / Tue ads / Wed design · report Fri 16:00 · retro Sun 20:00
-`Actions` A1 week-start · A2 friday-pack · A3 validate-publish (no keys, ~60 of 2,000 min)
+`Actions` public-guard + site→Pages (unmetered, public) · A1 week-start · A2 friday-pack (private repo)
+`Guard` os/ops/tools/public-guard.sh — CI fails on any client folder, lead row, invoice, secret, phone/GSTIN/PAN, or an open-source LICENSE
 `Not used` paid AI tiers, API keys, n8n, Oracle, Cloudflare email, Tally, hosted portal
 
 ## Frozen decisions

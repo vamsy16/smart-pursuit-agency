@@ -1,36 +1,48 @@
-# Vertical Preference Table
-Used by Engine 00 (+12 bonus) and Engine 01 (which autopsies to write).
-Refreshed by D13 monthly. Do not hardcode a niche into the *front door* — only into the *preference*.
+# Vertical Preference Table — consumed by Engine 00 (score bonus) and Engine 01 (what to write about)
+# Refreshed monthly by R-07 retro. Do NOT hardcode a niche into the front door — only into the preference.
+# Valid YAML: agents read this file as data.
 
-```yaml
-preferred:                       # ₹10L is normal here; data is available; you can credibly serve solo+AI
-  - { name: "Real estate & construction", why: "Ticket ₹30L-2Cr, desperate for leads, local premium, zero sophistication", city: "Vizag/Hyderabad/Coimbatore" }
-  - { name: "EdTech / upskilling / study-abroad", why: "High LTV, seasonal bursts, retainer-friendly, huge Indian + GCC market" }
-  - { name: "Healthcare (clinics, dental, IVF, multi-speciality)", why: "Local + high-ticket; needs compliance discipline (ad policy!)" }
-  - { name: "Manufacturing / B2B export & industrial", why: "Nobody markets well here; ₹10L is a rounding error; long retention" }
-  - { name: "SaaS / funded startup (pre-Series B)", why: "Budget exists, speed valued, AI-native buyers — they respect the OS" }
-  - { name: "D2C (₹1Cr+ revenue, not below)", why: "Clear numbers, fast proof; churn risk so keep it under 30% of book" }
-  - { name: "CA / legal / premium professional services", why: "Referral-rich, underserved, high fees, quiet buyers" }
+updated: "2026-09-03"
+
+preferred:                       # +12 · ₹10L is normal here; data is obtainable; servable solo + AI
+  - name: "Real estate & construction"
+    why: "Ticket ₹30L–2Cr, hungry for leads, local premium, little marketing sophistication"
+    where: "Vizag / Hyderabad / Coimbatore"
+  - name: "EdTech, upskilling, study abroad"
+    why: "High LTV, seasonal bursts, retainer-friendly, India + GCC demand"
+  - name: "Healthcare (clinics, dental, IVF, multi-speciality)"
+    why: "Local and high-ticket; strict ad policy — compliance is the differentiator"
+  - name: "Manufacturing, B2B export, industrial"
+    why: "Almost nobody markets well here; ₹10L is a rounding error; long retention"
+  - name: "SaaS / funded startup (pre-Series B)"
+    why: "Budget exists, values speed, AI-native buyers — they respect the OS"
+  - name: "D2C above ₹1Cr revenue"
+    why: "Clear numbers, fast proof; churn risk, so keep under 30% of the book"
+  - name: "CA / legal / premium professional services"
+    why: "Referral-rich, underserved, high fees, quiet buyers"
 
 adjacent:                        # +6
-  [ "Hospitality & resorts", "Jewellery/durables retail", "Franchise development", "Solar/EV/cleantech", "Logistics", "Wedding & events" ]
+  - "Hospitality & resorts"
+  - "Jewellery and durables retail"
+  - "Franchise development"
+  - "Solar / EV / cleantech"
+  - "Logistics"
+  - "Wedding & events"
 
-avoid:                           # 0 and usually a trap for a solo shop
-  "Real-money/gambling/crypto/betting"      # ad policy + legal exposure, not worth it
-  "Political campaigns"                      # deadline hell, unpaid-forever
-  "Pre-revenue idea-stage founders"           # no budget, wants equity
-  "Single-restaurant / salon under ₹1Cr"      # below the floor, high maintenance
-  "Anything needing 24/7 community replies"   # breaks the 8-retainer ceiling
+avoid:                           # 0 — a trap for a solo shop
+  gambling_crypto_betting: "ad policy + legal exposure"
+  political_campaigns: "deadline hell, paid late or never"
+  pre_revenue_founders: "no budget, wants equity"
+  sub_1cr_single_outlet_local: "below the floor, high maintenance"
+  always_on_community: "breaks the 8-retainer ceiling"
 
 monthly_refresh:
-  - "which closed clients beat their 90-day plan? add their vertical to preferred"
+  - "which closed clients beat their 90-day plan? add that vertical to preferred"
   - "which verticals churned or disputed scope? move to avoid"
   - "which vertical did the top 3 Tier-C rejects come from? fix the magnet or the message"
   - "any new ad-policy or platform change hitting a vertical? patch that vertical's playbook"
-```
 
-## The 6-month bet (say this out loud to yourself)
-You chose "general" and that's fine **as a starting position**. It becomes fatal as an *ending* position.
-The OS's job is therefore: run general, keep winning A-tier work in 3-4 verticals by preference, and let
-the **case-study library become the niche by month 6** — at which point "specialist in real estate +
-edtech growth systems" is a fact you can defend, and the ₹10L floor becomes the easy part.
+intent: >
+  You chose "general", which is fine as a starting position and fatal as an ending one. The OS markets
+  general, prefers these verticals internally, and lets the case-study library become the niche by month
+  6 — at which point premium pricing stops being a claim and starts being a record.
