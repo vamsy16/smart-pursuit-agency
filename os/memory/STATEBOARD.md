@@ -49,3 +49,9 @@
 | 2026-09-03 | Core product = Full Growth Partner | delivery line defined in Engine 03 |
 | 2026-09-03 | ₹0 tooling by default; domain + lawyer MSA are the only early spend | see stack/FREE-STACK.md |
 | 2026-09-03 | No auto-send to clients, ever (L0) | Law IV |
+
+---
+
+**Public-file rule:** this board may list a client as a **code** (`ND · foundation · green · wk36 digest sent`),
+never as a name or slug. The name ↔ code map lives in the vault, and `public-guard` rule 3c fails a push that
+puts `client: <real-slug>` anywhere under `os/pipeline/`, `os/ops/` or `os/memory/`. Same company, two zones.

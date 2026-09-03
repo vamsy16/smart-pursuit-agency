@@ -6,7 +6,7 @@
 
 Every template below is **repo-resident** and **variable-driven**, so the sales/ops engine can assemble a
 client-ready document in minutes. Placeholders use `{{like_this}}`; the values come from
-`clients/<slug>/00-account/MANIFEST.yml` and `00-account/` — never from memory.
+`clients/<slug>/MANIFEST.yml` (the account record) and `clients/<slug>/00-account/` (the facts) — never from memory.
 
 | File | Used at | Notes |
 |---|---|---|

@@ -2,7 +2,11 @@
 # public-guard — fails CI if anything client-shaped is committed to the PUBLIC repo.
 # Run locally:  bash os/ops/tools/public-guard.sh
 set -uo pipefail
-FILES=$(find . \( -path ./.git -o -path ./node_modules \) -prune -o -type f -print 2>/dev/null | sed 's|^\./||')
+# The scan set excludes .git, node_modules and .vault-work/. The last one is deliberate: the decrypted
+# working copy legitimately holds client names, phone numbers and invoice text — that is what a vault is
+# for. The plaintext is caught a different way: rule 3b fails the moment anything under .vault-work is
+# actually tracked. Scanning the working copy for PII would only make every honest session red.
+FILES=$(find . \( -path ./.git -o -path ./node_modules -o -path ./.vault-work \) -prune -o -type f -print 2>/dev/null | sed 's|^\./||')
 fail=0
 err() { printf '::error::%s\n' "$1"; fail=1; }
 
@@ -33,11 +37,11 @@ echo "$FILES" | grep -qE '^vault/[a-z0-9-]+\.age$' && printf '::notice::vault pr
 # 3c · a client named in the public zone: tickets, ledger lines and won/lost rows all carry a client key.
 # Client identity is the confidential part of a case study, not the method — so it is refused by rule, not by taste.
 # Anonymise the line ("a Vizag D2C dental brand") or move the file into the vault. `internal` is allowed on purpose.
-named=$(printf '%s\n' "$FILES" | grep -E '^os/(pipeline|ops)/.*\.(md|yml)$' \
+named=$(printf '%s\n' "$FILES" | grep -E '^os/(pipeline|ops|memory)/.*\.(md|yml)$' \
   | xargs -d '\n' grep -IlE '^[[:space:]]*[-*]?[[:space:]]*client:[[:space:]]*[a-z]' 2>/dev/null \
   | xargs -d '\n' grep -InE '^[[:space:]]*[-*]?[[:space:]]*client:[[:space:]]*[a-z0-9-]+' 2>/dev/null \
   | grep -viE 'client:[[:space:]]*(internal|none|null|<|the )' || true)
-[ -n "$named" ] && { err "a real client is named in a public file — that belongs in the vault:"; printf '  %s\n' "$named" | head -10; }
+[ -n "$named" ] && { err "a real client is named in a public file — anonymise it or move it into the vault:"; printf '  %s\n' "$named" | head -10; }
 
 # 3d · a public ticket may not reach `done` without a gate score of 90+.
 # This is A2's one check that can run on public files; keeping it here means one workflow, not two.
