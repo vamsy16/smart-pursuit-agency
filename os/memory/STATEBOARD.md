@@ -2,7 +2,7 @@
 > Updated by daemons + founder. This is the first file any agent reads after the constitution.
 > Keep it under 60 lines. Brevity here is what makes it get updated.
 
-**As of:** 2026-09-03 · **Status:** Design phase — build not started
+**As of:** 2026-09-03 · **Status:** Design complete · **Mode:** SEMI-AUTO (You + Arena + GitHub) · build not started
 
 ## Capacity
 `Green · 0 / 8 retainers · 0 sprints in flight`
@@ -28,9 +28,15 @@
 - [ ] none
 
 ## This week's single focus
-- [ ] Approve the design → start Build Week 1 (repo scaffolding + daemons D01/D02/D05 + public site)
+- [x] Design + semi-auto operating model delivered
+- [ ] Start Build Week 1 (domain → scaffold script → A1/A2/A3 → public site)
 - [ ] Write and publish Autopsy #1 (pick target: a Vizag real-estate developer with a broken funnel)
 - [ ] Publish the Price Card page (₹1L floor stated publicly)
+
+## Operating mode
+`Rituals` morning Mon/Wed/Fri 08:00 · produce Mon seo / Tue ads / Wed design · report Fri 16:00 · retro Sun 20:00
+`Actions` A1 week-start · A2 friday-pack · A3 validate-publish (no keys, ~60 of 2,000 min)
+`Not used` paid AI tiers, API keys, n8n, Oracle, Cloudflare email, Tally, hosted portal
 
 ## Frozen decisions
 | Date | Decision | Why |

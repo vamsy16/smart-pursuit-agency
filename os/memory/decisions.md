@@ -12,3 +12,8 @@ Format: `YYYY-MM-DD · decision · why · reversible? (Y/N) · decided by`
 2026-09-03 · Quality gate ≥90/100 required before any deliverable ships · the only defensible reason one person charges team rates · N · Vamsi
 2026-09-03 · Capacity ceiling 8 retainers; price rises at 5; waitlist at 8 · growth beyond that is a different business model · Y · Vamsi
 2026-09-03 · Repo = single source of truth; no SaaS CRM/database as master · portability across model/tool changes; nothing lost when a free tier dies · N · Vamsi
+2026-09-03 · MODE = SEMI-AUTOMATIC: You + Arena agent + GitHub only. No paid AI tier, no API keys, no n8n/Oracle, no cron-driven AI jobs · founder has no budget for paid AI and wants a workflow he can supervise, not a black box · Y (full-auto spec is preserved in daemons/RUNBOOK.md) · Vamsi
+2026-09-03 · Daemons become 6 human-triggered rituals (morning / intake / produce / report / prep+log / money / retro / ingest) + 3 key-free Actions (A1 week-start, A2 friday-pack, A3 validate-publish) · same playbooks, different scheduler (your calendar) · Y · Vamsi
+2026-09-03 · Client deliverable = self-contained HTML/PDF generated from the repo; no hosted portal until GitHub Pro ($4/mo) is bought with client money · Pages-on-private needs Pro; a designed document beats an empty dashboard anyway · Y · Vamsi
+2026-09-03 · Data ingestion = founder pastes CSV/screenshot weekly per client (~8 min/client/wk), never an API pull · removes credential risk and quota risk entirely · Y · Vamsi
+2026-09-03 · Approval mechanism = a PR per client per week; merged = shipped; rejected = reworked in-session · the diff is the audit trail and the phone is the office · N · Vamsi

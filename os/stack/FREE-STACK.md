@@ -1,5 +1,27 @@
 # The ₹0 Stack — everything you need, priced at what it actually costs you
 
+> ## 🔒 THE 3-ACTOR MINIMUM (this is what we run now)
+> **You + Arena agent + GitHub.** Nothing else is required to operate. Everything below the line is *optional*.
+>
+> | Layer | Tool | Cost | Replaces |
+> |---|---|---|---|
+> | Brain, files, history, board, tickets, approvals | **GitHub** (private repo: Issues + PR + Actions + Projects) | ₹0 | CRM, PM tool, portal, scheduler, audit trail |
+> | Public site + published work | **GitHub Pages** on a public repo (`site/` copied out by the agent) | ₹0 | Framer, Webflow, hosting, Vercel |
+> | Manufacturing, research, drafting, gate-scoring, reports | **Arena agent** (the 6 rituals) | ₹0 in AI APIs | Gemini API, n8n, Oracle VM, Canva, all the AI tools |
+> | Client deliverable | **one self-contained HTML/PDF file** I generate from the repo | ₹0 | the portal, Looker Studio, AgencyAnalytics |
+> | Comms | Gmail + WhatsApp + Google Meet | ₹0 | Slack, Zendesk, Calendly |
+> | Money | UPI + a repo-generated invoice (Razorpay/Zoho when volume demands) | ₹0 | billing SaaS |
+> | Numbers | you paste a CSV or screenshot once a week per client (`ingest`) | your 8 min | GA4/Ads API pulls |
+>
+> **Deleted from the plan:** Gemini API key · n8n · Oracle Cloud box · Cloudflare email/relay · Tally ·
+> HubSpot · Looker Studio · Zoho Books (until ₹25L) · every paid AI tier.
+> **Kept because it costs nothing and buys trust:** the domain (₹700/yr) and one lawyer-reviewed MSA (₹8–15k once).
+> **The one GitHub limit that bites:** Pages on a *private* repo needs Pro ($4/mo ≈ ₹350). Until then the
+> client artefact is a file, not a login — and a designed report often out-impresses a dashboard.
+> Full model: `design/05-SEMI-AUTO-3-ACTOR.md` · rituals: `os/sessions/RITUALS.md`.
+
+---
+
 > **The one number to remember: the whole agency runs on ₹0/month of subscriptions.**
 > The only thing you must spend money on is a domain: ₹500–900/year.
 > And you can *start* with a free subdomain and switch it the day your first invoice clears.
