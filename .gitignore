@@ -13,3 +13,5 @@ Thumbs.db
 *.log
 os/clients/*/04-analytics/raw/
 site/.vercel/
+# plaintext vault working copy — never committed
+.vault-work/

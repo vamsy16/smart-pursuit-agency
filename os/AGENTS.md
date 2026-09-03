@@ -14,6 +14,13 @@ in Arena behave like a trained employee instead of a stranger.
 Never start client work without steps 1–2 and 4–5. Never answer a business question from memory
 when a file holds the truth.
 
+**Vault protocol (single public repo).** Client records are never stored as plaintext here. Per session:
+`bash os/ops/tools/vault.sh open <slug>` → work in `.vault-work/<slug>/` (gitignored) →
+`vault seal <slug>` → the ciphertext `vault/<slug>.age` is the commit. The passphrase comes from
+`$SMARTPURSUIT_KEY` if set in the session env; if it is not set, ask once, never echo it, never write it to
+a file, and never put it in a commit message, a log line or a chat summary. If `vault/` is empty, this
+client does not exist yet — say so instead of inventing state.
+
 **Session protocol.** Every working conversation opens with a ritual trigger (`morning`, `intake`,
 `produce <slug> <type>`, `report wkNN`, `prep <slug>`, `log:`, `money`, `ingest <slug>`, `retro`) and closes
 with a commit or PR plus one line in `memory/log/`. Deliverables go to a branch → PR (that is the approval

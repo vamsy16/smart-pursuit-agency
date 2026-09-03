@@ -24,6 +24,13 @@ echo "$FILES" | grep -qiE '(INV-[0-9]|invoice|contract|msa\.|sow\.|\.pdf$|\.csv$
 pats='AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|gho_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{40}|AIza[0-9A-Za-z_-]{35}|rzp_(live|test)_[A-Za-z0-9]{14}|xox[bp]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|password[[:space:]]*[:=][[:space:]]*[^[:space:]]{6,}'
 hits=$(printf '%s\n' "$FILES" | xargs -d '\n' grep -IlE "$pats" 2>/dev/null || true)
 [ -n "$hits" ] && { err "secret-shaped strings:"; printf '  %s\n' $hits; }
+# 3b · the vault: ciphertext only, plaintext never
+for f in $(find vault -maxdepth 1 -type f 2>/dev/null | grep -v '\.age$'); do err "$f is plaintext — vault/ may contain only *.age"; done
+find vault -mindepth 2 -type f 2>/dev/null | grep . && err "loose files under vault/ — everything must be inside a sealed .age"
+git ls-files --error-unmatch .vault-work >/dev/null 2>&1 && err ".vault-work is TRACKED — plaintext client data is in the repo. Remove from the index and history now."
+grep -q '.vault-work' .gitignore 2>/dev/null || err ".gitignore missing .vault-work/ (the plaintext working copy)"
+echo "$FILES" | grep -qE '^vault/[a-z0-9-]+\.age$' && printf '::notice::vault present — confirm the passphrase is stored outside this machine\n'
+
 # 4 · Indian PII (mobile / GSTIN / PAN / card)
 pii=$(printf '%s\n' "$FILES" | grep -E '\.(md|yml|html|txt)$' | xargs -d '\n' grep -InE \
   '(^|[^0-9])[6-9][0-9]{9}([^0-9]|$)|[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{3}|[A-Za-z]{5}[0-9]{4}[A-Za-z]{4}|[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}' 2>/dev/null \
