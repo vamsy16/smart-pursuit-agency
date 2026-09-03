@@ -1,36 +1,28 @@
-# Public-scope contract — what this PUBLIC repo may and may never contain
-# Enforced mechanically by .github/workflows/public-guard.yml (CI goes red, not a promise).
+# Public-scope contract — ONE public repo, two zones. Enforced by os/ops/tools/public-guard.sh in CI.
 
-public:                     # ✅ publish freely; this IS the marketing
-  - site/**                 # the premium design + operating manual → GitHub Pages
-  - design/**               # the blueprint, published deliberately: proof-of-work, and the lead magnet
-  - os/SOVEREIGN.md         # laws, red lines, the floor — saying it publicly is the positioning
-  - os/AGENTS.md
-  - os/kernel/**            # roles, voice, quality gate, escalation
-  - os/engines/**           # how we work (no client names, no numbers)
-  - os/playbooks/** os/templates/**
-  - os/stack/** os/daemons/** os/sessions/**
-  - os/clients/_template/** # structure only
-  - os/pipeline/stages.md os/pipeline/tickets/README.md
-  - os/ops/{cadence,capacity}.md os/ops/bench/README.md os/ops/tools/**
+public:                     # ✅ readable by the world, on purpose — this is the shop window
+  - site/**                 # the premium design + operating manual → GitHub Pages, ₹0
+  - design/**               # the blueprint: proof-of-work, published deliberately
+  - os/SOVEREIGN.md         # laws, red lines, the ₹1L floor — saying it publicly is the positioning
+  - os/AGENTS.md os/kernel/** os/engines/** os/playbooks/** os/templates/**
+  - os/sessions/** os/stack/** os/daemons/** os/ops/tools/** os/ops/{cadence,capacity}.md
+  - os/clients/_template/** # structure only, never a real client
+  - proof/**                # anonymised case studies + published autopsies
 
-private:                    # ⛔ lives in `smart-pursuit-os` (private repo, same account, same ₹0)
-  - os/clients/<slug>/**    # every client folder, without exception
-  - os/pipeline/leads.yml    # the prospect list is the revenue
-  - os/pipeline/lost.md won.md
-  - os/ops/finance/**        # ledger, invoices, tax
-  - os/ops/bench/<names>.yml # people and rates
-  - os/ops/secrets.index.md  # names of credentials
-  - os/memory/**             # real logs, decisions, incidents
-  - contracts, exports, PDFs, CSVs, screenshots of client accounts
+sealed:                     # 🔒 in this repo, but ciphertext only — the ledger stays in the same place
+  - vault/pipeline.age      # leads, scores, won/lost, cash
+  - vault/<client-slug>.age # the entire client folder: strategy, deliverables, comms, invoices, contracts
 
-why: >
-  A public repo buys free hosted Pages, unmetered Actions and the strongest proof-of-work
-  a one-person agency can publish. It costs confidentiality the instant a client exists.
-  So the window and the ledger are separate repos: public shows the method, private holds the money.
-  Rule of thumb — if a competitor or a client's CFO would care, it goes private.
+never:                      # ⛔ nothing below may exist as plaintext anywhere in this repo
+  - any plaintext file under vault/            # guard: *.age only
+  - .vault-work/**  tracked in git             # the decrypted working copy is gitignored
+  - os/clients/<real-slug>/**                  # real client folders do not exist here
+  - invoices, contracts, exports, PDFs, CSVs, account screenshots  # into the vault or off GitHub
+  - secrets, tokens, API keys                    # none exist in this design; keep it that way
+  - client names, phone numbers, GSTIN, PAN, card numbers in any committed file
+  - LICENSE                                      # no open-source licence = competitors may not copy the OS
 
-switch: >
-  Zero clients signed → publish everything here; it is your best Autopsy.
-  The day an advance lands for client #1 → create the private repo and move the `private:` list,
-  history included (git filter-repo). Forks today: 0. In month 6: not so clean.
+rule: >
+  Publish the machine, seal the memory. If a competitor or a client's CFO would care, it is sealed.
+  The public zone is marketing; the vault is the company. Same repo, same clone, one passphrase.
+  Full model and key policy: design/07-ONE-REPO-AI-OS.md

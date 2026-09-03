@@ -6,10 +6,12 @@
 
 ---
 
-> **⚠️ This repository is PUBLIC by design — it is the shop window, not the ledger.**
-> Method, laws, playbooks and published work live here. **Never** a client name, a lead, an invoice or an
-> export. Enforced by `public-guard` in CI; the contract is [`PUBLIC-SCOPE.yml`](PUBLIC-SCOPE.yml).
-> Client work belongs in the private sibling repo `smart-pursuit-os` (same account, ₹0). Model: `design/06-PUBLIC-REPO-MODEL.md`.
+> **One public repo. Three actors: you + Arena + GitHub.** That is the entire company.
+> This repo is both zones of the design: the **method is public on purpose** (laws, playbooks, site,
+> anonymised proof) and the **ledger is sealed** — every client folder, lead and invoice lives in
+> `vault/*.age`, committed as ciphertext and readable only with your passphrase.
+> Contract: [`PUBLIC-SCOPE.yml`](PUBLIC-SCOPE.yml) · enforced by `public-guard` in CI · model:
+> [`design/07-ONE-REPO-AI-OS.md`](design/07-ONE-REPO-AI-OS.md).
 
 ## 🧠 What this repository is
 
@@ -34,9 +36,10 @@ Three layers:
 | 6 | [`design/04-HOW-IT-WORKS.md`](design/04-HOW-IT-WORKS.md) | **The operating manual: day minus 7, one Tuesday hour by hour** |
 | 7 | [`design/05-SEMI-AUTO-3-ACTOR.md`](design/05-SEMI-AUTO-3-ACTOR.md) | **Active mode: you + Arena + GitHub. What was deleted and what replaced it** |
 | 8 | [`os/sessions/RITUALS.md`](os/sessions/RITUALS.md) | The 8 rituals with the exact trigger text to type |
-| 9 | [`design/06-PUBLIC-REPO-MODEL.md`](design/06-PUBLIC-REPO-MODEL.md) | **This repo is public: what that buys, what it must never contain, and how CI enforces it** |
-| 10 | [`os/pricing/RATES.md`](os/pricing/RATES.md) | The price card that makes ₹10L the normal answer |
-| 11 | [`os/stack/FREE-STACK.md`](os/stack/FREE-STACK.md) | Every tool, every free limit, every fallback |
+| 9 | [`design/07-ONE-REPO-AI-OS.md`](design/07-ONE-REPO-AI-OS.md) | **The whole OS on one public repo: public method, sealed vault, one passphrase** |
+| 10 | [`os/sessions/RITUALS.md`](os/sessions/RITUALS.md) | the rituals, with the exact trigger text |
+| 11 | [`os/pricing/RATES.md`](os/pricing/RATES.md) | The price card that makes ₹10L the normal answer |
+| 12 | [`os/stack/FREE-STACK.md`](os/stack/FREE-STACK.md) | Every tool, every free limit, every fallback |
 
 **Visual:** `site/index.html` (the blueprint, printable to PDF) and `site/how-it-works.html`
 (the interactive day-in-the-life — every hour, the files it writes, the minutes it costs you).
