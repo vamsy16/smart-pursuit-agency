@@ -13,7 +13,7 @@ cached, mirrored and used for training, and deleting it does not unpublish it.
 ## 1 · What public mode genuinely wins you
 | Win | Detail |
 |---|---|
-| **Free hosted website** | GitHub Pages on the public repo → `vamsy16.github.io/smart-pursuit-agency`, ₹0, HTTPS, global CDN. Now wired: `.github/workflows/site.yml` publishes `site/` on every push. One setting to flip — **Settings → Pages → Source: GitHub Actions**. |
+| **Free hosted website** | GitHub Pages on the public repo → `vamsy16.github.io/smart-pursuit-agency`, ₹0, HTTPS, global CDN. Ready to wire: `os/daemons/A3-site-publish.yml` → copy into `.github/workflows/site.yml` (agent tokens can't write that folder), then **Settings → Pages → Source: GitHub Actions**. Two minutes, then every push republishes the site. |
 | **Unmetered CI** | Public repos aren't billed for Actions minutes (the 2,000/min cap applies to *private* repos). So `public-guard`, the site build and the mechanical jobs A1/A2 stop being rationed. |
 | **Proof-of-work, 24/7** | A prospect reading your actual playbooks, quality gate and price laws converts far better than one reading "we do performance marketing". This *is* the Engine 01 signature-work rail, at zero marginal cost. |
 | **The second product** | A public OS is the free demo for selling "build your own AI agency OS" to other founders at ₹2–5L — the highest-margin offer in the whole plan, and the one that doesn't consume your delivery capacity. |
@@ -75,10 +75,10 @@ as **weeks 1–6**, not a permanent choice, and let the guard refuse the first m
 ## 6 · What must change in the rest of the design (and did)
 | File | Change |
 |---|---|
-| `.github/workflows/public-guard.yml` | **New.** Fails CI on any client folder, real lead row, invoice/PDF/CSV, secret pattern, Indian phone/GSTIN/PAN/card shape, >1 MB file, or an open-source licence. Plus dead internal-link checking. Tested: green today, red on a planted leak. |
+| `os/daemons/A0-public-guard.yml` | **New — copy to `.github/workflows/public-guard.yml` to switch it on.** Agent tokens can't write into `.github/workflows/`, so it ships as a paste-and-commit file (60 seconds; instructions in `os/daemons/README.md`). Fails CI on any client folder, real lead row, invoice/PDF/CSV, secret pattern, Indian phone/GSTIN/PAN/card shape, >1 MB file, or an open-source licence. Plus dead internal-link checking. Tested: green today, red on a planted leak. |
 | `os/ops/tools/public-guard.sh` | The same check, runnable before you push: `bash os/ops/tools/public-guard.sh` |
 | `PUBLIC-SCOPE.yml` | **New.** The written public/private contract, machine-readable. |
-| `.github/workflows/site.yml` | **New.** Publishes `site/` to Pages from the public repo. |
+| `os/daemons/A3-site-publish.yml` | **New — copy to `.github/workflows/site.yml`.** Publishes `site/` to GitHub Pages from the public repo, on every push touching `site/**`. Needs one manual flip: Settings → Pages → Source = GitHub Actions. |
 | `os/stack/limits.yml` | Rewritten to reflect reality: no API keys in semi-auto; Pages/Actions notes for public repos. |
 | `os/engines/00-triage/scoring.yml`, `os/stack/verticals.yml` | Rewritten as valid YAML — they were markdown-with-fences and would not parse, so an agent or CI job reading them as data would have silently failed. Fixed and verified with a YAML parser. |
 | `site/index.html`, `README.md`, `STATEBOARD.md`, `memory/decisions.md` | Mode noted: public repo + guard + two-repo split. |
