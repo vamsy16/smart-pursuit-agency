@@ -38,7 +38,7 @@ Structure (8 pages, no more):
 1. **What we heard** — their words, their numbers, one sentence on the constraint.
 2. **The bet** — what we're doing, why this and not the obvious thing, in 5 lines.
 3. **Scope table** — what's in / what's explicitly out (this page raises price more than any other).
-4. **3 options** — Anchor high, land middle: e.g. Foundation ₹1.5L/mo · Growth Dept ₹2.5L/mo (recommended, "most choose this") · Market Entry ₹4L/mo. For projects: ₹10L / ₹16L / ₹25L.
+4. **3 options** — Anchor high, land middle, and quote **exactly** the published card (`os/pricing/RATES.md` — it is the single source of truth, and a proposal that disagrees with the public price page is a defect): Foundation ₹1,00,000/mo · Growth Dept ₹2,50,000/mo (recommended, "most choose this") · Market Entry ₹4,00,000/mo. For projects: website+funnel ₹3–6L · full growth build ₹8–14L · bespoke market entry ₹25L+.
 5. **90-day plan with dates** — week-by-week, and what the client must supply (their laziness is your delay risk; put it in writing).
 6. **Proof** — case study, or the honest "Month 1 is a paid test of the system: here's exactly what will be measured and what would make us stop."
 7. **Commercials** — payment terms, advance, auto-renew, cancellation notice, ad spend ownership, validity (14 days).
