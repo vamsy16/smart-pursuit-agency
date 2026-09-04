@@ -111,7 +111,9 @@ for ritual in [<span class="s">"morning"</span>, <span class="s">"intake"</span>
                <span class="s">"prep"</span>, <span class="s">"log"</span>, <span class="s">"ingest"</span>, <span class="s">"money"</span>, <span class="s">"retro"</span>]:
     open vault(slugs)                       <span class="c"># decrypt → .vault-work/</span>
     state  = read(<span class="s">"SOVEREIGN"</span>, <span class="s">"AGENTS"</span>, <span class="s">"STATEBOARD"</span>, playbook)
-    out    = roles.execute(ritual, state)   <span class="c"># 9 roles, file-to-file handoff</span>
+    skill  = load(<span class="s">"os/playbooks/PB-NN-*.md"</span>)   <span class="c"># rule A11: a request maps to a</span>
+                                           <span class="c"># skill; no skill ⇒ write it, then run it</span>
+    out    = roles.execute(ritual, state, skill)  <span class="c"># 9 roles, file-to-file handoff</span>
     score  = gate(out)                      <span class="c"># 100 pt rubric, hard fails</span>
     <span class="k">if</span> score &lt; <span class="n">90</span>: out = critique(out); <span class="k">continue</span>
     branch, commit, open_pr(out)            <span class="c"># nothing client-facing is sent</span>
@@ -153,7 +155,8 @@ for ritual in [<span class="s">"morning"</span>, <span class="s">"intake"</span>
 │   ├── <span class="vit">AGENTS.md</span>                       <span class="cm">boot order, 10 agent rules, ticket format, vault protocol</span>
 │   ├── kernel/  <span class="pub">roles.md voice.md quality-gate.md escalation.md</span>
 │   ├── engines/ <span class="pub">00-triage(playbook+scoring.yml) 01-leadgen 02-sales(+objections) 03-delivery 04-reporting 05-retention</span>
-│   ├── playbooks/INDEX.md   <span class="cm">24 PB-NN specs · numbering scheme, files split out on demand</span>
+│   ├── <span class="vit">playbooks/</span>  <span class="cm">the skill library · 5 live files (PB-01/03/12/18/19) + INDEX of 24 · each is</span>
+│   │   <span class="cm">an executable spec: Trigger · Inputs · Steps · Output paths · SLA · Gate · Failure modes · Owner</span>
 │   ├── templates/INDEX.md   <span class="cm">21 artefact specs · <span class="n">no files exist yet</span></span>
 │   ├── sessions/RITUALS.md  <span class="cm">the 9 rituals: trigger text, inputs, outputs, cap, owner</span>
 │   ├── daemons/  <span class="pub">A0-public-guard.yml A3-site-publish.yml</span> <span class="cm">+ RUNBOOK.md (full-auto spec)</span>
@@ -238,7 +241,10 @@ $ echo $?
       The morning ritual treats an undated stage as a defect, same as a red gate.</p>
     </div>
     <div>
-      <div class="code"><pre><span class="c"># a ticket · public: os/pipeline/tickets/ · client-scoped: vault/&lt;slug&gt;.age → 05-tasks/tickets/</span>
+      <div class="code"><pre><span class="c"># the artefact standard: site/doc.css — inlined, self-contained, prints to A4.</span>
+    <span class="c"># anything a human receives is ONE file: zero external requests, no webfont, .sources + .verify blocks.</span>
+
+<span class="c"># a ticket · public: os/pipeline/tickets/ · client-scoped: vault/&lt;slug&gt;.age → 05-tasks/tickets/</span>
 ---
 <span class="k">id</span>: 1042            <span class="k">client</span>: internal   <span class="c"># a real slug here = CI failure</span>
 <span class="k">engine</span>: delivery     <span class="k">playbook</span>: PB-07-content-factory

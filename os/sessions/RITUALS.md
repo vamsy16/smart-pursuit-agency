@@ -98,6 +98,24 @@ ingest <client-slug>
 ±20% anomalies, and if something looks like tracking breakage → open a P1 ticket + a pause proposal in the
 outbox. **Not a fix — a flag.**
 
+## Ask → skill (the dispatch)
+
+Any request is routed to a playbook file, and the file is executed top to bottom — that is the whole
+operating model: the repo holds the agency's skill, the session runs it. Stable ask-phrases, so a phrase
+means the same thing in six months and to a different model:
+
+| you say | skill that runs | you get |
+|---|---|---|
+| `intake: <paste>` | PB-01 | score + tier + route, lead card in the vault, reply draft in outbox, verify-before-send list |
+| `outreach: <business>` | PB-19 | the T0 message now, T1–T3 dated, a self-contained teardown file |
+| `autopsy: <business>` | PB-18 | anonymised public specimen in `site/autopsies/`, scrub-checked by grep, not by eye |
+| `prep <slug>` | PB-03 | one page, five blocks, four minutes of reading |
+| `report wk<NN>` | PB-12 | ~400-word digest + the client's own HTML file, every figure sourced and dated |
+| a request with no skill | rule A11 | the skill written first, then executed — so the backlog only ever shrinks |
+
+Everything client-shaped lands in `.vault-work/` and gets sealed; nothing client-shaped is committed, and
+`public-guard` is what makes that a fact rather than an intention.
+
 ## Cross-cutting rules (both of us)
 1. **Checkpoint often.** Commit after each sub-step; a session that dies at minute 3 must not lose 25 minutes.
 2. **One PR per client per week** for deliverables; direct commits for internal/ops files.

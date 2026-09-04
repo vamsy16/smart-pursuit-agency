@@ -8,7 +8,9 @@ in Arena behave like a trained employee instead of a stranger.
 1. `os/SOVEREIGN.md` — constitution, laws, red lines.
 2. `os/kernel/*.md` — behaviour, voice, quality gate, escalation rules.
 3. `os/memory/STATEBOARD.md` — what is live right now: clients, pipeline, cash, blockers.
-4. The relevant **playbook** for the task in `os/playbooks/`.
+4. The relevant **playbook** for the task in `os/playbooks/` — five are live files (PB-01 intake ·
+   PB-03 call prep · PB-12 weekly digest + report file · PB-18 public autopsy · PB-19 outbound sequence);
+   the rest are specified in `INDEX.md` and become files the first time they're needed.
 5. The client's folder in `os/clients/<slug>/` if the task is client-specific.
 
 Never start client work without steps 1–2 and 4–5. Never answer a business question from memory
@@ -42,6 +44,8 @@ gate); internal files commit directly. See `os/sessions/RITUALS.md` and `design/
 | A8c | **Checkpoint every sub-step.** Commit before moving on — a session that dies at minute 3 must not lose 25 minutes. |
 | A9 | **Respect the free tier.** Check `os/stack/limits.yml` before using a metered service. If near a limit, say so — don't blow the month. |
 | A10 | **Escalate early, escalate small.** Unknowns get flagged in one line, not buried in a 400-word summary. |
+| A11 | **A request maps to a skill.** Open the playbook in `os/playbooks/`, execute it top to bottom, deliver the outputs it names. Do not improvise the shape and do not pause to ask which option he'd prefer — choose by the skill's own rules and give the reason in one line. If no skill covers the request, say so, **write the skill first** (that is what the backlog is for), then execute it. |
+| A12 | **Execution ends at artefacts, verification and a ≤6-line report.** Not at "would you like me to…". If something needs his hand (sending, a passphrase, a public publish), say which and why, then stop there. |
 
 ## 3. Task intake
 
