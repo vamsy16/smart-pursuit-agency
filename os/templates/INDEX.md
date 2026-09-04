@@ -1,6 +1,8 @@
 # Templates — write once, bill forever
 
-> **STATUS: none of these files exist yet.** This is the Week 1–2 build list, and the spec each one must
+> **STATUS: the playbooks in `os/playbooks/` now carry the working shape for audit, intake, prep, digest,
+> autopsy and outreach** — those six templates are specified inside their playbook (PB-01/03/06/12/18/19) and
+> have each been rendered at least once. **The rest of these rows still have no file.** This is the Week 1–2 build list, and the spec each one must
 > satisfy. Until a file exists, the ritual writes that artefact from the description below — so treat this
 > table as instructions to me, not as a directory listing.
 

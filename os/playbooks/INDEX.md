@@ -1,7 +1,7 @@
 # Playbooks — the operating manual
 
-> **STATUS: 5 of the 24 exist as files** — `PB-01-intake-scoring.md`, `PB-03-discovery-prep.md`,
-> `PB-12-weekly-digest.md`, `PB-18-growth-autopsy.md`, `PB-19-outbound-sequence.md`. Each one has been
+> **STATUS: 6 of the 24 exist as files** — `PB-01-intake-scoring.md`, `PB-03-discovery-prep.md`,
+> `PB-06-client-audit.md`, `PB-12-weekly-digest.md`, `PB-18-growth-autopsy.md`, `PB-19-outbound-sequence.md`. Each one has been
 > executed as written, so the shape in the file is the shape that shipped. The other 19 stay rows until
 > first use (rule **A11** in `os/AGENTS.md`: a request with no skill gets the skill written first, then
 > executed). The working playbook for an engine is otherwise `os/engines/0N-*/playbook.md`.
@@ -32,7 +32,7 @@ Owner:          role (R1–R9) / human?
 | **PB-03** | Discovery-call prep | call booked <24h | 1-page prep brief | · [`file`](PB-03-discovery-prep.md) ●
 | PB-04 | Proposal assembly | call done | 8-page proposal in outbox |
 | PB-05 | Follow-up sequence | proposal sent | T+1/3/7/12 drafts |
-| PB-06 | Client audit (Day 1–3) | WON | 25-page findings + 90-day plan |
+| **PB-06** | Client audit (Day 1–3) · also the free pre-sale draft | `audit: <business>` / WON | 25-page doc, self-contained, prints to A4 | · [`file`](PB-06-client-audit.md) ●
 | PB-07 | Content factory | weekly Sun | briefs → drafts → gate ≥90 |
 | PB-08 | Paid campaign build | strategy approved | account structure + creatives + stop rules |
 | PB-09 | Weekly optimisation log | Mon | actions taken, why, next watch |

@@ -111,6 +111,7 @@ means the same thing in six months and to a different model:
 | `autopsy: <business>` | PB-18 | anonymised public specimen in `site/autopsies/`, scrub-checked by grep, not by eye |
 | `prep <slug>` | PB-03 | one page, five blocks, four minutes of reading |
 | `report wk<NN>` | PB-12 | ~400-word digest + the client's own HTML file, every figure sourced and dated |
+| `audit: <business>` | **PB-06** | the 25-page audit document itself, in one file, ready to attach |
 | a request with no skill | rule A11 | the skill written first, then executed — so the backlog only ever shrinks |
 
 Everything client-shaped lands in `.vault-work/` and gets sealed; nothing client-shaped is committed, and
