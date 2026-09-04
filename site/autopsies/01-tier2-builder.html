@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Growth Autopsy № 01 — a builder in a Tier-2 city buying attention it cannot convert</title>
+<meta name="description" content="An anonymised teardown of the most common growth leak in Indian real estate, and the ₹0 fixes."/>
+<!-- Self-contained by design: the stylesheet below is inlined, so this file works offline,
+     on a 2-bar phone, in an email client, and prints to PDF without a network request. -->
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   doc.css — the artefact standard for Smart Pursuit.
+   Everything a client or prospect receives is ONE file that opens anywhere,
+   prints to PDF, and carries zero external requests. So: system fonts only.
+   A webfont that needs a CDN is a document that breaks on a plane, in a village
+   with 2 bars of signal, or in an email client that strips links. Georgia is on
+   every machine on earth. That is the whole reason this file looks the way it does.
+
+   report.mjs (not built yet) inlines this file into each artefact and nothing else.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --ink:#14161a; --ink2:#3b4048; --muted:#6d7480; --faint:#9aa1ab;
+  --line:#e3e1da; --line2:#cac7be; --paper:#fbfaf7; --wash:#f4f2ec;
+  --gold:#8a6d2f; --gold-soft:rgba(138,109,47,.14);
+  --sage:#3c6a51; --rose:#8f4038; --blue:#3a5a7a;
+  --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,'Courier New',monospace;
+  --measure:66ch;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--wash);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.66;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet{max-width:820px;margin:0 auto;background:var(--paper);
+  padding:clamp(26px,6vw,64px) clamp(20px,6vw,64px) clamp(30px,6vw,60px)}
+@media(min-width:1100px){.sheet{margin:44px auto;border:1px solid var(--line2);box-shadow:0 40px 90px -50px rgba(20,22,26,.45)}}
+
+/* ── masthead ─────────────────────────────────────────────────────── */
+.mast{border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:30px}
+.kicker{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(25px,4.6vw,38px);line-height:1.12;margin:11px 0 0;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--gold)}
+.dek{margin:11px 0 0;color:var(--ink2);font-size:14px;max-width:var(--measure)}
+.byline{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:16px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tag{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid currentColor;padding:4px 9px;margin-bottom:14px}
+.tag.demo{color:var(--rose)} .tag.conf{color:var(--blue)} .tag.pri{color:var(--gold)}
+
+/* ── type ─────────────────────────────────────────────────────────── */
+h2{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  font-weight:500;margin:0 0 13px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.32;margin:0 0 7px}
+h4{font-family:var(--sans);font-weight:600;font-size:13.5px;margin:0 0 5px}
+section{margin:0 0 30px}
+p{margin:0 0 12px;max-width:var(--measure)}
+p:last-child{margin-bottom:0}
+.lede{font-family:var(--serif);font-size:clamp(16px,2.2vw,20px);line-height:1.52;color:var(--ink)}
+.lede b{font-weight:400;background:linear-gradient(transparent 62%,var(--gold-soft) 0)}
+small,.small{font-size:12.5px;color:var(--muted)}
+.tiny{font-family:var(--mono);font-size:10.5px;line-height:1.72;color:var(--muted)}
+.strong{color:var(--ink)}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--line2)}
+ul,ol{margin:0 0 12px;padding-left:20px;max-width:var(--measure)} li{margin-bottom:7px}
+ul.check{list-style:none;padding-left:0} ul.check li{padding-left:24px;position:relative}
+ul.check li:before{content:"✓";position:absolute;left:0;color:var(--sage);font-family:var(--mono);font-size:12px}
+ul.no{list-style:none;padding-left:0} ul.no li{padding-left:24px;position:relative}
+ul.no li:before{content:"✕";position:absolute;left:0;color:var(--rose);font-family:var(--mono);font-size:11px}
+
+/* ── findings: the shape of an audit ──────────────────────────────── */
+.finding{border:1px solid var(--line2);background:#fff;padding:18px 20px;margin:0 0 14px}
+.finding .n{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--rose);display:block;margin-bottom:9px}
+.finding p{font-size:13.8px;color:var(--ink2);margin-bottom:9px}
+.finding .fix{border-top:1px dotted var(--line2);padding-top:11px;margin-top:2px}
+.finding .fix b{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--sage);display:block;margin-bottom:6px}
+.sev{float:right;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.quote{border-left:2px solid var(--gold);padding:2px 0 2px 16px;margin:0 0 14px;font-family:var(--serif);font-size:15.5px;color:var(--ink2);font-style:italic}
+
+/* ── figures ──────────────────────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line2);background:#fff}
+.kpis>div{padding:15px 15px 13px;border-right:1px solid var(--line2)}
+.kpis>div:last-child{border-right:0}
+.kpis b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(20px,3.2vw,29px);line-height:1.06}
+.kpis span{display:block;font-family:var(--mono);font-size:8.8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.kpis i{display:block;font-style:normal;font-size:12px;color:var(--sage);margin-top:5px}
+.kpis i.dn{color:var(--rose)}
+
+table{width:100%;border-collapse:collapse;font-size:13.4px;background:#fff}
+th{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+  text-align:left;font-weight:500;padding:10px 12px;border-bottom:1px solid var(--line2)}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:1px solid var(--line2)}
+td.n,th.n{text-align:right;font-family:var(--mono);font-size:12px;white-space:nowrap}
+td.k{font-family:var(--mono);font-size:11px;color:var(--gold);white-space:nowrap}
+.ok{color:var(--sage);font-family:var(--mono);font-size:11px} .no{color:var(--rose);font-family:var(--mono);font-size:11px}
+tbody tr.hot td{background:rgba(138,109,47,.045)}
+
+pre,code{font-family:var(--mono)}
+pre{background:#14161a;color:#c3ccc4;padding:16px 18px;overflow-x:auto;font-size:11.5px;line-height:1.75;border:1px solid #22262c}
+pre .c{color:#6f7a71} pre .g{color:#d6bd82} pre .s{color:#9fbba6} pre .r{color:#d69a92}
+code{font-size:.9em;background:var(--wash);padding:1px 5px;border:1px solid var(--line)}
+pre code{background:none;border:0;padding:0;font-size:inherit}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line2);border:1px solid var(--line2)}
+.two>div{background:#fff;padding:16px 18px}
+.pill{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  padding:4px 9px;border:1px solid var(--line2);color:var(--muted);margin:0 6px 6px 0;background:#fff}
+.pill.g{color:var(--sage);border-color:rgba(60,106,81,.4)} .pill.r{color:var(--rose);border-color:rgba(143,64,56,.4)}
+.pill.y{color:var(--gold);border-color:rgba(138,109,47,.42)}
+.note{font-size:12.8px;color:var(--ink2);border-left:2px solid var(--line2);padding-left:14px;margin-top:14px}
+.rule{height:1px;background:var(--line);margin:26px 0}
+.ledger{font-size:13.4px}
+.ledger div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px dotted var(--line2)}
+.ledger div:last-child{border-bottom:0}
+.ledger span{color:var(--muted);text-align:right;font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+
+/* ── the honesty furniture ─────────────────────────────────────────── */
+.sources{font-family:var(--mono);font-size:10px;line-height:1.85;color:var(--muted)}
+.sources b{color:var(--ink2);font-weight:500}
+.verify{border:1px dashed rgba(143,64,56,.5);background:rgba(143,64,56,.045);padding:14px 17px;margin:0 0 18px}
+.verify b{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);display:block;margin-bottom:7px}
+.verify p{font-size:12.8px;margin:0;color:var(--ink2)}
+footer{border-top:1px solid var(--line2);margin-top:32px;padding-top:16px;display:flex;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+
+/* ── responsive ───────────────────────────────────────────────────── */
+@media(max-width:720px){
+  .kpis{grid-template-columns:1fr 1fr}.kpis>div:nth-child(2){border-right:0}
+  .kpis>div:nth-child(-n+2){border-bottom:1px solid var(--line2)}
+  .two{grid-template-columns:1fr} h1{font-size:26px} body{font-size:14.5px}
+}
+/* ── print / PDF: the artefact IS a document, so it must paginate like one ── */
+@media print{
+  @page{size:A4;margin:14mm 13mm}
+  body{background:#fff;font-size:11pt;color:#000}
+  .sheet{max-width:none;margin:0;border:0;box-shadow:none;padding:0}
+  .tag.demo,.tag.pri,.tag.conf{border-color:#666;color:#444}
+  section,.finding,.kpis,table,.two,pre{break-inside:avoid}
+  h2{break-after:avoid} a{color:#000;border:0}
+  pre{background:#f2f1ed;color:#20242a;border-color:#ddd} pre .c{color:#6a6f68}
+  .noprint{display:none}
+}
+</style></head><body><div class="sheet">
+<div class="tag conf">Growth Autopsy № 01 · anonymised: the business is not named here and will not be</div>
+
+<div class="mast">
+  <div class="kicker">Smart Pursuit · a public teardown of a real growth leak · 4 September 2026</div>
+  <h1>A builder in a Tier-2 city is buying attention <em>it cannot convert</em></h1>
+  <p class="dek">A residential developer in a North Indian Tier-2 market, apartments in the ₹10–45 lakh band,
+  running live Meta ads. I spent 25 minutes on their public footprint and found ₹0-worth of fixes that stand
+  between that ad spend and a family walking into a site office. Published anonymised, because the point is
+  the method, not the embarrassment.</p>
+  <div class="byline"><span>Method: 25 minutes, by hand</span><span>Tools: a browser, no scrapers</span><span>Identifying details removed</span></div>
+</div>
+
+<section>
+  <h2>Why this is the most common leak in Indian real estate</h2>
+  <p class="lede">Developers in smaller markets buy <b>reach</b>, then lose the buyer in the 40 seconds after
+  the click: a dead landing URL, no price on the page, no RERA number, and four portal listings that disagree
+  with each other. Media spend is the visible cost. The invisible one is the family that compared three
+  builders in ten minutes and picked the one whose story was clean.</p>
+</section>
+
+<section>
+  <h2>What I found</h2>
+  <table>
+    <thead><tr><th>Leak</th><th>What it looks like from outside</th><th>Why it costs money</th></tr></thead>
+    <tbody>
+      <tr class="hot"><td class="k">Dead front door</td><td>Old project and about pages are still indexed in Google, and return "Page not found". The live site is a splash page of links.</td><td>Brand search is the cheapest traffic you will ever get. Sending it to a 404 is paying a portal to take the visitor instead.</td></tr>
+      <tr><td class="k">No decision data on the page</td><td>Hero prose, materials list, fourteen renders. No price band, no unit-size table, no RERA number above the fold.</td><td>Buyers decide on price, area, possession and legality. Everything else is decoration for the person who already decided.</td></tr>
+      <tr><td class="k">Four portals, four stories</td><td>Same project listed "Ready to Move" on one portal and "possession by 2031" on another; unit counts off by an order of magnitude; three different RERA numbers; a price range spanning 4×.</td><td>Shortlisting happens off listings, not off your website. Inconsistency reads as risk — in a ₹30 lakh purchase, risk kills the file.</td></tr>
+      <tr><td class="k">Selling a phase nobody can read about</td><td>Site imagery last refreshed roughly two years ago; a newer phase with an EMI-holiday offer exists in listings and ads but not on the site.</td><td>Ad destination mismatch. The offer that closes is the one the page never mentions.</td></tr>
+      <tr><td class="k">Nobody owns the enquiry at 21:00</td><td>Public office hours Mon–Sat, no visible Sunday desk, no auto-reply, no stated response time.</td><td>Family decisions happen Sunday lunch and late evening. A lead that waits until Monday got three other call-backs first.</td></tr>
+    </tbody>
+  </table>
+  <p class="tiny">Total cost of the first three, if done in-house with a developer and a diligent admin: about
+  two days of work and ₹0 in media money.</p>
+</section>
+
+<section>
+  <h2>The three fixes, in order</h2>
+  <ol>
+    <li><b>Redirect everything indexed.</b> Search the brand name on mobile in incognito, click every result,
+    301 anything that 404s to the live project page. Then do it for every old campaign URL, because ads age
+    slower than landing pages do.</li>
+    <li><b>Put the decision data above the fold.</b> Configuration · saleable area · price band plus charges ·
+    possession status · RERA number in the exact words filed with the regulator · payment plan · two buttons:
+    WhatsApp and book a site visit. Copy goes underneath.</li>
+    <li><b>Write one canonical fact sheet and correct every listing with it.</b> One page, one truth: legal
+    entity, RERA per phase, unit count, sizes, price bands, possession, OC status. Portals get updated to
+    match it, and nobody publishes a bait price again.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>How I'd do it, with money and 30 days</h2>
+  <div class="two">
+    <div>
+      <h4>Week 1 · stop the leak</h4>
+      <p class="small">Redirects and canonical fact sheet live. Listing hygiene across every portal. Auto-reply
+      and speed-to-lead rule (15 minutes in office hours, Sunday covered) written into the sales office, not
+      into a PDF nobody reads.</p>
+    </div>
+    <div>
+      <h4>Week 2–4 · make it measurable</h4>
+      <p class="small">A page per phase, used as the ad destination. Tracking so every enquiry has a source
+      that can be named in a meeting. The account rebuilt around the one creative that already works, with a
+      written cap and a stop rule. Weekly one-page report: walk-ins booked, not impressions served.</p>
+    </div>
+  </div>
+  <p class="tiny" style="margin-top:14px">What I would not do for a business like this: pay-per-lead or
+  ₹-per-walk-in (that turns an agency into a broker and a broker into a squeeze), promise flats sold, touch
+  subsidy or EWS eligibility wording without the legal file, or move budget in an account without a written cap.</p>
+</section>
+
+<section>
+  <h2>The method, free to steal</h2>
+  <p class="small">Twenty-five minutes, in this order, on any business that advertises: (1) the mobile brand
+  search, (2) the ad's landing page on 4G with the keyboard closed, (3) does the page answer price, area,
+  timeline, proof, and how to act, (4) the top three listings and whether they agree, (5) how old the newest
+  creative and photo are, (6) what happens to an enquiry at 21:00 and on Sunday, (7) one competitor's same
+  five answers. If three of those seven are bad, the ad budget is not the problem and more of it won't help.</p>
+  <p class="tiny">Autopsies on this site are anonymised and, when the subject is a live prospect, never named —
+  the private version goes to them directly, with screenshots and fixes. If you want your own business read
+  this way, the teardown is free; the ₹25,000 audit is the one with the 25 pages and the plan.</p>
+</section>
+
+<footer>
+  <div>Smart Pursuit · Growth Autopsy № 01</div>
+  <div>Anonymised 2026-09-04 · sources on request</div>
+</footer>
+
+</div></body></html>

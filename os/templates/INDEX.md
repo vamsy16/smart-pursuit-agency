@@ -4,6 +4,29 @@
 > satisfy. Until a file exists, the ritual writes that artefact from the description below — so treat this
 > table as instructions to me, not as a directory listing.
 
+## The visual standard for anything a human receives
+
+`site/doc.css` is the single stylesheet for every artefact: audit report, teardown, proposal, weekly report
+file, MBR, handover. Rules that make it the standard:
+
+1. **One file, self-contained.** `doc.css` is **inlined** into the artefact, so it opens offline, on a
+   two-bar phone, inside an email client, and prints to PDF without a single network request. No webfonts,
+   no CDN, no build step — Georgia and the system stack, because a document that needs the internet to look
+   right is not finished.
+2. **Print is a first-class target.** `@page` A4 margins, `break-inside: avoid` on every finding, KPI block,
+   table and code panel. "Save as PDF" is a supported delivery method, not an accident.
+3. **The honesty furniture is structural.** `.sources` (every figure, dated), `.verify` (what was *not*
+   confirmed, before anyone acts on it), `.tag` (priority / confidential / demo). A template that has no place
+   to put an uncertainty will ship one anyway.
+4. **A finding is a shape, not a paragraph.** `.finding` = severity · what I saw · why it costs money ·
+   the fix with a size. Anything that does not fit that shape is an opinion, and goes in the notes.
+5. **Markdown stays the source of truth.** The .md file is what agents write and read; the HTML is a
+   rendering produced by `report.mjs` (not built yet — until then the agent hand-builds from this stylesheet,
+   as the sample below shows).
+
+Specimen, same layout the client receives: [`site/autopsies/01-tier2-builder.html`](../../site/autopsies/01-tier2-builder.html)
+— anonymised on purpose: the public zone never carries a prospect's or a client's name.
+
 Every template below is **repo-resident** and **variable-driven**, so the sales/ops engine can assemble a
 client-ready document in minutes. Placeholders use `{{like_this}}`; the values come from
 `clients/<slug>/MANIFEST.yml` (the account record) and `clients/<slug>/00-account/` (the facts) — never from memory.

@@ -1,0 +1,134 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   doc.css — the artefact standard for Smart Pursuit.
+   Everything a client or prospect receives is ONE file that opens anywhere,
+   prints to PDF, and carries zero external requests. So: system fonts only.
+   A webfont that needs a CDN is a document that breaks on a plane, in a village
+   with 2 bars of signal, or in an email client that strips links. Georgia is on
+   every machine on earth. That is the whole reason this file looks the way it does.
+
+   report.mjs (not built yet) inlines this file into each artefact and nothing else.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --ink:#14161a; --ink2:#3b4048; --muted:#6d7480; --faint:#9aa1ab;
+  --line:#e3e1da; --line2:#cac7be; --paper:#fbfaf7; --wash:#f4f2ec;
+  --gold:#8a6d2f; --gold-soft:rgba(138,109,47,.14);
+  --sage:#3c6a51; --rose:#8f4038; --blue:#3a5a7a;
+  --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,'Courier New',monospace;
+  --measure:66ch;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--wash);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.66;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet{max-width:820px;margin:0 auto;background:var(--paper);
+  padding:clamp(26px,6vw,64px) clamp(20px,6vw,64px) clamp(30px,6vw,60px)}
+@media(min-width:1100px){.sheet{margin:44px auto;border:1px solid var(--line2);box-shadow:0 40px 90px -50px rgba(20,22,26,.45)}}
+
+/* ── masthead ─────────────────────────────────────────────────────── */
+.mast{border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:30px}
+.kicker{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(25px,4.6vw,38px);line-height:1.12;margin:11px 0 0;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--gold)}
+.dek{margin:11px 0 0;color:var(--ink2);font-size:14px;max-width:var(--measure)}
+.byline{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:16px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tag{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid currentColor;padding:4px 9px;margin-bottom:14px}
+.tag.demo{color:var(--rose)} .tag.conf{color:var(--blue)} .tag.pri{color:var(--gold)}
+
+/* ── type ─────────────────────────────────────────────────────────── */
+h2{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  font-weight:500;margin:0 0 13px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.32;margin:0 0 7px}
+h4{font-family:var(--sans);font-weight:600;font-size:13.5px;margin:0 0 5px}
+section{margin:0 0 30px}
+p{margin:0 0 12px;max-width:var(--measure)}
+p:last-child{margin-bottom:0}
+.lede{font-family:var(--serif);font-size:clamp(16px,2.2vw,20px);line-height:1.52;color:var(--ink)}
+.lede b{font-weight:400;background:linear-gradient(transparent 62%,var(--gold-soft) 0)}
+small,.small{font-size:12.5px;color:var(--muted)}
+.tiny{font-family:var(--mono);font-size:10.5px;line-height:1.72;color:var(--muted)}
+.strong{color:var(--ink)}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--line2)}
+ul,ol{margin:0 0 12px;padding-left:20px;max-width:var(--measure)} li{margin-bottom:7px}
+ul.check{list-style:none;padding-left:0} ul.check li{padding-left:24px;position:relative}
+ul.check li:before{content:"✓";position:absolute;left:0;color:var(--sage);font-family:var(--mono);font-size:12px}
+ul.no{list-style:none;padding-left:0} ul.no li{padding-left:24px;position:relative}
+ul.no li:before{content:"✕";position:absolute;left:0;color:var(--rose);font-family:var(--mono);font-size:11px}
+
+/* ── findings: the shape of an audit ──────────────────────────────── */
+.finding{border:1px solid var(--line2);background:#fff;padding:18px 20px;margin:0 0 14px}
+.finding .n{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--rose);display:block;margin-bottom:9px}
+.finding p{font-size:13.8px;color:var(--ink2);margin-bottom:9px}
+.finding .fix{border-top:1px dotted var(--line2);padding-top:11px;margin-top:2px}
+.finding .fix b{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--sage);display:block;margin-bottom:6px}
+.sev{float:right;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.quote{border-left:2px solid var(--gold);padding:2px 0 2px 16px;margin:0 0 14px;font-family:var(--serif);font-size:15.5px;color:var(--ink2);font-style:italic}
+
+/* ── figures ──────────────────────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line2);background:#fff}
+.kpis>div{padding:15px 15px 13px;border-right:1px solid var(--line2)}
+.kpis>div:last-child{border-right:0}
+.kpis b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(20px,3.2vw,29px);line-height:1.06}
+.kpis span{display:block;font-family:var(--mono);font-size:8.8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.kpis i{display:block;font-style:normal;font-size:12px;color:var(--sage);margin-top:5px}
+.kpis i.dn{color:var(--rose)}
+
+table{width:100%;border-collapse:collapse;font-size:13.4px;background:#fff}
+th{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+  text-align:left;font-weight:500;padding:10px 12px;border-bottom:1px solid var(--line2)}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:1px solid var(--line2)}
+td.n,th.n{text-align:right;font-family:var(--mono);font-size:12px;white-space:nowrap}
+td.k{font-family:var(--mono);font-size:11px;color:var(--gold);white-space:nowrap}
+.ok{color:var(--sage);font-family:var(--mono);font-size:11px} .no{color:var(--rose);font-family:var(--mono);font-size:11px}
+tbody tr.hot td{background:rgba(138,109,47,.045)}
+
+pre,code{font-family:var(--mono)}
+pre{background:#14161a;color:#c3ccc4;padding:16px 18px;overflow-x:auto;font-size:11.5px;line-height:1.75;border:1px solid #22262c}
+pre .c{color:#6f7a71} pre .g{color:#d6bd82} pre .s{color:#9fbba6} pre .r{color:#d69a92}
+code{font-size:.9em;background:var(--wash);padding:1px 5px;border:1px solid var(--line)}
+pre code{background:none;border:0;padding:0;font-size:inherit}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line2);border:1px solid var(--line2)}
+.two>div{background:#fff;padding:16px 18px}
+.pill{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  padding:4px 9px;border:1px solid var(--line2);color:var(--muted);margin:0 6px 6px 0;background:#fff}
+.pill.g{color:var(--sage);border-color:rgba(60,106,81,.4)} .pill.r{color:var(--rose);border-color:rgba(143,64,56,.4)}
+.pill.y{color:var(--gold);border-color:rgba(138,109,47,.42)}
+.note{font-size:12.8px;color:var(--ink2);border-left:2px solid var(--line2);padding-left:14px;margin-top:14px}
+.rule{height:1px;background:var(--line);margin:26px 0}
+.ledger{font-size:13.4px}
+.ledger div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px dotted var(--line2)}
+.ledger div:last-child{border-bottom:0}
+.ledger span{color:var(--muted);text-align:right;font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+
+/* ── the honesty furniture ─────────────────────────────────────────── */
+.sources{font-family:var(--mono);font-size:10px;line-height:1.85;color:var(--muted)}
+.sources b{color:var(--ink2);font-weight:500}
+.verify{border:1px dashed rgba(143,64,56,.5);background:rgba(143,64,56,.045);padding:14px 17px;margin:0 0 18px}
+.verify b{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);display:block;margin-bottom:7px}
+.verify p{font-size:12.8px;margin:0;color:var(--ink2)}
+footer{border-top:1px solid var(--line2);margin-top:32px;padding-top:16px;display:flex;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+
+/* ── responsive ───────────────────────────────────────────────────── */
+@media(max-width:720px){
+  .kpis{grid-template-columns:1fr 1fr}.kpis>div:nth-child(2){border-right:0}
+  .kpis>div:nth-child(-n+2){border-bottom:1px solid var(--line2)}
+  .two{grid-template-columns:1fr} h1{font-size:26px} body{font-size:14.5px}
+}
+/* ── print / PDF: the artefact IS a document, so it must paginate like one ── */
+@media print{
+  @page{size:A4;margin:14mm 13mm}
+  body{background:#fff;font-size:11pt;color:#000}
+  .sheet{max-width:none;margin:0;border:0;box-shadow:none;padding:0}
+  .tag.demo,.tag.pri,.tag.conf{border-color:#666;color:#444}
+  section,.finding,.kpis,table,.two,pre{break-inside:avoid}
+  h2{break-after:avoid} a{color:#000;border:0}
+  pre{background:#f2f1ed;color:#20242a;border-color:#ddd} pre .c{color:#6a6f68}
+  .noprint{display:none}
+}
