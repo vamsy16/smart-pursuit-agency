@@ -19,6 +19,7 @@
 | **[`05-ad-scripts-v2-corrected.md`](05-ad-scripts-v2-corrected.md)** | **The corrected scripts — shoot these.** Four finished scripts (54s/48s/41s/47s) covering four segments, the Fit Report lead magnet, CTA system, proof rules, ad set routing | **Primary production reference.** Supersedes the scripts in `01-ad-scripts.md` |
 | **[`06-skills-traceability-audit.md`](06-skills-traceability-audit.md)** | Honest audit of which repo skills were actually run vs. only cited, including two wrong citations of my own, and the gaps that threaten the 200-lead target | Read to see what's real and what's outstanding |
 | **[`07-content-program.md`](07-content-program.md)** | The content-marketing skill run properly: Content Matrix by buyer stage, 3 full briefs (each with the ONE belief it must change), 150-word opening, 8-asset repurposing map | Feeds the nurture gap and the organic layer |
+| **[`08-content-pieces-full-drafts.md`](08-content-pieces-full-drafts.md)** | **The writing itself — publish-ready.** Three full pieces (~1,615 / ~820 / ~607 words): the documentation guide with every H2 section written, the four-university comparison page, the SEVP explainer. Includes the copy-paste DSO email and the honest "what we won't claim" block | Publish after the university re-verification pass |
 
 ---
 
