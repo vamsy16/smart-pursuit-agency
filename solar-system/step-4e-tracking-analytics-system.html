@@ -1,0 +1,2547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Pursuit — Step 4E: Solar Tracking &amp; Analytics System (Solar, India, v1.0)</title>
+<style>
+:root{
+  --ink:#0A0A0A; --ink2:#111111; --white:#FFFFFF; --muted:#A1A1AA;
+  --accent:#7C3AED; --accent-soft:rgba(124,58,237,.12);
+  --solar:#C9A227; --leaf:#2F9E6E;
+  --line:#E6E6EA; --line-dark:#242428; --paper:#FFFFFF; --paper2:#FAFAFB;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:#EDEDF0; color:var(--ink);
+  font-family:"Inter","Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:11.2pt; line-height:1.62; letter-spacing:.001em;
+}
+.page{
+  width:210mm; min-height:297mm; margin:10mm auto; background:var(--paper);
+  padding:20mm 18mm 24mm; position:relative;
+  box-shadow:0 10px 40px rgba(0,0,0,.13);
+}
+/* ---------- header / footer ---------- */
+.runhead{
+  position:absolute; top:9mm; left:18mm; right:18mm;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:7.6pt; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:4px;
+}
+.runhead b{color:var(--ink); font-weight:700; letter-spacing:.16em}
+.runfoot{
+  position:absolute; bottom:10mm; left:18mm; right:18mm;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:7.6pt; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted); border-top:1px solid var(--line); padding-top:5px;
+}
+.pg{display:inline-block; min-width:22px; text-align:right; color:var(--ink); font-weight:700}
+/* ---------- cover ---------- */
+.cover{ background:var(--ink); color:var(--white); padding:0; overflow:hidden; }
+.cover-inner{padding:26mm 18mm 20mm; position:relative; min-height:297mm; display:flex; flex-direction:column}
+.cover:after{
+  content:""; position:absolute; right:-60mm; top:-60mm; width:150mm; height:150mm;
+  border-radius:50%; background:radial-gradient(circle at 35% 35%, rgba(124,58,237,.55), rgba(124,58,237,0) 62%);
+}
+.cover:before{
+  content:""; position:absolute; left:-40mm; bottom:-70mm; width:140mm; height:140mm;
+  border-radius:50%; background:radial-gradient(circle at 50% 50%, rgba(201,162,39,.28), rgba(201,162,39,0) 64%);
+}
+.brandmark{display:flex; align-items:center; gap:12px; position:relative; z-index:2}
+.brandmark .dot{width:34px;height:34px;border-radius:9px;background:linear-gradient(140deg,var(--accent),#4C1D95);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13pt}
+.brandmark .name{font-size:12pt;font-weight:700;letter-spacing:.28em;text-transform:uppercase}
+.brandmark .sub{font-size:7.6pt;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+.cover h1{font-size:34pt; line-height:1.06; margin:0 0 6mm; font-weight:800; letter-spacing:-.02em; position:relative; z-index:2}
+.cover h2{font-size:15pt; font-weight:600; color:#E4E4E7; margin:0 0 10mm; position:relative; z-index:2}
+.eyebrow{display:inline-block; font-size:8pt; letter-spacing:.26em; text-transform:uppercase; color:#DDD6FE; border:1px solid rgba(124,58,237,.6); background:rgba(124,58,237,.18); padding:5px 12px; border-radius:999px; margin-bottom:10mm; position:relative; z-index:2}
+.cover .lede{font-size:12.5pt; color:#D4D4D8; max-width:135mm; border-left:3px solid var(--accent); padding-left:14px; position:relative; z-index:2}
+.cover-meta{margin-top:auto; position:relative; z-index:2; display:grid; grid-template-columns:repeat(4,1fr); gap:8mm; border-top:1px solid var(--line-dark); padding-top:8mm}
+.cover-meta div span{display:block; font-size:7.4pt; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+.cover-meta div b{font-size:10.5pt; font-weight:700}
+.cover-note{margin-top:8mm; font-size:8.6pt; color:var(--muted); border:1px dashed var(--line-dark); border-radius:10px; padding:10px 14px; position:relative; z-index:2}
+/* ---------- typography ---------- */
+h2.sec{font-size:19pt; line-height:1.15; margin:0 0 3mm; font-weight:800; letter-spacing:-.015em}
+.secnum{font-size:8pt; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); font-weight:800; margin-bottom:3mm}
+h3{font-size:12.6pt; margin:9mm 0 3mm; font-weight:750; letter-spacing:-.01em}
+h4{font-size:10.4pt; margin:6mm 0 2mm; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#3F3F46}
+p{margin:0 0 3.4mm}
+ul,ol{margin:0 0 3.6mm; padding-left:5mm}
+li{margin-bottom:1.4mm}
+code,.kw{font-family:"JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size:9.4pt; background:#F4F4F6; border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:#3B0764}
+hr.div{border:0; height:1px; background:linear-gradient(90deg,var(--ink),var(--accent) 22%,var(--line) 60%,transparent); margin:10mm 0}
+.lead{font-size:12pt; color:#3F3F46}
+.toc{border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.toc div{display:flex; justify-content:space-between; gap:10px; padding:5px 12px; font-size:9.6pt; border-bottom:1px solid var(--line)}
+.toc div:last-child{border-bottom:0}
+.toc div b{font-weight:600}
+.toc span{color:var(--muted); font-variant-numeric:tabular-nums}
+/* ---------- components ---------- */
+.card{border:1px solid var(--line); border-radius:12px; padding:6mm 6mm 4mm; background:var(--paper2); margin:0 0 5mm}
+.card h4{margin-top:0}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:5mm}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:4mm}
+.callout{border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 12px 12px 0; padding:5mm 6mm; margin:5mm 0}
+.callout .label{font-size:7.6pt; letter-spacing:.22em; text-transform:uppercase; color:#5B21B6; font-weight:800; margin-bottom:2mm}
+.warn{border-left:4px solid var(--solar); background:rgba(201,162,39,.10); border-radius:0 12px 12px 0; padding:5mm 6mm; margin:5mm 0}
+.warn .label{font-size:7.6pt; letter-spacing:.22em; text-transform:uppercase; color:#8A6D06; font-weight:800; margin-bottom:2mm}
+.principle{background:var(--ink); color:var(--white); border-radius:16px; padding:9mm 8mm; margin:6mm 0; position:relative; overflow:hidden}
+.principle:after{content:""; position:absolute; right:-30mm; top:-30mm; width:80mm; height:80mm; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.45),transparent 65%)}
+.principle .label{font-size:7.6pt; letter-spacing:.24em; text-transform:uppercase; color:#C4B5FD; font-weight:800; margin-bottom:4mm; position:relative; z-index:2}
+.principle p{font-size:14.5pt; line-height:1.42; font-weight:650; margin:0; position:relative; z-index:2}
+.tag{display:inline-block; font-size:7.4pt; font-weight:800; letter-spacing:.16em; text-transform:uppercase; padding:3px 9px; border-radius:999px; vertical-align:middle}
+.tag-ex{background:#EDE9FE; color:#5B21B6; border:1px solid #DDD6FE}
+.tag-hy{background:#FEF3C7; color:#854D0E; border:1px solid #FDE68A}
+.tag-rec{background:#DCFCE7; color:#166534; border:1px solid #BBF7D0}
+.tag-data{background:#F4F4F5; color:#52525B; border:1px solid #E4E4E7}
+table{width:100%; border-collapse:collapse; margin:0 0 5mm; font-size:9.8pt}
+th{background:var(--ink); color:#fff; text-align:left; font-size:8pt; letter-spacing:.14em; text-transform:uppercase; padding:6px 9px; font-weight:700}
+td{border-bottom:1px solid var(--line); padding:6px 9px; vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--paper2)}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+table.tight{font-size:9.2pt}
+table.tight td,table.tight th{padding:4.5px 7px}
+.flow{margin:5mm 0; display:flex; flex-direction:column; align-items:center}
+.flow .node{
+  width:100%; max-width:118mm; text-align:center; border:1px solid var(--line);
+  border-radius:10px; padding:7px 12px; font-size:9.8pt; font-weight:650; background:#fff;
+}
+.flow .node.key{background:var(--ink); color:#fff; border-color:var(--ink)}
+.flow .node.acc{border-color:var(--accent); color:#4C1D95; background:#FAF5FF}
+.flow .node.win{border-color:var(--leaf); color:#14532D; background:#F0FDF4}
+.flow .node.bad{border-color:#FCA5A5; color:#7F1D1D; background:#FEF2F2}
+.flow .node small{display:block; font-weight:400; color:var(--muted); font-size:8.2pt; margin-top:2px}
+.flow .node.key small{color:#A1A1AA}
+.flow .arw{color:var(--accent); font-size:11pt; line-height:1; margin:3px 0}
+.flow.sm .node{max-width:86mm; padding:5px 10px; font-size:9.2pt}
+.flow.sm .arw{margin:2px 0; font-size:10pt}
+/* funnel */
+.funnel{margin:5mm 0; display:flex; flex-direction:column; align-items:center; gap:2.4mm}
+.funnel .fr{border-radius:8px; padding:6px 12px; text-align:center; font-size:9.6pt; font-weight:650; border:1px solid var(--line); background:#fff}
+.funnel .fr small{display:block; font-weight:400; font-size:8pt; color:var(--muted)}
+.funnel .fr.a{background:#FAF5FF; border-color:#DDD6FE; color:#4C1D95}
+.funnel .fr.b{background:var(--ink); color:#fff; border-color:var(--ink)}
+.funnel .fr.b small{color:#A1A1AA}
+.funnel .fr.c{background:#F0FDF4; border-color:#BBF7D0; color:#14532D}
+.split{display:grid; grid-template-columns:1fr 1fr; gap:5mm; align-items:start}
+.chips span{display:inline-block; font-family:"JetBrains Mono",monospace; font-size:9pt; background:#fff; border:1px solid var(--line); border-radius:6px; padding:3px 8px; margin:0 4px 4px 0}
+.chips.neg span{border-color:#FCA5A5; background:#FEF2F2; color:#7F1D1D}
+.chips.ok span{border-color:#BBF7D0; background:#F0FDF4; color:#14532D}
+.level{border:1px solid var(--line); border-left:5px solid var(--accent); border-radius:0 12px 12px 0; padding:5mm 6mm; margin-bottom:4mm; background:#fff}
+.level.l2{border-left-color:#8B5CF6}
+.level.l3{border-left-color:var(--solar)}
+.level.l4{border-left-color:#DC2626}
+.level.lg{border-left-color:var(--leaf)}
+.level .h{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2mm}
+.level .h b{font-size:11.4pt}
+.level .h em{font-style:normal; font-size:7.6pt; letter-spacing:.18em; text-transform:uppercase; color:var(--muted)}
+.wwh{border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:0 0 5mm}
+.wwh > div{padding:4mm 6mm; border-bottom:1px solid var(--line)}
+.wwh > div:last-child{border-bottom:0}
+.wwh .t{font-size:7.8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); font-weight:800; margin-bottom:1.5mm}
+.wwh > div:nth-child(4){background:#FAF5FF}
+.checklist{list-style:none; padding:0; margin:0}
+.checklist li{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:10px; padding:4mm 5mm; margin-bottom:3mm; background:#fff}
+.checklist .n{width:24px;height:24px;border-radius:7px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9pt;font-weight:800;flex:none}
+.st{font-size:7.6pt; font-weight:800; letter-spacing:.14em; text-transform:uppercase; padding:2px 8px; border-radius:999px; margin-left:auto; flex:none}
+.st.done{background:#DCFCE7;color:#166534}
+.st.prog{background:#FEF3C7;color:#854D0E}
+.st.this{background:#EDE9FE;color:#5B21B6}
+.st.next{background:#F4F4F5;color:#52525B}
+.quote{font-size:11.6pt; font-style:italic; color:#27272A; border-left:3px solid var(--solar); padding-left:12px; margin:0 0 4mm}
+.smallnote{font-size:8.8pt; color:#52525B}
+/* checkbox list */
+.cbx{list-style:none; padding:0; margin:0 0 4mm; column-gap:6mm}
+.cbx li{font-size:9.6pt; margin-bottom:1.6mm; padding-left:7mm; position:relative; break-inside:avoid}
+.cbx li:before{content:""; position:absolute; left:0; top:2.6px; width:12px; height:12px; border:1.5px solid var(--ink); border-radius:3px}
+.cbx.two{column-count:2}
+/* formula */
+.fml{border:1px solid var(--line); border-radius:10px; padding:4mm 5mm; margin:0 0 3mm; background:#fff; display:flex; justify-content:space-between; align-items:center; gap:5mm}
+.fml b{font-size:10.4pt; flex:none; min-width:52mm}
+.fml span{font-family:"JetBrains Mono",monospace; font-size:9.4pt; color:#3B0764; text-align:right}
+/* score */
+.band{display:flex; align-items:center; gap:8px; padding:3mm 4mm; border:1px solid var(--line); border-radius:9px; margin-bottom:2.4mm; font-size:9.6pt; background:#fff}
+.band .pill{font-size:8pt; font-weight:800; padding:2px 9px; border-radius:999px; flex:none; min-width:22mm; text-align:center}
+.p1{background:#DCFCE7;color:#166534}
+.p2{background:#EDE9FE;color:#5B21B6}
+.p3{background:#FEF3C7;color:#854D0E}
+.p4{background:#FEE2E2;color:#991B1B}
+/* rules */
+.rule{border:1px solid var(--line-dark); background:var(--ink); color:#fff; border-radius:12px; padding:4mm 5mm; margin-bottom:3mm; display:flex; gap:10px; align-items:flex-start}
+.rule .rn{font-size:7.4pt; font-weight:800; letter-spacing:.18em; color:#C4B5FD; flex:none; width:16mm; padding-top:1mm}
+.rule b{font-size:10.6pt; font-weight:700}
+.mono{font-family:"JetBrains Mono",monospace; font-size:9.2pt}
+.kpi{border:1px solid var(--line); border-radius:11px; padding:4mm 5mm; background:#fff}
+.kpi .t{font-size:7.6pt; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); font-weight:800; margin-bottom:1.5mm}
+.kpi b{font-size:10.6pt; display:block; margin-bottom:1mm}
+@media print{
+  body{background:#fff}
+  .page{margin:0; box-shadow:none; width:auto; min-height:auto; page-break-after:always; padding:20mm 16mm 24mm}
+  @page{size:A4; margin:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="page cover">
+  <div class="cover-inner">
+    <div class="brandmark">
+      <div class="dot">S</div>
+      <div>
+        <div class="name">Smart Pursuit</div>
+        <div class="sub">Performance Marketing</div>
+      </div>
+    </div>
+
+    <div style="height:30mm"></div>
+
+    <div class="eyebrow">Solar Digital Marketing System · Step 4E</div>
+    <h1>SOLAR DIGITAL<br>MARKETING SYSTEM</h1>
+    <h2>Step 4E — Tracking &amp; Analytics System</h2>
+    <p class="lede">Connecting Solar advertising spend to leads, lead quality and sales outcomes — so optimization is based on evidence rather than assumption.</p>
+
+    <div class="cover-meta">
+      <div><span>Agency</span><b>Smart Pursuit</b></div>
+      <div><span>Framework</span><b>Measurement &amp; Attribution</b></div>
+      <div><span>Market</span><b>India</b></div>
+      <div><span>Version</span><b>1.0</b></div>
+    </div>
+
+    <div class="cover-note">
+      <b style="color:#fff">Status disclosure.</b> Smart Pursuit is currently at the pre-client / demo-system stage for the Solar niche.
+      This document contains no client tracking data and no campaign results. Every lead count, conversion rate, cost figure and
+      funnel number inside is labelled as an <b style="color:#DDD6FE">Example</b> or <b style="color:#DDD6FE">Illustration</b>.
+      No CPL, lead volume, conversion rate, ROAS or revenue outcome is promised anywhere in this system.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOC ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Contents</div>
+  <h2 class="sec">What this document covers</h2>
+  <p class="lead">Steps 4B, 4C and 4D built the channels and the page. Step 4E builds the measurement layer underneath all of them. Without it, every recommendation in the previous three documents becomes an opinion.</p>
+
+  <div class="toc">
+    <div><b>01 · Why Tracking Matters</b><span>3</span></div>
+    <div><b>02 · The Complete Tracking Stack</b><span>4</span></div>
+    <div><b>03 · Tracking Architecture</b><span>6</span></div>
+    <div><b>04 · Google Tag Manager</b><span>7</span></div>
+    <div><b>05 · GA4</b><span>8</span></div>
+    <div><b>06 · Solar Event Naming System</b><span>9</span></div>
+    <div><b>07 · Primary vs Secondary Conversions</b><span>10</span></div>
+    <div><b>08 · Meta Pixel</b><span>11</span></div>
+    <div><b>09 · Meta Conversions API</b><span>12</span></div>
+    <div><b>10 · Google Ads Conversion Tracking</b><span>13</span></div>
+    <div><b>11–12 · UTM Tracking &amp; Naming Convention</b><span>14</span></div>
+    <div><b>13 · Lead Source Tracking</b><span>16</span></div>
+    <div><b>14 · Lead Status System</b><span>17</span></div>
+    <div><b>15 · Lead Quality System</b><span>18</span></div>
+    <div><b>16 · Lead Attribution</b><span>19</span></div>
+    <div><b>17 · Solar Funnel Measurement</b><span>20</span></div>
+    <div><b>18 · Funnel Formulas</b><span>21</span></div>
+    <div><b>19–20 · Call &amp; WhatsApp Tracking</b><span>22</span></div>
+    <div><b>21–22 · Form &amp; Calculator Tracking</b><span>24</span></div>
+    <div><b>23 · Thank-You Page Tracking</b><span>26</span></div>
+    <div><b>24 · Tracking QA</b><span>27</span></div>
+    <div><b>25 · Tracking Debugging</b><span>28</span></div>
+    <div><b>26 · Testing Tools</b><span>30</span></div>
+    <div><b>27 · Dashboard Structure</b><span>31</span></div>
+    <div><b>28 · What to Optimize Based on Data</b><span>32</span></div>
+    <div><b>29–30 · Data Ownership &amp; Privacy</b><span>33</span></div>
+    <div><b>31 · Smart Pursuit Tracking SOP</b><span>35</span></div>
+    <div><b>32 · Implementation Checklist</b><span>36</span></div>
+    <div><b>33 · Solar Tracking Score</b><span>37</span></div>
+    <div><b>34 · Golden Rules</b><span>38</span></div>
+    <div><b>35 · Complete System So Far</b><span>39</span></div>
+    <div><b>Next · Step 4F Preview</b><span>40</span></div>
+  </div>
+
+  <hr class="div">
+
+  <div class="principle">
+    <div class="label">The core principle of this document</div>
+    <p>If Smart Pursuit cannot accurately measure where a lead came from and what happened after the lead was generated, it cannot properly optimize the Solar marketing system.</p>
+  </div>
+
+  <p>Tracking is often treated as a technical task handed to whoever is comfortable with code. It is not. It is the mechanism that connects marketing activity to business outcomes, and it determines what an agency is able to say truthfully about its own work.</p>
+
+  <div class="callout">
+    <div class="label">Labelling convention used throughout</div>
+    <p style="margin:0">Smart Pursuit has no Solar tracking data. Every figure carries a tag.
+    <span class="tag tag-ex">Example</span> or <span class="tag tag-ex">Illustration</span> means constructed for demonstration.
+    <span class="tag tag-rec">Recommendation</span> means a Smart Pursuit standard.
+    <span class="tag tag-data">Actual Data</span> appears nowhere in v1.0.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">2</span></span></div>
+</section>
+
+<!-- ============ S1 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 01</div>
+  <h2 class="sec">Why Tracking Matters</h2>
+  <p class="lead">The difference between knowing a number and understanding it.</p>
+
+  <h3>Without tracking</h3>
+  <p>A month ends and the client is told:</p>
+  <div class="quote">"We received 40 leads."</div>
+  <p>It sounds like a result. It is closer to a rumour. The following questions all remain unanswered:</p>
+  <div class="grid2">
+    <div class="card" style="margin-bottom:0">
+      <ul style="margin:0">
+        <li>Which campaign generated them?</li>
+        <li>Which ad generated them?</li>
+        <li>Which keyword generated them?</li>
+        <li>Which landing page generated them?</li>
+        <li>Which leads were qualified?</li>
+      </ul>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <ul style="margin:0">
+        <li>Which leads booked a site assessment?</li>
+        <li>Which leads received quotations?</li>
+        <li>Which leads became customers?</li>
+        <li>How much revenue came from marketing?</li>
+        <li>Which spend should be increased or stopped?</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="margin-top:5mm">Without answers, optimization becomes guesswork dressed as strategy. Budget gets moved on instinct, campaigns get paused for the wrong reasons, and the agency cannot distinguish between a channel that is failing and a channel whose leads are being handled poorly after they arrive.</p>
+
+  <h3>With proper tracking</h3>
+  <p>These stages can be connected into one continuous chain:</p>
+  <div class="flow">
+    <div class="node acc">TRAFFIC</div>
+    <div class="arw">↓</div>
+    <div class="node">LEAD</div>
+    <div class="arw">↓</div>
+    <div class="node">QUALIFIED LEAD</div>
+    <div class="arw">↓</div>
+    <div class="node key">SALE</div>
+    <div class="arw">↓</div>
+    <div class="node win">REVENUE</div>
+  </div>
+
+  <h3>Tracking is not only a technical task</h3>
+  <p>It is the connective tissue of the entire Solar marketing system. Each link in the chain below is owned by a different tool, and sometimes by a different person — which is precisely why the chain breaks so often:</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:24%">Stage</th><th style="width:34%">Measured by</th><th>What it tells us</th></tr></thead>
+    <tbody>
+      <tr><td><b>Ad</b></td><td>Meta Ads / Google Ads</td><td>Reach, impressions, cost of attention</td></tr>
+      <tr><td><b>Click</b></td><td>Ad platform + UTM parameters</td><td>Which creative or keyword earned the visit</td></tr>
+      <tr><td><b>Landing page</b></td><td>GA4 via GTM</td><td>Whether the page held attention</td></tr>
+      <tr><td><b>Lead</b></td><td>Website event + form backend</td><td>Whether the page converted</td></tr>
+      <tr><td><b>Qualified lead</b></td><td>Lead database / CRM</td><td>Whether the lead was worth having</td></tr>
+      <tr><td><b>Site assessment</b></td><td>Client sales team</td><td>Whether interest survived first contact</td></tr>
+      <tr><td><b>Quotation</b></td><td>Client sales team</td><td>Whether the opportunity became concrete</td></tr>
+      <tr><td><b>Sale</b></td><td>Client business records</td><td>Whether marketing produced revenue</td></tr>
+      <tr><td><b>Revenue</b></td><td>Client business records</td><td>Whether the investment returned</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Where the chain usually breaks</div>
+    <p style="margin:0">The first four stages are almost always instrumented, because they are technical and sit on the agency's side. The last five depend on the client's sales team recording outcomes consistently. This is the real work of Step 4E — not installing tags, but establishing a process where lead outcomes flow back into the data. An agency that only measures the first four stages can report activity, but not value.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">3</span></span></div>
+</section>
+
+<!-- ============ S2 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 02</div>
+  <h2 class="sec">The Complete Tracking Stack</h2>
+  <p class="lead">Every component below is free or low-cost. At Smart Pursuit's current stage, nothing here requires a paid subscription except optional call tracking.</p>
+
+  <div class="level">
+    <div class="h"><b>1 · Solar Website</b><em>The foundation</em></div>
+    <p style="margin:0"><b>Role:</b> the surface every measurement sits on. Forms, CTAs, calculator and thank-you page must be built so events can be attached to them cleanly — distinct URLs, stable element attributes, a real form submission rather than a silent JavaScript handler.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> part of the build. <b>Note:</b> retrofitting tracking onto a badly built page costs more than building it correctly once.</p>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>2 · Google Tag Manager</b><em>Tag management layer</em></div>
+    <p style="margin:0"><b>Role:</b> a single container installed on the site through which every other tag is deployed and managed. Changes to tracking no longer require a developer or a site deployment.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> free. <b>Priority:</b> install first, before anything else.</p>
+  </div>
+
+  <div class="level">
+    <div class="h"><b>3 · Google Analytics 4</b><em>Behaviour measurement</em></div>
+    <p style="margin:0"><b>Role:</b> records what happens on the website — traffic sources, landing pages, engagement, events and conversions. The neutral reference point when Meta and Google Ads disagree with each other.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> free.</p>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>4 · Google Ads Conversion Tracking</b><em>Search performance</em></div>
+    <p style="margin:0"><b>Role:</b> tells Google Ads which clicks produced leads, so bidding can optimise toward outcomes rather than clicks. Without it, Smart Bidding has nothing meaningful to learn from.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> free with the ad account.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>5 · Meta Pixel</b><em>Social performance</em></div>
+    <p style="margin:0"><b>Role:</b> records website activity from Meta traffic, builds retargeting audiences, and feeds conversion signals back to Meta's delivery system.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> free with the ad account.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>6 · Meta Conversions API</b><em>Server-side event sharing</em></div>
+    <p style="margin:0"><b>Role:</b> sends the same conversion events to Meta from a server rather than only from the browser, improving signal reliability where browser tracking is restricted. Complements the Pixel; does not replace it.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> free, but implementation effort varies by platform. See Section 9 for when to bother.</p>
+  </div>
+
+  <div class="level lg">
+    <div class="h"><b>7 · Lead Database</b><em>Google Sheets or CRM</em></div>
+    <p style="margin:0"><b>Role:</b> the only place where marketing data meets sales reality. Records every lead with its source and its eventual outcome. This is the component most often skipped and the one that matters most.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> free with Google Sheets. Move to a CRM when lead volume makes a spreadsheet unmanageable, not before.</p>
+  </div>
+
+  <div class="level">
+    <div class="h"><b>8 · UTM Tracking</b><em>Campaign attribution</em></div>
+    <p style="margin:0"><b>Role:</b> parameters appended to ad URLs that tell GA4 and the lead database exactly which campaign, creative or keyword produced each visit.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> free. Requires discipline, not budget.</p>
+  </div>
+
+  <div class="level l4">
+    <div class="h"><b>9 · Call Tracking</b><em>Phone measurement</em></div>
+    <p style="margin:0"><b>Role:</b> at minimum, a <code>phone_click</code> event on every <code>tel:</code> link. Where budget allows, a proper call tracking service using dynamic numbers to attribute actual calls to source.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> click tracking free; call tracking services are paid. Justify only once call volume is material.</p>
+  </div>
+
+  <div class="level lg">
+    <div class="h"><b>10 · WhatsApp Tracking</b><em>Click measurement</em></div>
+    <p style="margin:0"><b>Role:</b> a <code>whatsapp_click</code> event with the link location. Captures a major Indian conversion path that is otherwise entirely invisible in analytics.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Cost:</b> free. Conversation outcomes require manual logging — see Section 20.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Tooling philosophy</div>
+    <p style="margin:0">Do not recommend expensive tools without a clear reason. Heat-mapping suites, session recorders, attribution platforms and enterprise CRMs all have legitimate uses, but none of them fix a missing lead database or an untested event. Get the free stack working correctly and consistently first; the paid tools only amplify whatever discipline already exists.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">4</span></span></div>
+</section>
+
+<!-- ============ S2b ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 02 · continued</div>
+  <h2 class="sec">Stack Summary</h2>
+
+  <table>
+    <thead><tr><th style="width:23%">Component</th><th style="width:27%">Primary role</th><th style="width:14%">Cost</th><th>Install order</th></tr></thead>
+    <tbody>
+      <tr><td><b>Website</b></td><td>Surface for measurement</td><td>Build cost</td><td>Prerequisite</td></tr>
+      <tr><td><b>Google Tag Manager</b></td><td>Tag management</td><td>Free</td><td>1st</td></tr>
+      <tr><td><b>GA4</b></td><td>Behaviour analytics</td><td>Free</td><td>2nd</td></tr>
+      <tr><td><b>Meta Pixel</b></td><td>Social events + audiences</td><td>Free</td><td>3rd</td></tr>
+      <tr><td><b>Google Ads conversions</b></td><td>Search bid optimisation</td><td>Free</td><td>4th</td></tr>
+      <tr><td><b>UTM structure</b></td><td>Campaign attribution</td><td>Free</td><td>5th — before launch</td></tr>
+      <tr><td><b>Lead database</b></td><td>Source-to-sale connection</td><td>Free</td><td>6th — before launch</td></tr>
+      <tr><td><b>WhatsApp / phone events</b></td><td>Contact-path capture</td><td>Free</td><td>7th</td></tr>
+      <tr><td><b>Conversions API</b></td><td>Signal reliability</td><td>Free / effort</td><td>Later — when justified</td></tr>
+      <tr><td><b>Call tracking service</b></td><td>Call attribution</td><td>Paid</td><td>Later — when justified</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Install order is not arbitrary</div>
+    <p style="margin:0">GTM goes first because everything else is deployed through it. UTM structure and the lead database must both exist <b>before</b> campaigns launch — neither can be applied retrospectively to traffic that has already arrived. A campaign launched without UTMs produces a month of data that can never be attributed, and there is no way to recover it.</p>
+  </div>
+
+  <h3>What each tool answers</h3>
+  <div class="grid2">
+    <div class="kpi"><div class="t">GA4 answers</div><b>What happened on the website?</b><p class="smallnote" style="margin:0">Which pages, which sources, how deep the engagement, where visitors dropped off.</p></div>
+    <div class="kpi"><div class="t">Ad platforms answer</div><b>What did the advertising do?</b><p class="smallnote" style="margin:0">Which campaigns, creatives and keywords produced clicks and reported conversions.</p></div>
+    <div class="kpi"><div class="t">Lead database answers</div><b>Were the leads any good?</b><p class="smallnote" style="margin:0">Which leads qualified, which reached assessment, which became sales.</p></div>
+    <div class="kpi"><div class="t">Together they answer</div><b>What should change?</b><p class="smallnote" style="margin:0">The only question that matters. No single tool answers it alone.</p></div>
+  </div>
+
+  <div class="callout">
+    <div class="label">A realistic sequencing note for a first client</div>
+    <p style="margin:0">A complete stack does not need to exist on day one, but the <b>irreversible</b> parts do: GTM, GA4, conversion events, UTMs and the lead database. Conversions API and paid call tracking can be added in month two or three without losing anything. Distinguishing between "must exist before launch" and "can be added later" prevents an implementation from stalling while the client waits to start spending.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">5</span></span></div>
+</section>
+
+<!-- ============ S3 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 03</div>
+  <h2 class="sec">Tracking Architecture</h2>
+  <p class="lead">The same chain, traced separately for each channel, with the responsible technology named at every step.</p>
+
+  <div class="grid2">
+    <div>
+      <h4 style="margin-top:0">Meta path</h4>
+      <div class="flow sm">
+        <div class="node acc">META ADS<small>Meta Ads Manager</small></div>
+        <div class="arw">↓</div>
+        <div class="node">META CLICK<small>UTM parameters attached</small></div>
+        <div class="arw">↓</div>
+        <div class="node">LANDING PAGE<small>GTM container loads</small></div>
+        <div class="arw">↓</div>
+        <div class="node">WEBSITE EVENT<small>GA4 + Meta Pixel</small></div>
+        <div class="arw">↓</div>
+        <div class="node key">LEAD<small>Form submit event</small></div>
+        <div class="arw">↓</div>
+        <div class="node">LEAD DATABASE<small>Sheets / CRM</small></div>
+        <div class="arw">↓</div>
+        <div class="node">QUALIFICATION<small>Sales team</small></div>
+        <div class="arw">↓</div>
+        <div class="node">SITE ASSESSMENT<small>Sales team</small></div>
+        <div class="arw">↓</div>
+        <div class="node">QUOTATION<small>Sales team</small></div>
+        <div class="arw">↓</div>
+        <div class="node win">SALE<small>Business records</small></div>
+        <div class="arw">↓</div>
+        <div class="node win">REVENUE<small>Business records</small></div>
+      </div>
+    </div>
+    <div>
+      <h4 style="margin-top:0">Google path</h4>
+      <div class="flow sm">
+        <div class="node acc">GOOGLE SEARCH<small>Query typed</small></div>
+        <div class="arw">↓</div>
+        <div class="node">GOOGLE CLICK<small>GCLID + UTM parameters</small></div>
+        <div class="arw">↓</div>
+        <div class="node">LANDING PAGE<small>GTM container loads</small></div>
+        <div class="arw">↓</div>
+        <div class="node">WEBSITE EVENT<small>GA4 + Google Ads tag</small></div>
+        <div class="arw">↓</div>
+        <div class="node key">LEAD<small>Form submit event</small></div>
+        <div class="arw">↓</div>
+        <div class="node">LEAD DATABASE<small>Sheets / CRM</small></div>
+        <div class="arw">↓</div>
+        <div class="node">QUALIFICATION<small>Sales team</small></div>
+        <div class="arw">↓</div>
+        <div class="node">SITE ASSESSMENT<small>Sales team</small></div>
+        <div class="arw">↓</div>
+        <div class="node">QUOTATION<small>Sales team</small></div>
+        <div class="arw">↓</div>
+        <div class="node win">SALE<small>Business records</small></div>
+        <div class="arw">↓</div>
+        <div class="node win">REVENUE<small>Business records</small></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Where each technology sits</h3>
+  <table class="tight">
+    <thead><tr><th style="width:26%">Layer</th><th style="width:32%">Technology</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td>Ad delivery</td><td>Meta Ads / Google Ads</td><td>Serve the ad, record impressions and clicks</td></tr>
+      <tr><td>Link attribution</td><td>UTM parameters, GCLID</td><td>Carry campaign identity into the website session</td></tr>
+      <tr><td>Tag deployment</td><td>Google Tag Manager</td><td>Fire the right tags on the right triggers</td></tr>
+      <tr><td>Behaviour recording</td><td>GA4</td><td>Sessions, pages, events, source attribution</td></tr>
+      <tr><td>Platform feedback</td><td>Meta Pixel, Google Ads tag</td><td>Return conversion signals to the bidding systems</td></tr>
+      <tr><td>Lead capture</td><td>Form backend, email, webhook</td><td>Deliver the actual enquiry to the sales team</td></tr>
+      <tr><td>Outcome recording</td><td>Lead database / CRM</td><td>Status, quality and sales result per lead</td></tr>
+      <tr><td>Reporting</td><td>Dashboard (Step 4G)</td><td>Assemble all of the above into a single view</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">The critical junction</div>
+    <p style="margin:0">Note where both diagrams change hands: at <b>Lead Database</b>. Everything above it is automated and reliable. Everything below it depends on a person updating a record. This is not a technology problem and cannot be solved with a better tool — it is solved by agreeing the process during onboarding and keeping it simple enough that a busy sales team will actually maintain it.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">6</span></span></div>
+</section>
+
+<!-- ============ S4 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 04</div>
+  <h2 class="sec">Google Tag Manager</h2>
+
+  <div class="wwh">
+    <div>
+      <div class="t">What it is</div>
+      <p style="margin:0">A container installed once on the website, through which all other tracking tags are added, edited and removed. GTM sits between the site and the analytics platforms as a management layer.</p>
+    </div>
+    <div>
+      <div class="t">Why it matters</div>
+      <p style="margin:0">Without GTM, every tracking change requires a developer and a site deployment. With it, the agency can add an event, fix a trigger or deploy a new pixel in minutes — which is the difference between tracking that stays current and tracking that decays.</p>
+    </div>
+    <div>
+      <div class="t">How it works</div>
+      <p style="margin:0">The site pushes information into a <code>dataLayer</code>. GTM listens for it, matches it against configured triggers, and fires the corresponding tags to GA4, Meta or Google Ads. The page itself never needs to know which platforms exist.</p>
+    </div>
+    <div>
+      <div class="t">What Smart Pursuit should do</div>
+      <p style="margin:0">Install GTM before anything else. Deploy every tag through it without exception. Use Preview mode before publishing, and write a clear description on every version so changes can be traced later.</p>
+    </div>
+  </div>
+
+  <h3>Problems GTM solves</h3>
+  <table class="tight">
+    <thead><tr><th style="width:40%">Problem without GTM</th><th>How GTM resolves it</th></tr></thead>
+    <tbody>
+      <tr><td>Every tracking change needs a developer</td><td>Marketing team deploys changes directly</td></tr>
+      <tr><td>Multiple scripts hard-coded across templates</td><td>One container tag; everything else managed inside it</td></tr>
+      <tr><td>No record of what changed or when</td><td>Version history with rollback</td></tr>
+      <tr><td>No safe way to test before going live</td><td>Preview mode tests against the real site privately</td></tr>
+      <tr><td>Duplicate or orphaned pixels accumulating</td><td>All tags visible in one place and auditable</td></tr>
+      <tr><td>Click and scroll tracking requires custom code</td><td>Built-in triggers handle most cases without code</td></tr>
+    </tbody>
+  </table>
+
+  <h3>What Smart Pursuit should manage through GTM</h3>
+  <div class="chips">
+    <span>GA4 events</span><span>Meta Pixel events</span><span>Button-click tracking</span><span>Form tracking</span><span>WhatsApp clicks</span><span>Phone clicks</span><span>Calculator events</span><span>Conversion events</span>
+  </div>
+
+  <div class="callout">
+    <div class="label">An important clarification</div>
+    <p style="margin:0">GTM does not replace GA4 or Meta Pixel. It is a delivery mechanism, not a measurement tool — it holds no reports and stores no data. GA4 still analyses behaviour, Meta Pixel still feeds Meta. GTM simply controls when and how each of them is triggered. Beginners frequently expect to find reports inside GTM and conclude something is broken when they cannot.</p>
+  </div>
+
+  <h3>Container structure standard</h3>
+  <table class="tight">
+    <thead><tr><th style="width:24%">Element</th><th style="width:36%">Naming pattern</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Tags</td><td>Platform – Event – Detail</td><td><span class="mono">GA4 – Event – solar_lead_form_submit</span></td></tr>
+      <tr><td>Triggers</td><td>Type – Condition</td><td><span class="mono">CE – solar_lead_form_submit</span></td></tr>
+      <tr><td>Variables</td><td>DLV – parameter name</td><td><span class="mono">DLV – link_location</span></td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> Consistent naming makes a container maintainable by someone who did not build it — including the client, or the next person at the agency.</p>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">7</span></span></div>
+</section>
+
+<!-- ============ S5 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 05</div>
+  <h2 class="sec">GA4</h2>
+
+  <div class="wwh">
+    <div>
+      <div class="t">What it is</div>
+      <p style="margin:0">Google Analytics 4 — the current version of Google Analytics. It records interactions on the website as <b>events</b> rather than as pageviews, which suits a landing page where the meaningful actions are clicks and form steps rather than page loads.</p>
+    </div>
+    <div>
+      <div class="t">Why it matters for Solar</div>
+      <p style="margin:0">Solar buyers research before enquiring, often across several visits and devices. GA4 shows which sources bring people who engage rather than bounce, which landing pages hold attention, and where in the page the drop-off occurs.</p>
+    </div>
+    <div>
+      <div class="t">How it works</div>
+      <p style="margin:0">A GA4 configuration tag loads via GTM. Event tags then fire on defined triggers, sending named events with parameters. Selected events are marked as key events (conversions) so they appear in conversion reporting.</p>
+    </div>
+    <div>
+      <div class="t">What Smart Pursuit should do</div>
+      <p style="margin:0">Create one property per client, owned by the client. Configure the Section 6 events. Mark only genuine conversions as key events. Enable DebugView during setup and verify every event before launch.</p>
+    </div>
+  </div>
+
+  <h3>What GA4 measures</h3>
+  <table class="tight">
+    <thead><tr><th style="width:24%">Metric</th><th style="width:30%">Definition</th><th>Solar application</th></tr></thead>
+    <tbody>
+      <tr><td><b>Users</b></td><td>Distinct visitors</td><td>Reach of the landing pages</td></tr>
+      <tr><td><b>Sessions</b></td><td>Visits, including repeats</td><td>Return visits — common in a considered purchase</td></tr>
+      <tr><td><b>Traffic source</b></td><td>Where visitors came from</td><td>Separates paid, organic, direct and referral performance</td></tr>
+      <tr><td><b>Landing pages</b></td><td>Entry page of each session</td><td>Compares assessment, installation and location pages</td></tr>
+      <tr><td><b>Engagement</b></td><td>Engaged sessions and duration</td><td>Whether traffic is relevant or accidental</td></tr>
+      <tr><td><b>Events</b></td><td>Named interactions</td><td>Form steps, calculator use, WhatsApp and phone clicks</td></tr>
+      <tr><td><b>Conversions</b></td><td>Events marked as key</td><td>Lead submissions and assessment bookings</td></tr>
+      <tr><td><b>Campaign attribution</b></td><td>UTM-based source data</td><td>Which specific campaign produced each lead</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">GA4 versus the ad platforms — a distinction worth explaining to clients</div>
+    <p style="margin:0">GA4 helps understand <b>website behaviour</b>. Advertising platforms measure <b>advertising performance</b>. They answer different questions and will not agree with each other, because they attribute differently, use different time windows and count differently. Neither is wrong. Section 16 covers this properly — but set the expectation early, because the first time Meta reports 30 leads and GA4 reports 24, an unprepared client assumes something is broken.</p>
+  </div>
+
+  <h3>Configuration standards</h3>
+  <ul>
+    <li><b>One property per client</b>, with the client as owner and the agency granted access.</li>
+    <li><b>Exclude internal traffic</b> — agency and client IP addresses, which distort low-volume data noticeably.</li>
+    <li><b>Set the reporting time zone to IST</b> so reports align with the client's business day.</li>
+    <li><b>Set the currency to INR</b> before any value-based reporting begins.</li>
+    <li><b>Mark only real conversions as key events.</b> Section 7 explains why this matters.</li>
+    <li><b>Extend data retention</b> to the maximum available, since Solar sales cycles run long.</li>
+    <li><b>Link GA4 to Google Ads</b> so audiences and conversions can be shared.</li>
+  </ul>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">8</span></span></div>
+</section>
+
+<!-- ============ S6 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 06</div>
+  <h2 class="sec">Solar Event Naming System</h2>
+  <p class="lead">These exact names are used on every Smart Pursuit Solar client, every page and every platform. No variations.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:28%">Event</th><th style="width:30%">Meaning</th><th style="width:16%">Importance</th><th>Platform</th></tr></thead>
+    <tbody>
+      <tr><td><code>solar_lead_form_view</code></td><td>Lead form scrolled into view</td><td>Secondary</td><td>GA4</td></tr>
+      <tr><td><code>solar_lead_form_start</code></td><td>First input into the form</td><td>Secondary</td><td>GA4, Meta</td></tr>
+      <tr><td><code>solar_lead_form_submit</code></td><td>Validated form submission</td><td><b>Primary</b></td><td>GA4, Meta, Google Ads</td></tr>
+      <tr><td><code>whatsapp_click</code></td><td>WhatsApp CTA clicked</td><td>Secondary</td><td>GA4, Meta</td></tr>
+      <tr><td><code>phone_click</code></td><td>Click-to-call link clicked</td><td>Secondary</td><td>GA4, Meta, Google Ads</td></tr>
+      <tr><td><code>savings_calculator_start</code></td><td>First calculator interaction</td><td>Secondary</td><td>GA4</td></tr>
+      <tr><td><code>savings_calculator_complete</code></td><td>Estimate generated</td><td>Secondary</td><td>GA4, Meta</td></tr>
+      <tr><td><code>assessment_booking</code></td><td>Assessment slot confirmed</td><td><b>Primary</b></td><td>GA4, Meta, Google Ads</td></tr>
+      <tr><td><code>residential_solar_click</code></td><td>Residential section CTA clicked</td><td>Secondary</td><td>GA4</td></tr>
+      <tr><td><code>commercial_solar_click</code></td><td>Commercial section CTA clicked</td><td>Secondary</td><td>GA4</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Naming rules</h3>
+  <table class="tight">
+    <thead><tr><th style="width:30%">Rule</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td>Lowercase with underscores</td><td>GA4 event names are case-sensitive; mixed case creates duplicate events silently</td></tr>
+      <tr><td>Describe the action, not the design</td><td><code>whatsapp_click</code> survives a redesign; <code>green_button_click</code> does not</td></tr>
+      <tr><td>Prefix Solar-specific events</td><td><code>solar_</code> groups them together and avoids collision with GA4's automatic events</td></tr>
+      <tr><td>Use parameters, not more event names</td><td>One <code>whatsapp_click</code> with a <code>link_location</code> parameter beats five separate events</td></tr>
+      <tr><td>Never rename a live event</td><td>Renaming breaks historical continuity; the old and new names cannot be joined</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Recommended parameters</h3>
+  <table class="tight">
+    <thead><tr><th style="width:26%">Parameter</th><th style="width:34%">Attached to</th><th>Example values</th></tr></thead>
+    <tbody>
+      <tr><td><code>link_location</code></td><td>whatsapp_click, phone_click</td><td><span class="mono">hero, sticky_bar, footer, form</span></td></tr>
+      <tr><td><code>page_type</code></td><td>All events</td><td><span class="mono">meta_lp, google_lp, location_lp, main_site</span></td></tr>
+      <tr><td><code>property_type</code></td><td>form_submit, calculator_complete</td><td><span class="mono">independent_house, villa, shop, office</span></td></tr>
+      <tr><td><code>bill_band</code></td><td>form_submit, calculator_complete</td><td><span class="mono">under_2000, 2000_5000, 5000_10000</span></td></tr>
+      <tr><td><code>city</code></td><td>form_submit</td><td><span class="mono">hyderabad, secunderabad</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Do not send personal data as parameters</div>
+    <p style="margin:0">Name, phone number and email must never be sent to GA4 or Meta as event parameters. Use non-identifying categories — a bill <em>band</em> rather than an exact amount, a city rather than an address. Section 30 covers this in full, but the rule belongs here too because this is where the mistake is made.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">9</span></span></div>
+</section>
+
+<!-- ============ S7 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 07</div>
+  <h2 class="sec">Primary vs Secondary Conversions</h2>
+  <p class="lead">Not every event has equal business value, and treating them as though they do actively damages campaign performance.</p>
+
+  <div class="grid2">
+    <div class="card" style="border-color:var(--leaf); background:#F0FDF4">
+      <h4 style="color:#14532D">Primary</h4>
+      <ul style="margin:0">
+        <li>Qualified lead</li>
+        <li>Lead submission</li>
+        <li>Assessment booking</li>
+        <li>Phone enquiry where properly qualified</li>
+        <li>Site assessment</li>
+      </ul>
+      <p class="smallnote" style="margin:3mm 0 0">Actions that represent genuine commercial progress. These are what bidding should optimise toward.</p>
+    </div>
+    <div class="card">
+      <h4>Secondary</h4>
+      <ul style="margin:0">
+        <li>WhatsApp click</li>
+        <li>Phone button click</li>
+        <li>Form start</li>
+        <li>Calculator start</li>
+        <li>Calculator completion</li>
+        <li>Page engagement</li>
+      </ul>
+      <p class="smallnote" style="margin:3mm 0 0">Useful diagnostics that indicate interest. Valuable for understanding behaviour, not for bid optimisation.</p>
+    </div>
+  </div>
+
+  <h3>Why this distinction matters technically</h3>
+  <p>Automated bidding optimises toward whatever it is told to count as a conversion. If a calculator start is marked as a conversion alongside a lead submission, the system learns that both are equally desirable — and will happily find cheap traffic that plays with calculators and never enquires.</p>
+
+  <div class="card">
+    <h4>Illustration — what mis-classification produces</h4>
+    <table class="tight" style="margin:0">
+      <thead><tr><th>Setup</th><th class="num">Reported conversions</th><th class="num">Actual leads</th><th>What bidding learns</th></tr></thead>
+      <tbody>
+        <tr><td>All events marked as conversions</td><td class="num">180</td><td class="num">22</td><td>Optimise toward clicks and calculator use</td></tr>
+        <tr><td>Only form submits marked</td><td class="num">22</td><td class="num">22</td><td>Optimise toward people who actually enquire</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="smallnote"><span class="tag tag-ex">Illustration</span> Constructed to demonstrate the mechanism. Not Smart Pursuit data and not a prediction of any account's performance.</p>
+
+  <div class="principle">
+    <div class="label">Rule</div>
+    <p>Treating every click as a conversion distorts optimization. Count what the business values, not what is easy to measure.</p>
+  </div>
+
+  <h3>Platform configuration</h3>
+  <table class="tight">
+    <thead><tr><th style="width:26%">Platform</th><th style="width:34%">Primary handling</th><th>Secondary handling</th></tr></thead>
+    <tbody>
+      <tr><td><b>GA4</b></td><td>Mark as key events</td><td>Record as standard events; do not mark as key</td></tr>
+      <tr><td><b>Google Ads</b></td><td>Set as Primary conversion action</td><td>Set as Secondary — observed but not bid toward</td></tr>
+      <tr><td><b>Meta</b></td><td>Optimise campaigns for the lead event</td><td>Track for audience building and diagnostics</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">The case of the phone click</div>
+    <p style="margin:0">A phone click sits awkwardly between the two. It signals high intent, but a click is not a connected call — the visitor may not dial, may not get through, or may hang up. Smart Pursuit's position: treat <code>phone_click</code> as secondary by default. Promote it to primary only where proper call tracking confirms connected calls of meaningful duration, so the conversion reflects a real conversation rather than a tap.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">10</span></span></div>
+</section>
+
+<!-- ============ S8 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 08</div>
+  <h2 class="sec">Meta Pixel</h2>
+
+  <div class="wwh">
+    <div>
+      <div class="t">What it is</div>
+      <p style="margin:0">A piece of code, deployed through GTM, that records website activity and reports it back to Meta. It connects what happens on the site to the ad that brought the visitor.</p>
+    </div>
+    <div>
+      <div class="t">Why Solar marketing needs it</div>
+      <p style="margin:0">Meta campaigns reach people who were not searching for solar. Without conversion signals, Meta's delivery system cannot distinguish between an audience that enquires and one that scrolls past. The Pixel also enables retargeting, which matters for a purchase researched over weeks.</p>
+    </div>
+    <div>
+      <div class="t">How it works</div>
+      <p style="margin:0">The Pixel loads on the page, records events, and associates them with the ad click where possible. Meta aggregates these signals to inform delivery and to report conversions.</p>
+    </div>
+    <div>
+      <div class="t">What Smart Pursuit should do</div>
+      <p style="margin:0">Deploy via GTM, never hard-coded. Map the Section 6 events to Pixel events. Verify in Events Manager before launch. Build retargeting audiences from calculator completers and form starters who did not submit.</p>
+    </div>
+  </div>
+
+  <h3>What it can measure</h3>
+  <div class="chips">
+    <span>Landing page activity</span><span>Lead events</span><span>CTA clicks</span><span>Retargeting audiences</span><span>Conversion optimization</span>
+  </div>
+
+  <h3>The feedback relationship</h3>
+  <div class="flow">
+    <div class="node acc">META AD</div>
+    <div class="arw">↓</div>
+    <div class="node">WEBSITE</div>
+    <div class="arw">↓</div>
+    <div class="node">META PIXEL</div>
+    <div class="arw">↓</div>
+    <div class="node">EVENT</div>
+    <div class="arw">↓</div>
+    <div class="node key">META LEARNS<small>Delivery adjusts toward similar people</small></div>
+  </div>
+
+  <div class="warn">
+    <div class="label">An honest limitation</div>
+    <p style="margin:0">The Pixel does not guarantee better performance. It supplies the signal that makes optimisation possible — but a campaign with poor targeting, weak creative or a badly converting landing page will not be rescued by good tracking. Tracking makes problems visible; it does not fix them. Be careful never to sell it as a performance improvement in itself.</p>
+  </div>
+
+  <h3>Event mapping</h3>
+  <table class="tight">
+    <thead><tr><th style="width:38%">Smart Pursuit event</th><th style="width:26%">Meta event</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td><code>solar_lead_form_submit</code></td><td><span class="mono">Lead</span></td><td>Primary optimisation event</td></tr>
+      <tr><td><code>solar_lead_form_start</code></td><td><span class="mono">InitiateCheckout</span> or custom</td><td>Retargeting audience — started but abandoned</td></tr>
+      <tr><td><code>savings_calculator_complete</code></td><td>Custom event</td><td>High-intent retargeting audience</td></tr>
+      <tr><td><code>whatsapp_click</code></td><td><span class="mono">Contact</span></td><td>Secondary signal</td></tr>
+      <tr><td><code>assessment_booking</code></td><td><span class="mono">Schedule</span></td><td>Primary where booking exists on-site</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> Use standard Meta events where a sensible one exists; custom events otherwise. Standard events integrate more cleanly with Meta's optimisation.</p>
+
+  <div class="callout">
+    <div class="label">Retargeting audiences worth building for Solar</div>
+    <p style="margin:0">Calculator completers who did not submit. Form starters who abandoned. Visitors who reached the FAQ but did not convert. Each represents demonstrated interest without commitment — and in a category where the decision takes weeks, these are usually the most efficient audiences available.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">11</span></span></div>
+</section>
+
+<!-- ============ S9 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 09</div>
+  <h2 class="sec">Meta Conversions API</h2>
+
+  <div class="wwh">
+    <div>
+      <div class="t">What it is</div>
+      <p style="margin:0">A method of sending conversion events to Meta from a server rather than from the visitor's browser. The same events, delivered by a different route.</p>
+    </div>
+    <div>
+      <div class="t">Why it exists</div>
+      <p style="margin:0">Browser-based tracking has become less reliable. Ad blockers, browser privacy protections, cookie restrictions and network interruptions all prevent some Pixel events from reaching Meta. Events that never arrive cannot inform optimisation or appear in reporting.</p>
+    </div>
+    <div>
+      <div class="t">How it works</div>
+      <p style="margin:0">When a conversion occurs, the server sends the event directly to Meta's API. Where the Pixel also sends the same event, Meta deduplicates them using a shared event ID so the conversion is counted once.</p>
+    </div>
+    <div>
+      <div class="t">What Smart Pursuit should do</div>
+      <p style="margin:0">Start with the Pixel alone. Add Conversions API once Meta spend is material and the client's platform offers a supported integration. Do not delay a campaign launch waiting for it.</p>
+    </div>
+  </div>
+
+  <h3>Browser tracking limitations, plainly</h3>
+  <table class="tight">
+    <thead><tr><th style="width:34%">Limitation</th><th>Effect on measurement</th></tr></thead>
+    <tbody>
+      <tr><td>Ad blockers</td><td>Pixel may not load at all for some visitors</td></tr>
+      <tr><td>Browser privacy features</td><td>Cookie lifetime restricted; cross-session matching weakens</td></tr>
+      <tr><td>iOS app tracking restrictions</td><td>Reduced signal from a significant share of mobile traffic</td></tr>
+      <tr><td>Network failures</td><td>Event lost if the request does not complete before navigation</td></tr>
+      <tr><td>Slow connections</td><td>Visitor leaves before the Pixel fires</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Two maturity levels</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Beginner setup</h4>
+      <div class="flow sm" style="margin:0">
+        <div class="node acc">Pixel</div>
+        <div class="arw">↓</div>
+        <div class="node">Website events</div>
+      </div>
+      <p class="smallnote" style="margin:3mm 0 0">Entirely adequate to launch. Most Solar clients begin and remain here for the first months.</p>
+    </div>
+    <div class="card">
+      <h4>More mature setup</h4>
+      <div class="flow sm" style="margin:0">
+        <div class="node acc">Pixel</div>
+        <div class="arw">+</div>
+        <div class="node">Conversions API</div>
+        <div class="arw">↓</div>
+        <div class="node key">Deduplicated events</div>
+      </div>
+      <p class="smallnote" style="margin:3mm 0 0">Improved signal reliability. Worth the effort once spend justifies it.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="label">When to consider implementing</div>
+    <p style="margin:0">Three conditions, ideally together: Meta spend has become a meaningful part of the budget; the client's website platform offers a supported integration (many CMS platforms and form tools provide one without custom development); and the current Pixel setup is already verified and stable. Adding Conversions API on top of a Pixel that was never working correctly compounds the problem rather than solving it.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Keep the implementation proportionate</div>
+    <p style="margin:0">Conversions API can be implemented through a platform integration, a partner tool, or custom server-side development — in roughly ascending order of cost and complexity. For a first Solar client, a supported integration is almost always the right choice. Building custom server-side infrastructure for a modest ad budget is effort better spent on the landing page. Implementation genuinely depends on the website platform and available integrations, and that should be assessed before anything is promised to the client.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">12</span></span></div>
+</section>
+
+<!-- ============ S10 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 10</div>
+  <h2 class="sec">Google Ads Conversion Tracking</h2>
+  <p class="lead">Google Ads bidding is only as intelligent as the conversion data it receives.</p>
+
+  <h3>What to track</h3>
+  <table class="tight">
+    <thead><tr><th style="width:26%">Action</th><th style="width:30%">How it is tracked</th><th>Classification</th></tr></thead>
+    <tbody>
+      <tr><td><b>Lead form submission</b></td><td>GA4 key event imported, or Google Ads tag on the thank-you page</td><td><b>Primary</b></td></tr>
+      <tr><td><b>Phone calls</b></td><td>Click event; call tracking where available</td><td>Secondary by default</td></tr>
+      <tr><td><b>Assessment booking</b></td><td>Confirmation event or page</td><td><b>Primary</b></td></tr>
+      <tr><td><b>WhatsApp click</b></td><td>Click event via GTM</td><td>Secondary</td></tr>
+      <tr><td><b>Calculator completion</b></td><td>Event via GTM</td><td>Secondary</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Two implementation routes</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Import from GA4</h4>
+      <p style="margin:0">Mark the event as a key event in GA4, then import it into Google Ads. One source of truth, less duplication, simpler to maintain.</p>
+      <p class="smallnote" style="margin:2mm 0 0">Slight reporting delay. Depends on the GA4–Ads link remaining intact.</p>
+    </div>
+    <div class="card">
+      <h4>Native Google Ads tag</h4>
+      <p style="margin:0">Deploy the conversion tag directly via GTM. Faster reporting and more robust attribution using the GCLID.</p>
+      <p class="smallnote" style="margin:2mm 0 0">Requires careful trigger configuration to avoid double-counting.</p>
+    </div>
+  </div>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> Use the native tag for the primary lead conversion, and import secondary events from GA4. Whichever route is chosen, ensure the same action is not counted twice through both.</p>
+
+  <h3>Primary vs secondary in Google Ads</h3>
+  <table class="tight">
+    <thead><tr><th style="width:22%">Setting</th><th style="width:32%">Effect</th><th>Use for</th></tr></thead>
+    <tbody>
+      <tr><td><b>Primary</b></td><td>Included in the Conversions column; bidding optimises toward it</td><td>Lead submissions, assessment bookings</td></tr>
+      <tr><td><b>Secondary</b></td><td>Recorded and viewable; excluded from bidding</td><td>Calculator use, WhatsApp clicks, form starts</td></tr>
+    </tbody>
+  </table>
+
+  <div class="principle">
+    <div class="label">Optimisation principle</div>
+    <p>Google Ads should optimize toward meaningful business outcomes, not every interaction a visitor happens to perform.</p>
+  </div>
+
+  <h3>Configuration standards</h3>
+  <ul>
+    <li><b>Conversion window:</b> extend it. Solar decisions are rarely made in a single session, and a 30-day window will under-report a considered purchase.</li>
+    <li><b>Count:</b> use "one" for lead submissions. A person enquiring twice is one lead, not two.</li>
+    <li><b>Attribution model:</b> apply consistently across conversion actions so comparisons remain valid.</li>
+    <li><b>Value:</b> leave unset until the client can supply a realistic average value per qualified lead. An invented value corrupts every downstream calculation.</li>
+    <li><b>Enhanced conversions:</b> consider where supported and where consent permits, to improve match rates.</li>
+  </ul>
+
+  <div class="warn">
+    <div class="label">Do not assign a conversion value you cannot justify</div>
+    <p style="margin:0">It is tempting to set a lead value so ROAS figures appear in reporting. If that value is a guess, every ROAS number derived from it is fiction — and it will be quoted back later as though it were measured. Leave value blank until the client's actual close rate and average order value are known.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">13</span></span></div>
+</section>
+
+<!-- ============ S11 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 11</div>
+  <h2 class="sec">UTM Tracking</h2>
+  <p class="lead">Parameters appended to an ad's destination URL that carry campaign identity into the website session — and from there into GA4 and the lead database.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:22%">Parameter</th><th style="width:30%">What it identifies</th><th>Solar example</th></tr></thead>
+    <tbody>
+      <tr><td><code>utm_source</code></td><td>The platform sending the traffic</td><td><span class="mono">facebook</span>, <span class="mono">google</span></td></tr>
+      <tr><td><code>utm_medium</code></td><td>The type of traffic</td><td><span class="mono">paid_social</span>, <span class="mono">cpc</span></td></tr>
+      <tr><td><code>utm_campaign</code></td><td>The specific campaign</td><td><span class="mono">solar_assessment_v1</span></td></tr>
+      <tr><td><code>utm_content</code></td><td>The creative or ad variant</td><td><span class="mono">bill_problem_creative</span></td></tr>
+      <tr><td><code>utm_term</code></td><td>The keyword (search only)</td><td><span class="mono">solar_installation_hyderabad</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Worked examples</h3>
+  <div class="card">
+    <h4>Meta campaign</h4>
+    <p class="mono" style="margin:0; word-break:break-all">https://www.example.com/solar-assessment?utm_source=facebook&amp;utm_medium=paid_social&amp;utm_campaign=solar_assessment_v1&amp;utm_content=bill_problem_creative</p>
+  </div>
+  <div class="card">
+    <h4>Google Search campaign</h4>
+    <p class="mono" style="margin:0; word-break:break-all">https://www.example.com/solar-installation?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=solar_search_v1&amp;utm_term=solar_installation_hyderabad</p>
+  </div>
+
+  <h3>Why consistency matters more than cleverness</h3>
+  <p>UTM values are recorded exactly as written. GA4 treats <code>Facebook</code>, <code>facebook</code> and <code>FB</code> as three separate sources, which fragments reporting into meaningless pieces that cannot be recombined retrospectively. Two people tagging campaigns differently will produce a data set nobody can analyse.</p>
+
+  <div class="warn">
+    <div class="label">Rules that prevent the common failures</div>
+    <ul style="margin:0">
+      <li><b>Always lowercase.</b> UTM values are case-sensitive.</li>
+      <li><b>Underscores, never spaces.</b> Spaces become <code>%20</code> and break readability.</li>
+      <li><b>Never use UTMs on internal links.</b> Doing so restarts the session and overwrites the original source — the most common way genuine attribution is destroyed.</li>
+      <li><b>Use auto-tagging alongside UTMs on Google Ads.</b> The GCLID handles Google Ads attribution; UTMs serve GA4 and the lead database.</li>
+      <li><b>Maintain one shared UTM sheet</b> per client so every campaign is tagged from the same reference.</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <div class="label">Carrying UTMs into the lead record</div>
+    <p style="margin:0">UTM parameters are only fully useful if they reach the lead database. Capture them into hidden form fields on page load so each submitted lead arrives already labelled with its source, medium and campaign. Without this, GA4 knows which campaign produced a conversion but the sales team's record of that lead does not — and the two can never be reconciled.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">14</span></span></div>
+</section>
+
+<!-- ============ S12 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 12</div>
+  <h2 class="sec">UTM Naming Convention</h2>
+  <p class="lead">The Smart Pursuit standard. Applied identically across every Solar client.</p>
+
+  <h3>Base rules</h3>
+  <div class="chips ok">
+    <span>lowercase only</span><span>underscores_between_words</span><span>no spaces</span><span>no special characters</span><span>version suffix _v1</span><span>never rename live campaigns</span>
+  </div>
+
+  <h3>Campaign naming pattern</h3>
+  <div class="card">
+    <p class="mono" style="margin:0 0 3mm; font-size:10.4pt">sp_[niche]_[channel]_[objective]_[version]</p>
+    <table class="tight" style="margin:0">
+      <thead><tr><th style="width:30%">Component</th><th style="width:26%">Values</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>sp</code></td><td>fixed</td><td>Smart Pursuit prefix — identifies agency-managed campaigns</td></tr>
+        <tr><td><code>niche</code></td><td><span class="mono">solar</span></td><td>Vertical</td></tr>
+        <tr><td><code>channel</code></td><td><span class="mono">meta</span>, <span class="mono">search</span></td><td>Traffic source</td></tr>
+        <tr><td><code>objective</code></td><td><span class="mono">leads</span>, <span class="mono">assessment</span></td><td>Campaign goal</td></tr>
+        <tr><td><code>version</code></td><td><span class="mono">v1</span>, <span class="mono">v2</span></td><td>Iteration, so reworked campaigns stay distinguishable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Worked values</h3>
+  <table class="tight">
+    <thead><tr><th style="width:26%">Type</th><th style="width:36%">Example</th><th>Reading</th></tr></thead>
+    <tbody>
+      <tr><td>Meta campaign</td><td><span class="mono">sp_solar_meta_leads_v1</span></td><td>Smart Pursuit · solar · Meta · lead generation · first version</td></tr>
+      <tr><td>Search campaign</td><td><span class="mono">sp_solar_search_v1</span></td><td>Smart Pursuit · solar · Google Search · first version</td></tr>
+      <tr><td>Creative</td><td><span class="mono">bill_problem_v1</span></td><td>Creative built on the rising-bill problem angle</td></tr>
+      <tr><td>Creative</td><td><span class="mono">assessment_offer_v1</span></td><td>Creative leading with the free assessment offer</td></tr>
+      <tr><td>Keyword</td><td><span class="mono">solar_installation_hyderabad</span></td><td>The search term being targeted</td></tr>
+      <tr><td>Location campaign</td><td><span class="mono">sp_solar_search_hyderabad_v1</span></td><td>City-specific search campaign</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why consistency matters</h3>
+  <table class="tight">
+    <thead><tr><th style="width:36%">Without a convention</th><th>With a convention</th></tr></thead>
+    <tbody>
+      <tr><td>Reports fragment across near-identical names</td><td>Campaigns group and compare cleanly</td></tr>
+      <tr><td>Nobody can tell what a campaign was for six months later</td><td>The name is self-documenting</td></tr>
+      <tr><td>Two team members tag differently</td><td>Any team member tags identically</td></tr>
+      <tr><td>Filtering requires manual cleanup every month</td><td>Filtering by prefix works immediately</td></tr>
+      <tr><td>Cross-client comparison is impossible</td><td>Structure is consistent across every account</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Avoid random naming</div>
+    <p style="margin:0">Names like <span class="mono">campaign_final_2</span>, <span class="mono">new_test</span> or <span class="mono">copy_of_solar</span> appear during rushed launches and permanently degrade the account's data. A naming convention costs nothing at setup and cannot be applied retrospectively. Agree it before the first campaign is built, and keep the reference sheet where the whole team can reach it.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">15</span></span></div>
+</section>
+
+<!-- ============ S13 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 13</div>
+  <h2 class="sec">Lead Source Tracking</h2>
+  <p class="lead">The lead database is where marketing data and sales reality meet. It is the single most valuable artefact in this entire document.</p>
+
+  <h3>Recommended structure</h3>
+  <table class="tight">
+    <thead><tr><th style="width:8%">#</th><th style="width:28%">Column</th><th style="width:20%">Filled by</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>Lead ID</b></td><td>Automatic</td><td>Unique reference for every record</td></tr>
+      <tr><td>2</td><td><b>Date</b></td><td>Automatic</td><td>Enquiry timestamp; enables speed-to-lead measurement</td></tr>
+      <tr><td>3</td><td><b>Name</b></td><td>Form</td><td>Contact identity</td></tr>
+      <tr><td>4</td><td><b>Phone</b></td><td>Form</td><td>Primary contact method</td></tr>
+      <tr><td>5</td><td><b>Email</b></td><td>Form</td><td>Secondary contact method</td></tr>
+      <tr><td>6</td><td><b>Location</b></td><td>Form</td><td>Service-area check and routing</td></tr>
+      <tr><td>7</td><td><b>Property Type</b></td><td>Form</td><td>Residential or commercial routing</td></tr>
+      <tr><td>8</td><td><b>Monthly Electricity Bill</b></td><td>Form</td><td>Indicative system scale</td></tr>
+      <tr><td>9</td><td><b>Timeline</b></td><td>Form</td><td>Follow-up urgency</td></tr>
+      <tr><td>10</td><td><b>Source</b></td><td>UTM — automatic</td><td>facebook, google, organic, direct</td></tr>
+      <tr><td>11</td><td><b>Medium</b></td><td>UTM — automatic</td><td>paid_social, cpc, organic</td></tr>
+      <tr><td>12</td><td><b>Campaign</b></td><td>UTM — automatic</td><td>Which campaign produced the lead</td></tr>
+      <tr><td>13</td><td><b>Ad</b></td><td>UTM — automatic</td><td>Which creative produced the lead</td></tr>
+      <tr><td>14</td><td><b>Keyword</b></td><td>UTM — automatic</td><td>Which search term produced the lead</td></tr>
+      <tr><td>15</td><td><b>Landing Page</b></td><td>Automatic</td><td>Which page converted</td></tr>
+      <tr><td>16</td><td><b>Lead Status</b></td><td>Sales team</td><td>Section 14 pipeline stage</td></tr>
+      <tr><td>17</td><td><b>Lead Quality</b></td><td>Sales team</td><td>Hot / Warm / Cold per Section 15</td></tr>
+      <tr><td>18</td><td><b>Contacted?</b></td><td>Sales team</td><td>Whether an attempt was made</td></tr>
+      <tr><td>19</td><td><b>Call Outcome</b></td><td>Sales team</td><td>Connected, no answer, invalid number</td></tr>
+      <tr><td>20</td><td><b>WhatsApp Outcome</b></td><td>Sales team</td><td>Replied, no response, progressed</td></tr>
+      <tr><td>21</td><td><b>Site Assessment</b></td><td>Sales team</td><td>Scheduled and completed dates</td></tr>
+      <tr><td>22</td><td><b>Quotation</b></td><td>Sales team</td><td>Whether a quote was issued</td></tr>
+      <tr><td>23</td><td><b>Sale</b></td><td>Sales team</td><td>Won or lost</td></tr>
+      <tr><td>24</td><td><b>Revenue</b></td><td>Sales team</td><td>Order value where won</td></tr>
+      <tr><td>25</td><td><b>Notes</b></td><td>Sales team</td><td>Context that does not fit elsewhere</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Why this database is non-negotiable</div>
+    <p style="margin:0">Columns 1–15 populate automatically from the form and UTM parameters. Columns 16–25 require the sales team. Without those ten columns, the agency can report cost per lead but never cost per <em>sale</em> — and cost per lead alone has repeatedly led clients to cut the campaigns that were actually producing their customers.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Keep it achievable</div>
+    <p style="margin:0">A Google Sheet with these columns, populated honestly, outperforms an expensive CRM nobody updates. Agree at onboarding who owns the update and when — typically the salesperson, at the point each conversation concludes. Review completeness weekly for the first month; habits formed early tend to hold.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">16</span></span></div>
+</section>
+
+<!-- ============ S14 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 14</div>
+  <h2 class="sec">Lead Status System</h2>
+  <p class="lead">Ten stages describing where each lead actually is. Every lead sits in exactly one at any time.</p>
+
+  <table class="tight">
+    <thead><tr><th style="width:20%">Status</th><th style="width:34%">Definition</th><th>What it tells the agency</th></tr></thead>
+    <tbody>
+      <tr><td><b>NEW</b></td><td>Lead just received, no contact attempted</td><td>If many sit here, follow-up capacity is the constraint</td></tr>
+      <tr><td><b>CONTACTED</b></td><td>Sales team attempted contact</td><td>Attempt made; outcome not yet known</td></tr>
+      <tr><td><b>CONNECTED</b></td><td>Lead answered and spoke</td><td>Gap from CONTACTED indicates phone-number quality</td></tr>
+      <tr><td><b>QUALIFIED</b></td><td>Lead fits basic criteria</td><td>The true measure of campaign quality</td></tr>
+      <tr><td><b>SITE ASSESSMENT</b></td><td>Assessment or site visit scheduled</td><td>Genuine commercial progress</td></tr>
+      <tr><td><b>QUOTATION</b></td><td>Quote provided</td><td>Opportunity is concrete</td></tr>
+      <tr><td><b>NEGOTIATION</b></td><td>Commercial discussion ongoing</td><td>Close is plausible</td></tr>
+      <tr><td><b>WON</b></td><td>Customer purchased</td><td>The outcome everything is measured against</td></tr>
+      <tr><td><b>LOST</b></td><td>Opportunity lost</td><td>Reason matters more than the count</td></tr>
+      <tr><td><b>NURTURE</b></td><td>Not ready now but potential later</td><td>Revisit list — significant in Solar</td></tr>
+    </tbody>
+  </table>
+
+  <div class="funnel">
+    <div class="fr a" style="width:100%">NEW</div>
+    <div class="fr a" style="width:92%">CONTACTED</div>
+    <div class="fr a" style="width:84%">CONNECTED</div>
+    <div class="fr b" style="width:74%">QUALIFIED</div>
+    <div class="fr b" style="width:62%">SITE ASSESSMENT</div>
+    <div class="fr c" style="width:50%">QUOTATION</div>
+    <div class="fr c" style="width:40%">NEGOTIATION</div>
+    <div class="fr c" style="width:30%">WON</div>
+  </div>
+  <p class="smallnote" style="text-align:center">Shape illustrates narrowing only. No drop-off rate is implied. <span class="tag tag-ex">Illustration</span></p>
+
+  <h3>Why this beats counting leads</h3>
+  <p>"We got 40 leads" describes an input. A status breakdown describes a business situation, and it localises the problem:</p>
+  <table class="tight">
+    <thead><tr><th style="width:40%">Pattern in the data</th><th>What it points to</th></tr></thead>
+    <tbody>
+      <tr><td>Many stuck at NEW</td><td>Leads are not being worked. Not a marketing problem.</td></tr>
+      <tr><td>CONTACTED high, CONNECTED low</td><td>Wrong numbers, or follow-up timing is poor</td></tr>
+      <tr><td>CONNECTED high, QUALIFIED low</td><td>Targeting or ad messaging is attracting the wrong people</td></tr>
+      <tr><td>QUALIFIED high, SITE ASSESSMENT low</td><td>The assessment is not being sold well on the call</td></tr>
+      <tr><td>QUOTATION high, WON low</td><td>Pricing or competitive position — outside advertising's control</td></tr>
+      <tr><td>NURTURE growing steadily</td><td>Real demand on a longer timeline; needs a follow-up process</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">The diagnostic value</div>
+    <p style="margin:0">This single column lets the agency answer the hardest question in client reporting — <em>whose problem is this?</em> — with evidence rather than opinion. It protects the client from spending on campaigns that do not convert, and protects the agency from being blamed for a sales process that is not following up.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">17</span></span></div>
+</section>
+
+<!-- ============ S15 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 15</div>
+  <h2 class="sec">Lead Quality System</h2>
+  <p class="lead">Status describes where a lead is. Quality describes whether it is worth pursuing. Both are needed.</p>
+
+  <div class="level lg">
+    <div class="h"><b>HOT</b><em>Priority follow-up</em></div>
+    <ul style="margin:0">
+      <li>Serviceable location</li>
+      <li>Suitable property</li>
+      <li>Relevant electricity consumption</li>
+      <li>Strong intent</li>
+      <li>Short timeline</li>
+      <li>Willing to discuss assessment or site visit</li>
+    </ul>
+    <p class="smallnote" style="margin:3mm 0 0"><b>Handling:</b> contact immediately. These justify the entire advertising budget.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>WARM</b><em>Structured follow-up</em></div>
+    <ul style="margin:0">
+      <li>Relevant property</li>
+      <li>Genuine interest</li>
+      <li>Longer timeline</li>
+      <li>Needs more information</li>
+    </ul>
+    <p class="smallnote" style="margin:3mm 0 0"><b>Handling:</b> contact promptly, then maintain scheduled follow-up. Many Solar sales originate here — the category is researched slowly.</p>
+  </div>
+
+  <div class="level l4">
+    <div class="h"><b>COLD</b><em>Low priority</em></div>
+    <ul style="margin:0">
+      <li>Just researching</li>
+      <li>Low intent</li>
+      <li>Outside service area</li>
+      <li>Not suitable</li>
+      <li>No immediate requirement</li>
+    </ul>
+    <p class="smallnote" style="margin:3mm 0 0"><b>Handling:</b> brief contact, record the reason, move to NURTURE if there is future potential.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Calibrate to the client's business</div>
+    <p style="margin:0">Exact qualification rules must be adjusted according to the Solar client's business model. A company focused on 10 kW+ commercial installations will treat a ₹3,000 residential bill as cold, while a residential specialist may treat the same lead as hot. A client with a three-city service radius defines "serviceable" differently from one covering a single district. Set these thresholds with the client during onboarding and revisit after the first month of real leads.</p>
+  </div>
+
+  <h3>Why quality must be recorded per lead</h3>
+  <p>Recording quality against each lead's source makes the most important comparison possible:</p>
+  <div class="card">
+    <h4>Illustration — why cost per lead misleads</h4>
+    <table class="tight" style="margin:0">
+      <thead><tr><th>Campaign</th><th class="num">Leads</th><th class="num">CPL</th><th class="num">Hot</th><th class="num">Cost per hot lead</th></tr></thead>
+      <tbody>
+        <tr><td>Campaign A</td><td class="num">30</td><td class="num">₹400</td><td class="num">3</td><td class="num">₹4,000</td></tr>
+        <tr><td>Campaign B</td><td class="num">12</td><td class="num">₹900</td><td class="num">7</td><td class="num">₹1,543</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="smallnote"><span class="tag tag-ex">Illustration</span> Constructed arithmetic demonstrating the principle. Not Smart Pursuit data, not benchmarks, and not a prediction.</p>
+  <p>Campaign A looks twice as efficient on cost per lead and is comfortably the worse investment. Without quality data recorded per lead, an agency reporting only CPL would recommend shifting budget toward the campaign producing fewer customers.</p>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">18</span></span></div>
+</section>
+
+<!-- ============ S16 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 16</div>
+  <h2 class="sec">Lead Attribution</h2>
+  <p class="lead">Attribution decides which touchpoint gets credit for a conversion. Different systems decide differently, and all of them are defensible.</p>
+
+  <div class="grid3">
+    <div class="card">
+      <h4>First-touch</h4>
+      <p style="margin:0">Credits the source where the prospect first arrived.</p>
+      <p class="smallnote" style="margin:2mm 0 0"><b>Useful for:</b> understanding what creates awareness. Often favours Meta in Solar.</p>
+    </div>
+    <div class="card">
+      <h4>Last-touch</h4>
+      <p style="margin:0">Credits the source that drove the final conversion.</p>
+      <p class="smallnote" style="margin:2mm 0 0"><b>Useful for:</b> understanding what closes. Often favours branded search.</p>
+    </div>
+    <div class="card">
+      <h4>Platform attribution</h4>
+      <p style="margin:0">How Meta or Google each reports the conversion using their own rules.</p>
+      <p class="smallnote" style="margin:2mm 0 0"><b>Useful for:</b> in-platform optimisation. Not comparable across platforms.</p>
+    </div>
+  </div>
+
+  <h3>A typical Solar journey</h3>
+  <div class="flow sm">
+    <div class="node acc">Sees a Meta ad<small>First touch — Meta claims credit</small></div>
+    <div class="arw">↓</div>
+    <div class="node">Visits, does not enquire<small>Two weeks pass</small></div>
+    <div class="arw">↓</div>
+    <div class="node">Searches the company name<small>Last touch — branded search claims credit</small></div>
+    <div class="arw">↓</div>
+    <div class="node key">Submits the form<small>One lead, two platforms claiming it</small></div>
+  </div>
+  <p class="smallnote" style="text-align:center"><span class="tag tag-ex">Illustration</span> A common pattern in a considered purchase.</p>
+
+  <div class="warn">
+    <div class="label">Do not treat platform conversion counts as identical</div>
+    <p style="margin:0">Meta, Google Ads and GA4 will report different numbers for the same month. This is expected behaviour, not a fault. They use different attribution windows, different credit models, different device-matching methods, and count view-through conversions differently. Adding Meta's leads to Google's leads produces a total higher than reality, because the same lead is frequently counted by both.</p>
+  </div>
+
+  <h3>How Smart Pursuit resolves the discrepancy</h3>
+  <table class="tight">
+    <thead><tr><th style="width:30%">Source</th><th style="width:28%">Use it for</th><th>Do not use it for</th></tr></thead>
+    <tbody>
+      <tr><td><b>Meta Ads Manager</b></td><td>Optimising Meta campaigns</td><td>Reporting total business leads</td></tr>
+      <tr><td><b>Google Ads</b></td><td>Optimising search bidding</td><td>Reporting total business leads</td></tr>
+      <tr><td><b>GA4</b></td><td>Comparing channels on one consistent model</td><td>In-platform bid decisions</td></tr>
+      <tr><td><b>Lead database</b></td><td><b>The single source of truth for how many leads exist</b></td><td>Real-time campaign optimisation</td></tr>
+    </tbody>
+  </table>
+
+  <div class="principle">
+    <div class="label">Reporting standard</div>
+    <p>Platform numbers guide optimisation. The lead database determines what actually happened.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Explain this to the client in week one</div>
+    <p style="margin:0">The first time a client compares Meta's reported leads against their own inbox and finds a difference, trust is at risk. Explaining attribution differences <em>before</em> they appear turns a credibility problem into evidence that the agency understands its tools. It is a five-minute conversation at onboarding and a difficult one three months in.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">19</span></span></div>
+</section>
+
+<!-- ============ S17 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 17</div>
+  <h2 class="sec">Solar Funnel Measurement</h2>
+
+  <div class="funnel">
+    <div class="fr a" style="width:100%">TRAFFIC</div>
+    <div class="fr a" style="width:92%">LANDING PAGE VISITORS</div>
+    <div class="fr a" style="width:84%">FORM STARTS</div>
+    <div class="fr b" style="width:74%">LEADS</div>
+    <div class="fr b" style="width:64%">QUALIFIED LEADS</div>
+    <div class="fr c" style="width:54%">SITE ASSESSMENTS</div>
+    <div class="fr c" style="width:44%">QUOTATIONS</div>
+    <div class="fr c" style="width:34%">SALES</div>
+    <div class="fr c" style="width:24%">REVENUE</div>
+  </div>
+
+  <table class="tight">
+    <thead><tr><th style="width:20%">Stage</th><th style="width:24%">What to measure</th><th style="width:26%">Why it matters</th><th>What Smart Pursuit can optimize</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Traffic</b></td>
+        <td>Impressions, clicks, CTR, CPC</td>
+        <td>Whether the budget is reaching relevant people at sensible cost</td>
+        <td>Targeting, keywords, creative, bids, negatives</td>
+      </tr>
+      <tr>
+        <td><b>Landing page visitors</b></td>
+        <td>Sessions, bounce, engagement rate</td>
+        <td>Whether clicks survive the page load and find it relevant</td>
+        <td>Page speed, message match, hero clarity</td>
+      </tr>
+      <tr>
+        <td><b>Form starts</b></td>
+        <td><code>solar_lead_form_start</code></td>
+        <td>Whether the form is attempted once seen</td>
+        <td>Form placement, field count, CTA wording</td>
+      </tr>
+      <tr>
+        <td><b>Leads</b></td>
+        <td><code>solar_lead_form_submit</code></td>
+        <td>The page's core output</td>
+        <td>Validation, field types, friction inside the form</td>
+      </tr>
+      <tr>
+        <td><b>Qualified leads</b></td>
+        <td>Quality field in the database</td>
+        <td>Whether leads are worth the sales team's time</td>
+        <td>Targeting, ad honesty, qualification fields</td>
+      </tr>
+      <tr>
+        <td><b>Site assessments</b></td>
+        <td>Assessment column</td>
+        <td>Whether interest survives first contact</td>
+        <td>Expectation setting on page and thank-you page</td>
+      </tr>
+      <tr>
+        <td><b>Quotations</b></td>
+        <td>Quotation column</td>
+        <td>Whether assessments convert to concrete opportunities</td>
+        <td>Limited — mainly client sales process</td>
+      </tr>
+      <tr>
+        <td><b>Sales</b></td>
+        <td>Won status</td>
+        <td>The actual commercial outcome</td>
+        <td>Not agency-controlled; agency supplies better-matched leads</td>
+      </tr>
+      <tr>
+        <td><b>Revenue</b></td>
+        <td>Revenue column</td>
+        <td>Whether marketing investment returned</td>
+        <td>Budget allocation toward sources producing revenue</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Be honest about the boundary</div>
+    <p style="margin:0">Smart Pursuit meaningfully influences the first six stages. The last three depend on the client's sales team, pricing and product. Stating this at onboarding prevents both unfair blame and unearned credit — and makes the agency's actual contribution easier to see.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Measure the transitions, not only the stages</div>
+    <p style="margin:0">Absolute counts at each stage say less than the rate between them. A month with fewer leads but a higher qualified rate may be a better month. The formulas in Section 18 exist to make those transitions visible.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">20</span></span></div>
+</section>
+
+<!-- ============ S18 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 18</div>
+  <h2 class="sec">Funnel Formulas</h2>
+  <p class="lead">The calculations behind every Smart Pursuit Solar report.</p>
+
+  <div class="fml"><b>CTR</b><span>Clicks ÷ Impressions × 100</span></div>
+  <div class="fml"><b>Landing Page Conversion Rate</b><span>Leads ÷ Landing Page Visitors × 100</span></div>
+  <div class="fml"><b>CPL</b><span>Ad Spend ÷ Leads</span></div>
+  <div class="fml"><b>Qualified Lead Rate</b><span>Qualified Leads ÷ Total Leads × 100</span></div>
+  <div class="fml"><b>CPQL</b><span>Ad Spend ÷ Qualified Leads</span></div>
+  <div class="fml"><b>Site Assessment Rate</b><span>Site Assessments ÷ Qualified Leads × 100</span></div>
+  <div class="fml"><b>Quote Rate</b><span>Quotations ÷ Site Assessments × 100</span></div>
+  <div class="fml"><b>Close Rate</b><span>Sales ÷ Qualified Opportunities × 100</span></div>
+  <div class="fml"><b>Cost per Sale</b><span>Ad Spend ÷ Sales</span></div>
+  <div class="fml"><b>ROAS</b><span>Revenue ÷ Ad Spend</span></div>
+
+  <h3>Worked example</h3>
+  <div class="card">
+    <table class="tight" style="margin:0">
+      <thead><tr><th style="width:40%">Input</th><th class="num" style="width:22%">Value</th><th>Derived</th></tr></thead>
+      <tbody>
+        <tr><td>Ad spend</td><td class="num">₹60,000</td><td>—</td></tr>
+        <tr><td>Impressions</td><td class="num">120,000</td><td>—</td></tr>
+        <tr><td>Clicks</td><td class="num">2,400</td><td>CTR = 2.0%</td></tr>
+        <tr><td>Landing page visitors</td><td class="num">2,200</td><td>—</td></tr>
+        <tr><td>Leads</td><td class="num">88</td><td>LP conversion = 4.0% · CPL = ₹682</td></tr>
+        <tr><td>Qualified leads</td><td class="num">40</td><td>Qualified rate = 45.5% · CPQL = ₹1,500</td></tr>
+        <tr><td>Site assessments</td><td class="num">18</td><td>Assessment rate = 45.0%</td></tr>
+        <tr><td>Quotations</td><td class="num">11</td><td>Quote rate = 61.1%</td></tr>
+        <tr><td>Sales</td><td class="num">3</td><td>Close rate = 7.5% of qualified · Cost per sale = ₹20,000</td></tr>
+        <tr><td>Revenue</td><td class="num">₹8,40,000</td><td>ROAS = 14.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="warn">
+    <div class="label">Read this carefully</div>
+    <p style="margin:0">Every figure above is an <b>arithmetic illustration constructed to demonstrate how the formulas connect</b>. <span class="tag tag-ex">Illustration</span> They are not Smart Pursuit results, not Solar industry benchmarks, not targets, and not a prediction of what any campaign will achieve. Smart Pursuit has no Solar campaign data. Any agency presenting figures like these as expected outcomes is inventing them.</p>
+  </div>
+
+  <h3>Interpretation notes</h3>
+  <ul>
+    <li><b>CPL without CPQL is misleading.</b> A low CPL producing unqualified leads costs more per customer, as Section 15 demonstrates.</li>
+    <li><b>Close rate needs a stable denominator.</b> Decide whether it is measured against qualified leads or quoted opportunities, then keep that definition fixed.</li>
+    <li><b>ROAS in Solar lags badly.</b> A sale may close months after the click that started it. Early-month ROAS on a long sales cycle understates performance and invites premature decisions.</li>
+    <li><b>Small numbers move violently.</b> With three sales in a month, one extra sale changes close rate by a third. Report the count alongside the percentage so the volatility is visible.</li>
+  </ul>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">21</span></span></div>
+</section>
+
+<!-- ============ S19 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 19</div>
+  <h2 class="sec">Call Tracking</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>Phone button click</h4>
+      <p style="margin:0">The visitor tapped a <code>tel:</code> link. Measurable on the website through <code>phone_click</code>.</p>
+      <p class="smallnote" style="margin:2mm 0 0">Tells us intent was expressed. Nothing more.</p>
+    </div>
+    <div class="card">
+      <h4>Actual phone call</h4>
+      <p style="margin:0">A call was placed, connected, and a conversation occurred.</p>
+      <p class="smallnote" style="margin:2mm 0 0">Requires call tracking or manual logging to confirm.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="label">Core distinction</div>
+    <p>A click does not always mean a completed call.</p>
+  </div>
+
+  <p>Between the tap and the conversation sit several failure points: the visitor cancels the dial, the line is busy, nobody answers, it rings outside business hours, or they hang up after two seconds. Treating clicks as calls overstates performance — and if <code>phone_click</code> is set as a primary conversion, it teaches bidding to chase taps rather than conversations.</p>
+
+  <h3>What to track at each maturity level</h3>
+  <table class="tight">
+    <thead><tr><th style="width:24%">Level</th><th style="width:30%">Method</th><th>What becomes measurable</th></tr></thead>
+    <tbody>
+      <tr><td><b>Minimum</b></td><td><code>phone_click</code> via GTM</td><td>Intent, placement of the click, device, source</td></tr>
+      <tr><td><b>Better</b></td><td>Click event + manual call log</td><td>Connected calls, outcome, qualification</td></tr>
+      <tr><td><b>Best</b></td><td>Call tracking service with dynamic numbers</td><td>Calls, connection, duration, source attribution</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Where proper call tracking is available, record</h3>
+  <div class="chips">
+    <span>Calls</span><span>Connected calls</span><span>Duration where available</span><span>Qualified calls</span><span>Site assessment</span><span>Sale</span>
+  </div>
+
+  <div class="callout">
+    <div class="label">Duration as a quality proxy</div>
+    <p style="margin:0">Where duration is available, it is a useful filter. A call lasting a few seconds is usually a misdial or an immediate hang-up; a call of a minute or more generally indicates a real conversation. Many teams set a minimum duration before counting a call as a conversion — but agree the threshold with the client rather than assuming, since it varies with how their team answers.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Respect privacy and platform limitations</div>
+    <p style="margin:0">Call recording carries legal obligations that vary by jurisdiction and generally require disclosure to the caller. Number-substitution services must be configured so the displayed number remains consistent for returning visitors. Do not store call recordings or transcripts containing personal details in analytics platforms. Where the client operates under specific regulatory requirements, confirm what is permitted before implementing — this is a legal question, not a technical one.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">22</span></span></div>
+</section>
+
+<!-- ============ S20 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 20</div>
+  <h2 class="sec">WhatsApp Tracking</h2>
+  <p class="lead">A major Indian conversion path, and one where the measurement boundary must be stated clearly.</p>
+
+  <p>Track <code>whatsapp_click</code> on every WhatsApp CTA, with a <code>link_location</code> parameter identifying the placement — hero, sticky bar, footer or form area.</p>
+
+  <div class="grid2">
+    <div class="card" style="border-color:var(--leaf); background:#F0FDF4">
+      <h4 style="color:#14532D">What can be measured</h4>
+      <ul style="margin:0">
+        <li>WhatsApp CTA click</li>
+        <li>Landing page the click came from</li>
+        <li>Campaign, source and medium</li>
+        <li>Device</li>
+        <li>Timestamp</li>
+        <li>Placement within the page</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:#FCA5A5; background:#FEF2F2">
+      <h4 style="color:#991B1B">What cannot be measured on the website</h4>
+      <ul style="margin:0">
+        <li>Whether WhatsApp actually opened</li>
+        <li>Whether a message was sent</li>
+        <li>Whether anyone replied</li>
+        <li>What was discussed</li>
+        <li>Whether the enquiry was genuine</li>
+        <li>Whether it progressed to an assessment</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="label">Rule</div>
+    <p>A WhatsApp click is not a lead. It is an intention to start a conversation.</p>
+  </div>
+
+  <p>The click happens on the website and is measurable. Everything after it happens inside WhatsApp and is not. Reporting WhatsApp clicks as leads inflates results and eventually collides with the client's own sense of how many enquiries they actually received.</p>
+
+  <h3>Closing the gap</h3>
+  <table class="tight">
+    <thead><tr><th style="width:30%">Method</th><th style="width:24%">Effort</th><th>What it recovers</th></tr></thead>
+    <tbody>
+      <tr><td>Manual logging by sales team</td><td>Low, requires discipline</td><td>Conversation outcome per enquiry</td></tr>
+      <tr><td>Pre-filled message varied per page</td><td>Low</td><td>Which page the conversation originated from</td></tr>
+      <tr><td>WhatsApp Business labels</td><td>Low</td><td>Basic status categorisation inside the app</td></tr>
+      <tr><td>WhatsApp Business API with CRM</td><td>High, paid</td><td>Full conversation tracking and attribution</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> For a first Solar client, use varied pre-filled messages plus manual logging into the same lead database used for form leads. The API route is rarely justified at early lead volumes.</p>
+
+  <div class="callout">
+    <div class="label">Practical technique</div>
+    <p style="margin:0">Vary the pre-filled message subtly by page — for instance "Hi, I'm interested in a Solar assessment for my property" from the assessment page, and "Hi, I'd like to know about Solar installation in Hyderabad" from the location page. The sales team can then identify the source from the opening message alone, without any additional tooling.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">23</span></span></div>
+</section>
+
+<!-- ============ S21 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 21</div>
+  <h2 class="sec">Form Tracking</h2>
+  <p class="lead">Four stages, each isolating a different failure.</p>
+
+  <div class="flow">
+    <div class="node acc">FORM VIEW<small>solar_lead_form_view</small></div>
+    <div class="arw">↓</div>
+    <div class="node">FORM START<small>solar_lead_form_start</small></div>
+    <div class="arw">↓</div>
+    <div class="node">FORM COMPLETION<small>All required fields filled</small></div>
+    <div class="arw">↓</div>
+    <div class="node key">FORM SUBMISSION<small>solar_lead_form_submit</small></div>
+  </div>
+
+  <table class="tight">
+    <thead><tr><th style="width:24%">Stage</th><th style="width:34%">What it tells us</th><th>If the drop-off is here</th></tr></thead>
+    <tbody>
+      <tr><td><b>View</b></td><td>How many visitors reached the form at all</td><td>Page is too long, or the CTA is not directing people to it</td></tr>
+      <tr><td><b>Start</b></td><td>How many considered it worth attempting</td><td>Form looks intimidating, or trust is insufficient at that point</td></tr>
+      <tr><td><b>Completion</b></td><td>How many filled every required field</td><td>Too many fields, or one field is causing hesitation</td></tr>
+      <tr><td><b>Submission</b></td><td>How many got through successfully</td><td>Validation errors, technical failure, or a broken submit</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Worked example</h3>
+  <div class="card">
+    <div class="flow sm" style="margin:0">
+      <div class="node">100 users viewed the form</div>
+      <div class="arw">↓</div>
+      <div class="node">40 started</div>
+      <div class="arw">↓</div>
+      <div class="node key">25 submitted</div>
+    </div>
+    <p class="smallnote" style="margin:3mm 0 0; text-align:center">View → start: 40% · Start → submit: 62.5% · View → submit: 25%</p>
+  </div>
+  <p class="smallnote"><span class="tag tag-ex">Illustration</span> These figures demonstrate how the stages relate. They are not benchmarks, not targets, and not Smart Pursuit data.</p>
+
+  <p>Reading the illustration: 60 of 100 people saw the form and did not touch it, which points at the form's appearance or the trust established before it. A further 15 began and abandoned, which points at something inside the form itself. The two problems have entirely different fixes, and only staged tracking distinguishes them.</p>
+
+  <div class="warn">
+    <div class="label">Track the failed submission too</div>
+    <p style="margin:0">Where a submission fails validation or errors server-side, fire a distinct event. A form that silently fails for a subset of users is invisible otherwise — the leads simply never arrive, and nobody knows to look. This is among the most damaging tracking gaps and among the easiest to close.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Implementation notes</div>
+    <p style="margin:0">Fire <code>view</code> once per session using an IntersectionObserver, not on every scroll past. Fire <code>start</code> on the first input to any field, once only. Fire <code>submit</code> only after validation passes and the submission is accepted — never on button click, which counts failed attempts as conversions.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">24</span></span></div>
+</section>
+
+<!-- ============ S22 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 22</div>
+  <h2 class="sec">Savings Calculator Tracking</h2>
+
+  <p>Track two events:</p>
+  <div class="chips"><span>savings_calculator_start</span><span>savings_calculator_complete</span></div>
+
+  <table class="tight">
+    <thead><tr><th style="width:34%">Event</th><th style="width:26%">Trigger</th><th>Signal</th></tr></thead>
+    <tbody>
+      <tr><td><code>savings_calculator_start</code></td><td>First interaction with any input</td><td>Visitor is actively evaluating rather than reading</td></tr>
+      <tr><td><code>savings_calculator_complete</code></td><td>An estimate is produced</td><td>Strong intent — they wanted a number for their own property</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Parameters worth attaching</h3>
+  <table class="tight">
+    <thead><tr><th style="width:28%">Parameter</th><th style="width:34%">Example values</th><th>Why it is useful</th></tr></thead>
+    <tbody>
+      <tr><td><code>property_type</code></td><td><span class="mono">independent_house, shop</span></td><td>Reveals whether traffic skews residential or commercial</td></tr>
+      <tr><td><code>location</code></td><td><span class="mono">hyderabad, secunderabad</span></td><td>Shows demand concentration and out-of-area interest</td></tr>
+      <tr><td><code>bill_band</code></td><td><span class="mono">5000_10000</span></td><td>Indicates the value of the traffic being bought</td></tr>
+      <tr><td><code>system_estimate</code></td><td><span class="mono">3_5kw, 5_8kw</span></td><td>Indicative system scale being considered</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Do not send unnecessary or sensitive information</div>
+    <p style="margin:0">Send <b>bands and categories, never raw personal values</b>. A bill band of <code>5000_10000</code> is analytically useful; an exact rupee figure tied to a session adds nothing and increases data-handling risk. Never send name, phone, email or address as event parameters. Section 30 covers the full standard.</p>
+  </div>
+
+  <h3>What calculator behaviour reveals</h3>
+  <table class="tight">
+    <thead><tr><th style="width:38%">Pattern</th><th>Interpretation</th></tr></thead>
+    <tbody>
+      <tr><td>High start, low complete</td><td>Calculator is confusing, too long, or breaking on mobile</td></tr>
+      <tr><td>High complete, low form submit</td><td>The result is not leading into the enquiry — check the CTA after the result</td></tr>
+      <tr><td>Complete rate high, lead quality high</td><td>Calculator is qualifying visitors effectively; consider making it more prominent</td></tr>
+      <tr><td>Many completions in low bill bands</td><td>Targeting may be reaching properties below viable size</td></tr>
+      <tr><td>Many completions from outside the service area</td><td>Geographic targeting needs tightening</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">The most valuable audience on the page</div>
+    <p style="margin:0">Someone who completed the calculator entered their bill, chose their property type and asked for a number about their own roof — then did not enquire. That is demonstrated interest without commitment, and it is typically the single best retargeting audience a Solar account has. Build it from <code>savings_calculator_complete</code> excluding <code>solar_lead_form_submit</code>.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">25</span></span></div>
+</section>
+
+<!-- ============ S23 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 23</div>
+  <h2 class="sec">Thank-You Page Tracking</h2>
+  <p class="lead">A distinct thank-you URL is the most reliable conversion signal available, and a second conversion opportunity in its own right.</p>
+
+  <div class="flow">
+    <div class="node">Lead submitted</div>
+    <div class="arw">↓</div>
+    <div class="node key">Thank-you page<small>Conversion confirmed by a real page load</small></div>
+    <div class="arw">↓</div>
+    <div class="node win">Secondary CTA<small>Call · WhatsApp · Assessment booking</small></div>
+  </div>
+
+  <h3>Why it matters for measurement</h3>
+  <table class="tight">
+    <thead><tr><th style="width:34%">Function</th><th>Explanation</th></tr></thead>
+    <tbody>
+      <tr><td><b>Verifies the submission</b></td><td>The page only loads if the form actually completed. A button click can fire on a submission that later failed; a thank-you page load cannot.</td></tr>
+      <tr><td><b>Provides a clean trigger</b></td><td>A URL-based trigger is simpler and more robust than listening for a form event, particularly with third-party form tools.</td></tr>
+      <tr><td><b>Supports Google Ads</b></td><td>A dedicated conversion page is the most dependable Google Ads conversion configuration.</td></tr>
+      <tr><td><b>Measures post-conversion action</b></td><td>Reveals how many leads immediately reach out themselves — a strong intent indicator.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Potential actions to track on the page</h3>
+  <div class="chips"><span>phone_click</span><span>whatsapp_click</span><span>assessment_booking</span></div>
+  <p class="smallnote">Use a distinct <code>link_location</code> such as <span class="mono">thank_you</span> so these are separable from clicks on the landing page itself.</p>
+
+  <div class="warn">
+    <div class="label">Configuration requirements</div>
+    <ul style="margin:0">
+      <li><b>Set the page to <code>noindex</code></b> so it cannot be reached from search and inflate conversions.</li>
+      <li><b>Verify it is not directly accessible</b> in a way that lets a refresh count a second conversion.</li>
+      <li><b>Exclude it from landing-page reports</b>, or it will distort session and conversion-rate figures.</li>
+      <li><b>Confirm the conversion fires once</b>, not on every page refresh.</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <div class="label">A diagnostic worth checking monthly</div>
+    <p style="margin:0">Compare <code>solar_lead_form_submit</code> counts against thank-you page views. They should be close. A persistent gap means some submissions are not completing — visitors are leaving mid-redirect, or the form is failing after the event fires. This comparison has caught more silent lead loss than any other single check.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">26</span></span></div>
+</section>
+
+<!-- ============ S24 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 24</div>
+  <h2 class="sec">Tracking QA</h2>
+  <p class="lead">No Smart Pursuit Solar campaign spends money before every test below has passed on a real device.</p>
+
+  <div class="level">
+    <div class="h"><b>Test 1 — Submit the form</b><em>Primary conversion path</em></div>
+    <ul class="cbx" style="margin:0">
+      <li>Lead received by the sales team</li>
+      <li>Thank-you page works</li>
+      <li>GA4 event fires</li>
+      <li>Meta event fires</li>
+      <li>Google Ads conversion fires where configured</li>
+      <li>UTM values captured in the lead record</li>
+      <li>Notification reaches a named person</li>
+    </ul>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>Test 2 — Click WhatsApp</b><em>Secondary contact path</em></div>
+    <ul class="cbx" style="margin:0">
+      <li>Correct WhatsApp destination number</li>
+      <li>Event fires</li>
+      <li>Pre-filled message appears correctly</li>
+      <li><code>link_location</code> parameter is accurate</li>
+    </ul>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>Test 3 — Click phone</b><em>Call path</em></div>
+    <ul class="cbx" style="margin:0">
+      <li>Correct number dialled</li>
+      <li>Event fires</li>
+      <li>Someone answers during stated business hours</li>
+    </ul>
+  </div>
+
+  <div class="level lg">
+    <div class="h"><b>Test 4 — Use the calculator</b><em>Engagement path</em></div>
+    <ul class="cbx" style="margin:0">
+      <li>Start event fires</li>
+      <li>Complete event fires</li>
+      <li>Parameters populate correctly</li>
+      <li>No personal data present in the parameters</li>
+    </ul>
+  </div>
+
+  <h3>Full QA checklist</h3>
+  <h4>Environment</h4>
+  <ul class="cbx two">
+    <li>Tested on a real Android device</li>
+    <li>Tested on a real iOS device</li>
+    <li>Tested on desktop</li>
+    <li>Tested on mobile data, not only Wi-Fi</li>
+    <li>Internal traffic exclusion is active</li>
+    <li>GTM container is published, not only previewed</li>
+  </ul>
+  <h4>Events</h4>
+  <ul class="cbx two">
+    <li>All ten Section 6 events fire</li>
+    <li>No event fires twice on one action</li>
+    <li>Event names match the standard exactly</li>
+    <li>Parameters populate with expected values</li>
+    <li>No personal data in any parameter</li>
+    <li>Key events marked correctly in GA4</li>
+  </ul>
+  <h4>Platforms</h4>
+  <ul class="cbx two">
+    <li>GA4 DebugView shows the events</li>
+    <li>Meta Events Manager shows the events</li>
+    <li>Google Ads shows a recorded conversion</li>
+    <li>Primary and secondary classification correct</li>
+    <li>Conversion counted once, not per refresh</li>
+    <li>GA4 and Google Ads are linked</li>
+  </ul>
+  <h4>Attribution</h4>
+  <ul class="cbx two">
+    <li>UTMs present on every ad URL</li>
+    <li>UTM values follow the convention</li>
+    <li>Source captured into the lead record</li>
+    <li>Auto-tagging enabled on Google Ads</li>
+    <li>No UTMs on internal links</li>
+    <li>Test lead traced end to end from click to database</li>
+  </ul>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">27</span></span></div>
+</section>
+
+<!-- ============ S25 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 25</div>
+  <h2 class="sec">Tracking Debugging</h2>
+  <p class="lead">Three common failures and how to work through them. Note that the same symptom can have several causes — diagnose rather than assume.</p>
+
+  <div class="level l4">
+    <div class="h"><b>Problem — GA4 is not recording the event</b><em>Most common</em></div>
+    <table class="tight" style="margin:3mm 0 0">
+      <thead><tr><th style="width:34%">Possible cause</th><th>How to check</th></tr></thead>
+      <tbody>
+        <tr><td>Tag not firing</td><td>GTM Preview — does the tag appear under the action?</td></tr>
+        <tr><td>Trigger incorrect</td><td>Check the trigger condition matches the actual event name or element</td></tr>
+        <tr><td>Consent configuration</td><td>If consent mode is active, confirm the tag is permitted to fire</td></tr>
+        <tr><td>GTM not published</td><td>Preview works but live does not — the container was never published</td></tr>
+        <tr><td>Event name incorrect</td><td>Case mismatch or a typo creates a separate event silently</td></tr>
+        <tr><td>Browser limitations</td><td>Ad blocker or privacy setting preventing the request; test in a clean profile</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="level l4">
+    <div class="h"><b>Problem — Meta reports no leads</b><em>Frequently a setup issue</em></div>
+    <table class="tight" style="margin:3mm 0 0">
+      <thead><tr><th style="width:34%">Possible cause</th><th>How to check</th></tr></thead>
+      <tbody>
+        <tr><td>Pixel not installed correctly</td><td>Meta Pixel Helper, and Events Manager diagnostics</td></tr>
+        <tr><td>Event not firing</td><td>Test Events tab in Events Manager while performing the action</td></tr>
+        <tr><td>Wrong event selected</td><td>Campaign optimising for an event the site never sends</td></tr>
+        <tr><td>Domain or setup issue</td><td>Domain verification, and Aggregated Event Measurement configuration</td></tr>
+        <tr><td>Consent or browser limitations</td><td>Expect some signal loss; consider Conversions API per Section 9</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="level l4">
+    <div class="h"><b>Problem — Google Ads shows no conversions</b><em>Often configuration</em></div>
+    <table class="tight" style="margin:3mm 0 0">
+      <thead><tr><th style="width:34%">Possible cause</th><th>How to check</th></tr></thead>
+      <tbody>
+        <tr><td>Conversion action not configured</td><td>Confirm it exists and is set to Primary</td></tr>
+        <tr><td>Tag not firing</td><td>Google Tag Assistant on the thank-you page</td></tr>
+        <tr><td>Wrong conversion event</td><td>Imported GA4 event does not match the one being fired</td></tr>
+        <tr><td>Import or configuration issue</td><td>Check the GA4–Google Ads link is active</td></tr>
+        <tr><td>Implementation issue</td><td>Conversion linker missing, or the GCLID not being preserved</td></tr>
+        <tr><td>Reporting delay</td><td>Conversions can take hours to appear; confirm before escalating</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="warn">
+    <div class="label">A disciplined debugging sequence</div>
+    <p style="margin:0">Work outward from the page. <b>1.</b> Does the dataLayer receive the event? <b>2.</b> Does GTM Preview show the trigger firing? <b>3.</b> Does the tag fire? <b>4.</b> Does the platform's debug tool receive it? <b>5.</b> Does it appear in reporting, allowing for delay? Each step eliminates a layer. Changing several things at once and re-testing is how simple problems become unexplainable ones.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Not every problem has the same cause</div>
+    <p style="margin:0">The same symptom — "no conversions showing" — can stem from a trigger fault, a publishing oversight, an attribution window, a consent setting or simple reporting lag. Resist applying the last fix that worked. Verify which layer is actually failing before changing anything, and change one thing at a time.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">28</span></span></div>
+</section>
+
+<!-- ============ S25b ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 25 · continued</div>
+  <h2 class="sec">Additional Failure Patterns</h2>
+
+  <table>
+    <thead><tr><th style="width:32%">Symptom</th><th style="width:34%">Likely cause</th><th>Resolution</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Conversions counted twice</b></td>
+        <td>Both a native tag and a GA4 import are configured for the same action</td>
+        <td>Choose one route per conversion action and remove the other</td>
+      </tr>
+      <tr>
+        <td><b>All traffic showing as direct</b></td>
+        <td>UTMs missing, or internal links carrying UTMs and resetting the session</td>
+        <td>Audit ad URLs; remove UTMs from internal navigation</td>
+      </tr>
+      <tr>
+        <td><b>Leads in the inbox but not in GA4</b></td>
+        <td>Event fires after navigation begins and is lost</td>
+        <td>Fire the event before redirect, or trigger on the thank-you page load</td>
+      </tr>
+      <tr>
+        <td><b>GA4 and Google Ads disagree</b></td>
+        <td>Different attribution models and conversion windows</td>
+        <td>Expected. Document the difference rather than trying to reconcile it</td>
+      </tr>
+      <tr>
+        <td><b>Event count far exceeds plausible traffic</b></td>
+        <td>Trigger firing on scroll or on every interaction rather than once</td>
+        <td>Add a once-per-session condition</td>
+      </tr>
+      <tr>
+        <td><b>Tracking worked, then stopped</b></td>
+        <td>Site redeployed and the GTM container tag was removed</td>
+        <td>Re-install; add a monthly verification to the retainer</td>
+      </tr>
+      <tr>
+        <td><b>Mobile events missing</b></td>
+        <td>Event bound to a desktop-only element or hover state</td>
+        <td>Bind to the element itself; test on real mobile hardware</td>
+      </tr>
+      <tr>
+        <td><b>Thank-you views exceed submissions</b></td>
+        <td>Page reachable directly, or being refreshed</td>
+        <td>Set noindex; add a condition so the conversion fires once</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Monthly tracking health check</h3>
+  <p>Tracking decays. Sites get redeployed, plugins update, platforms change requirements. A short monthly check prevents a silent failure from costing a month of data: <span class="tag tag-rec">Recommendation</span></p>
+  <ul class="cbx two">
+    <li>Submit one test lead end to end</li>
+    <li>Confirm it appears in the lead database with source</li>
+    <li>Check GA4 key events recorded in the last 7 days</li>
+    <li>Check Meta Events Manager shows recent activity</li>
+    <li>Check Google Ads conversions are still recording</li>
+    <li>Compare form submits against thank-you page views</li>
+    <li>Confirm GTM container is still present on the site</li>
+    <li>Review any new pages for missing tracking</li>
+  </ul>
+
+  <div class="warn">
+    <div class="label">The most expensive tracking failure</div>
+    <p style="margin:0">Not a wrong number — a missing one. A campaign running for six weeks with a broken conversion tag produces no usable data, and that data cannot be reconstructed afterwards. The spend is gone and nothing was learned from it. This is why Section 24 must be completed before launch and why the monthly check above belongs in every retainer.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">29</span></span></div>
+</section>
+
+<!-- ============ S26 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 26</div>
+  <h2 class="sec">Tracking Testing Tools</h2>
+  <p class="lead">All free and native to the platforms already in the stack. No paid tooling is required to verify a Solar implementation.</p>
+
+  <div class="level">
+    <div class="h"><b>Google Tag Manager Preview</b><em>Free · first line of diagnosis</em></div>
+    <p style="margin:0"><b>Used for:</b> seeing exactly which tags fire on which actions, in real time, on the live site without publishing. Shows the dataLayer contents at each step and why a trigger did or did not match.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>When:</b> during every implementation and before every publish. Most tracking problems are diagnosed here.</p>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>GA4 DebugView</b><em>Free · confirms GA4 receipt</em></div>
+    <p style="margin:0"><b>Used for:</b> confirming events actually reach GA4 with the expected parameters, within seconds rather than waiting for standard reporting delay.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>When:</b> after GTM Preview confirms the tag fires, to verify GA4 received it correctly.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>Meta Events Manager</b><em>Free · Pixel verification</em></div>
+    <p style="margin:0"><b>Used for:</b> the Test Events tab shows Pixel events arriving live. The diagnostics section flags setup problems, deduplication issues and event quality warnings.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>When:</b> during Pixel setup, and whenever Meta reporting looks wrong.</p>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>Google Ads conversion diagnostics</b><em>Free · conversion health</em></div>
+    <p style="margin:0"><b>Used for:</b> the status column on each conversion action reports whether the tag is recording, unverified, or inactive — often the fastest way to spot a broken conversion.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>When:</b> after setup, and as part of the monthly health check.</p>
+  </div>
+
+  <div class="level">
+    <div class="h"><b>Browser developer tools</b><em>Free · last resort</em></div>
+    <p style="margin:0"><b>Used for:</b> the Network tab shows whether requests to analytics endpoints actually leave the browser. The Console surfaces JavaScript errors that can prevent events firing entirely.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>When:</b> the platform tools show nothing and the cause is unclear — usually a script error breaking the page.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Recommended verification order</div>
+    <p style="margin:0"><b>1.</b> GTM Preview — did the tag fire? <b>2.</b> Platform debug tool — did the platform receive it? <b>3.</b> Standard reporting — does it appear, allowing for delay? <b>4.</b> Browser dev tools — only if the first three leave the cause unexplained. Following this order consistently makes most issues a few minutes' work rather than an afternoon's.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Test in a clean browser profile</div>
+    <p style="margin:0">Agency machines accumulate ad blockers, privacy extensions and cached containers that suppress or distort tracking. Verify in an incognito window with extensions disabled, or a separate browser profile kept clean for QA. A surprising share of "tracking is broken" reports turn out to be the tester's own browser.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">30</span></span></div>
+</section>
+
+<!-- ============ S27 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 27</div>
+  <h2 class="sec">Dashboard Structure</h2>
+  <p class="lead">Five sections, ordered so the reader moves from spend to outcome. Each answers a distinct question.</p>
+
+  <div class="level">
+    <div class="h"><b>Section 1 — Advertising</b><em>What did we buy?</em></div>
+    <div class="chips" style="margin-bottom:0"><span>Spend</span><span>Impressions</span><span>Clicks</span><span>CTR</span><span>CPC</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">Channel activity and the cost of attention. Context for everything that follows.</p>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>Section 2 — Lead Generation</b><em>What did it produce?</em></div>
+    <div class="chips" style="margin-bottom:0"><span>Leads</span><span>CPL</span><span>Form conversion rate</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">The landing page's output. Where most agency reporting stops — and should not.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>Section 3 — Lead Quality</b><em>Were they any good?</em></div>
+    <div class="chips" style="margin-bottom:0"><span>Qualified leads</span><span>CPQL</span><span>Hot / Warm / Cold split</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">The first section that reflects commercial reality rather than platform activity.</p>
+  </div>
+
+  <div class="level lg">
+    <div class="h"><b>Section 4 — Sales Funnel</b><em>What happened next?</em></div>
+    <div class="chips" style="margin-bottom:0"><span>Site assessments</span><span>Quotations</span><span>Sales</span><span>Revenue</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">Requires the client's data. This is what the lead database in Section 13 exists to supply.</p>
+  </div>
+
+  <div class="level lg">
+    <div class="h"><b>Section 5 — Economics</b><em>Did it work?</em></div>
+    <div class="chips" style="margin-bottom:0"><span>Cost per sale</span><span>Revenue</span><span>ROAS</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">The only section a business owner truly needs. Everything above explains how it was reached.</p>
+  </div>
+
+  <h3>Design principles</h3>
+  <ul>
+    <li><b>Top to bottom follows the funnel.</b> The reader should be able to trace spend through to revenue in one pass.</li>
+    <li><b>Never show a rate without its counts.</b> "45% qualified" means something different at 40 leads than at 4.</li>
+    <li><b>Segment by source.</b> A blended view hides which channel is actually producing customers.</li>
+    <li><b>Mark unavailable data explicitly.</b> If the client has not supplied sales outcomes, state that rather than leaving cells blank and implying zero.</li>
+    <li><b>Include a period comparison,</b> but note when volumes are too small for the change to be meaningful.</li>
+  </ul>
+
+  <div class="callout">
+    <div class="label">Foundation for Step 4G</div>
+    <p style="margin:0">This structure becomes the basis for <b>Step 4G — Reporting Dashboard</b>, which will cover the weekly and monthly templates, the commentary standards, and how to present a month where results were poor. Step 4E defines what gets measured; Step 4G defines how it gets communicated.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">31</span></span></div>
+</section>
+
+<!-- ============ S28 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 28</div>
+  <h2 class="sec">What to Optimize Based on Data</h2>
+  <p class="lead">A diagnostic framework. Match the pattern, then investigate the listed areas before changing anything.</p>
+
+  <div class="level l4">
+    <div class="h"><b>High traffic + low leads</b><em>The page is the constraint</em></div>
+    <p style="margin:0 0 2mm">People are arriving and not converting. The advertising is working; the destination is not.</p>
+    <div class="chips" style="margin-bottom:0"><span>Landing page</span><span>Offer</span><span>CTA</span><span>Form</span><span>Message match</span><span>Mobile UX</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">Start with the Step 4D audit. Check the form actually works on mobile before anything else.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>Low traffic + low leads</b><em>The campaign is the constraint</em></div>
+    <p style="margin:0 0 2mm">Too few people are arriving to judge the page at all.</p>
+    <div class="chips" style="margin-bottom:0"><span>Campaign</span><span>Budget</span><span>Keywords</span><span>Audience</span><span>Ad relevance</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">Do not draw conclusions about the landing page from insufficient traffic.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>Many leads + poor quality</b><em>Targeting is the constraint</em></div>
+    <p style="margin:0 0 2mm">Volume is fine; the people arriving are not the right people.</p>
+    <div class="chips" style="margin-bottom:0"><span>Targeting</span><span>Search terms</span><span>Negative keywords</span><span>Qualification</span><span>Ad messaging</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">Check whether ads or the offer are attracting people outside the service area or below viable system size.</p>
+  </div>
+
+  <div class="level lg">
+    <div class="h"><b>Good qualified leads + low sales</b><em>The constraint is after the lead</em></div>
+    <p style="margin:0 0 2mm">Marketing is delivering; conversion is failing downstream.</p>
+    <div class="chips" style="margin-bottom:0"><span>Speed-to-lead</span><span>Sales follow-up</span><span>Qualification</span><span>Site assessment</span><span>Quotation</span><span>Pricing</span><span>Sales process</span></div>
+    <p class="smallnote" style="margin:3mm 0 0">Check the status column first — leads sitting at NEW indicate a follow-up problem, not a marketing one.</p>
+  </div>
+
+  <div class="principle">
+    <div class="label">The purpose of all of this</div>
+    <p>Tracking helps identify where the problem actually exists instead of automatically blaming advertising.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Handling the fourth pattern with a client</div>
+    <p style="margin:0">This conversation requires evidence and care. Telling a client their sales team is the bottleneck is credible only with data — response times, status distribution, contact attempts. Present it as a shared diagnostic rather than a defence: <em>"the leads are qualifying at a reasonable rate, and here is where they are stalling — let us look at that stage together."</em> Data makes it a business discussion rather than an argument.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">32</span></span></div>
+</section>
+
+<!-- ============ S29 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 29</div>
+  <h2 class="sec">Data Ownership</h2>
+  <p class="lead">Established during onboarding, before any account is created. Retrofitting ownership is difficult and occasionally impossible.</p>
+
+  <table>
+    <thead><tr><th style="width:34%">Asset</th><th style="width:24%">Owned by</th><th>Smart Pursuit role</th></tr></thead>
+    <tbody>
+      <tr><td>Google Ads account</td><td>Client</td><td>Admin or standard access</td></tr>
+      <tr><td>Meta Business assets</td><td>Client</td><td>Partner access via Business Manager</td></tr>
+      <tr><td>GA4 property</td><td>Client</td><td>Editor access</td></tr>
+      <tr><td>Google Tag Manager container</td><td>Client, or appropriate access</td><td>Publish access</td></tr>
+      <tr><td>Meta Pixel</td><td>Client Business Manager</td><td>Access via partner sharing</td></tr>
+      <tr><td>Lead database / CRM</td><td>Client</td><td>Edit access</td></tr>
+      <tr><td>Website and hosting</td><td>Client</td><td>Access as required</td></tr>
+      <tr><td>Campaign structures and documentation</td><td>Shared</td><td>Created by Smart Pursuit, handed over on request</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why client ownership is the professional standard</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Protects the client</h4>
+      <p style="margin:0">Their advertising history, audiences, conversion data and learning periods remain theirs if the relationship ends. Nothing has to be rebuilt from zero.</p>
+    </div>
+    <div class="card">
+      <h4>Protects the agency</h4>
+      <p style="margin:0">Removes any suggestion that data is being withheld as leverage. An agency confident in its work does not need to hold accounts hostage.</p>
+    </div>
+    <div class="card">
+      <h4>Improves the work</h4>
+      <p style="margin:0">Accounts with continuous history perform better. Conversion data and audiences accumulate value that a fresh account lacks entirely.</p>
+    </div>
+    <div class="card">
+      <h4>Signals seriousness</h4>
+      <p style="margin:0">Raising ownership at onboarding marks the agency as one that has thought about the relationship ending — which paradoxically makes clients more comfortable starting it.</p>
+    </div>
+  </div>
+
+  <div class="warn">
+    <div class="label">Practical onboarding sequence</div>
+    <p style="margin:0"><b>1.</b> Client creates the Google Ads account and Meta Business Manager under their own credentials. <b>2.</b> Client grants Smart Pursuit access. <b>3.</b> Smart Pursuit creates GA4 and GTM within the client's Google account, or transfers ownership on completion. <b>4.</b> Ownership and access are documented in writing at the start of the engagement, not assumed. Where a client already has accounts held by a previous agency, request transfer before building anything new on top.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">33</span></span></div>
+</section>
+
+<!-- ============ S30 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 30</div>
+  <h2 class="sec">Privacy &amp; Data Handling</h2>
+  <p class="lead">Responsible practice, stated as working rules. Legal specifics depend on jurisdiction and must be confirmed with the client.</p>
+
+  <div class="principle">
+    <div class="label">Baseline rule</div>
+    <p>Do not send unnecessary personal information to analytics platforms.</p>
+  </div>
+
+  <h3>Never place these in URLs, event names or public parameters</h3>
+  <div class="chips neg">
+    <span>Phone numbers</span><span>Email addresses</span><span>Full names</span><span>Street addresses</span><span>Exact bill amounts tied to a person</span><span>Any other sensitive customer information</span>
+  </div>
+
+  <h3>Use categories instead of values</h3>
+  <table class="tight">
+    <thead><tr><th style="width:44%">Do not send</th><th>Send instead</th></tr></thead>
+    <tbody>
+      <tr><td><span class="mono">email=customer@example.com</span></td><td>Nothing — the lead database holds this, analytics does not need it</td></tr>
+      <tr><td><span class="mono">phone=98XXXXXXXX</span></td><td>Nothing</td></tr>
+      <tr><td><span class="mono">bill_amount=7350</span></td><td><span class="mono">bill_band=5000_10000</span></td></tr>
+      <tr><td><span class="mono">address=full street address</span></td><td><span class="mono">city=hyderabad</span></td></tr>
+      <tr><td><span class="mono">name=...</span> in a thank-you URL</td><td>A clean thank-you URL with no parameters</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Working practices</h3>
+  <ul>
+    <li><b>Keep personal data in the lead database,</b> where it is needed, access-controlled and purpose-limited — not in analytics platforms, where it serves no analytical purpose.</li>
+    <li><b>Use consent mechanisms where legally or technically required,</b> and configure tags to respect the consent state rather than firing regardless.</li>
+    <li><b>Link a privacy policy from every lead form,</b> stating what is collected, why, and how it will be used.</li>
+    <li><b>Restrict lead database access</b> to people who need it. A shared sheet open to anyone with the link is not appropriate for personal contact data.</li>
+    <li><b>Avoid personal data in URL parameters entirely</b> — URLs appear in analytics reports, referrer headers and browser history.</li>
+    <li><b>Agree a retention position</b> with the client for how long lead records are kept.</li>
+  </ul>
+
+  <div class="warn">
+    <div class="label">Scope of this section</div>
+    <p style="margin:0">Exact privacy and legal requirements depend on the client's jurisdiction, website setup and applicable laws. This section sets responsible defaults, not legal advice. For a live Indian lead-generation operation, the client should confirm their obligations regarding consent, notice, data retention and the rights of individuals whose data they collect. Smart Pursuit's role is to build in a way that supports compliance and to raise the question early — not to determine what the law requires.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">A useful test</div>
+    <p style="margin:0">Before adding any parameter to an event, ask: could this identify a specific person, and does the analysis actually require it? If the answer is yes and no, remove it. Analytics needs patterns, not identities.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">34</span></span></div>
+</section>
+
+<!-- ============ S31 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 31</div>
+  <h2 class="sec">Smart Pursuit Tracking SOP</h2>
+  <p class="lead">Fifteen steps, in order. Steps 1–11 complete before any campaign spends money.</p>
+
+  <ul class="checklist">
+    <li><div class="n">1</div><div><b>Audit existing website</b><div class="smallnote">What tracking exists, what is broken, what is duplicated. Never assume a clean slate.</div></div></li>
+    <li><div class="n">2</div><div><b>Identify conversion actions</b><div class="smallnote">Agree with the client which actions represent real business value.</div></div></li>
+    <li><div class="n">3</div><div><b>Define event naming</b><div class="smallnote">Apply the Section 6 standard. No client-specific variations.</div></div></li>
+    <li><div class="n">4</div><div><b>Create GTM structure</b><div class="smallnote">Container, naming convention, workspace. Install before anything else.</div></div></li>
+    <li><div class="n">5</div><div><b>Configure GA4</b><div class="smallnote">Property, events, key events, IST time zone, INR currency, internal traffic excluded.</div></div></li>
+    <li><div class="n">6</div><div><b>Configure Meta Pixel</b><div class="smallnote">Deploy via GTM, map events, verify in Events Manager.</div></div></li>
+    <li><div class="n">7</div><div><b>Configure Google Ads conversions</b><div class="smallnote">Primary and secondary set correctly; no double-counting.</div></div></li>
+    <li><div class="n">8</div><div><b>Create UTM structure</b><div class="smallnote">Section 12 convention, documented in a shared reference sheet.</div></div></li>
+    <li><div class="n">9</div><div><b>Connect lead database</b><div class="smallnote">Section 13 columns, UTM capture into hidden fields, access agreed.</div></div></li>
+    <li><div class="n">10</div><div><b>Configure call and WhatsApp tracking</b><div class="smallnote">Click events with link_location; pre-filled messages varied by page.</div></div></li>
+    <li><div class="n">11</div><div><b>Test everything</b><div class="smallnote">Full Section 24 QA on real devices. Nothing launches until this passes.</div></div></li>
+    <li><div class="n">12</div><div><b>Launch campaigns</b><div class="smallnote">With tracking verified, the first day of spend produces usable data.</div></div></li>
+    <li><div class="n">13</div><div><b>Monitor tracking</b><div class="smallnote">Daily in week one, then the monthly health check from Section 25.</div></div></li>
+    <li><div class="n">14</div><div><b>Validate lead quality</b><div class="smallnote">Confirm the sales team is recording status and quality consistently.</div></div></li>
+    <li><div class="n">15</div><div><b>Connect marketing data to sales outcomes</b><div class="smallnote">Close the loop. This is what the preceding fourteen steps exist for.</div></div></li>
+  </ul>
+
+  <div class="warn">
+    <div class="label">Step 15 is the one that gets skipped</div>
+    <p style="margin:0">Steps 1–14 are technical and sit within the agency's control. Step 15 requires ongoing cooperation from the client's sales team and has no completion date. It is also the only step that lets Smart Pursuit answer whether the marketing produced customers. Build the habit in month one, while the client is engaged and lead volume is manageable.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">35</span></span></div>
+</section>
+
+<!-- ============ S32 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 32</div>
+  <h2 class="sec">Tracking Implementation Checklist</h2>
+  <p class="lead">Working document. Completed per client and retained as the implementation record.</p>
+
+  <h4>Website</h4>
+  <ul class="cbx two">
+    <li>GA4 installed</li>
+    <li>GTM installed</li>
+    <li>Meta Pixel installed</li>
+    <li>Google Ads tracking configured</li>
+    <li>Forms tracked</li>
+    <li>Phone clicks tracked</li>
+    <li>WhatsApp clicks tracked</li>
+    <li>Calculator tracked</li>
+    <li>Thank-you page configured and noindexed</li>
+    <li>No hard-coded tags outside GTM</li>
+  </ul>
+
+  <h4>Attribution</h4>
+  <ul class="cbx two">
+    <li>UTM structure created</li>
+    <li>Campaign naming standardized</li>
+    <li>Ad naming standardized</li>
+    <li>Lead source captured</li>
+    <li>Auto-tagging enabled on Google Ads</li>
+    <li>UTM reference sheet shared with the team</li>
+  </ul>
+
+  <h4>Lead Management</h4>
+  <ul class="cbx two">
+    <li>Lead database created</li>
+    <li>Lead status defined</li>
+    <li>Lead quality defined</li>
+    <li>Sales outcomes recorded</li>
+    <li>Owner of updates agreed by name</li>
+    <li>Notification routing confirmed</li>
+  </ul>
+
+  <h4>QA</h4>
+  <ul class="cbx two">
+    <li>Form tested</li>
+    <li>Thank-you page tested</li>
+    <li>Events tested</li>
+    <li>Conversion actions tested</li>
+    <li>Mobile tested</li>
+    <li>Test lead traced click to database</li>
+    <li>Verified in a clean browser profile</li>
+    <li>GTM container published</li>
+  </ul>
+
+  <h4>Governance</h4>
+  <ul class="cbx two">
+    <li>Client owns all advertising accounts</li>
+    <li>Client owns GA4 property</li>
+    <li>Client owns or controls the GTM container</li>
+    <li>Access documented in writing</li>
+    <li>Privacy policy linked from the form</li>
+    <li>Monthly health check scheduled</li>
+  </ul>
+
+  <div class="callout">
+    <div class="label">Use this as a handover artefact</div>
+    <p style="margin:0">A completed checklist, dated and signed off, demonstrates the implementation was done properly. It is useful at onboarding to set expectations, useful in month three when something breaks and the history matters, and useful if the client ever moves to another agency — which is exactly the situation where a professional reputation is made or lost.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">36</span></span></div>
+</section>
+
+<!-- ============ S33 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 33</div>
+  <h2 class="sec">Solar Tracking Score</h2>
+  <p class="lead">Score each category from 0 to 10 for a total out of 100.</p>
+
+  <table>
+    <thead><tr><th style="width:6%">#</th><th style="width:26%">Category</th><th style="width:46%">What a 10 looks like</th><th class="num">Score</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Website tracking</td><td>All ten events firing correctly, verified on real devices</td><td class="num">__ /10</td></tr>
+      <tr><td>2</td><td>GA4</td><td>Configured correctly, key events marked, internal traffic excluded</td><td class="num">__ /10</td></tr>
+      <tr><td>3</td><td>GTM</td><td>All tags managed in one container, named consistently, published</td><td class="num">__ /10</td></tr>
+      <tr><td>4</td><td>Meta tracking</td><td>Pixel verified, events mapped, audiences built</td><td class="num">__ /10</td></tr>
+      <tr><td>5</td><td>Google Ads tracking</td><td>Conversions recording, primary/secondary set correctly, no duplication</td><td class="num">__ /10</td></tr>
+      <tr><td>6</td><td>UTM attribution</td><td>Convention applied consistently, source reaching the lead record</td><td class="num">__ /10</td></tr>
+      <tr><td>7</td><td>Lead database</td><td>All Section 13 columns present and populated</td><td class="num">__ /10</td></tr>
+      <tr><td>8</td><td>Lead quality tracking</td><td>Status and quality recorded consistently by the sales team</td><td class="num">__ /10</td></tr>
+      <tr><td>9</td><td>Sales funnel tracking</td><td>Assessments, quotations, sales and revenue recorded per lead</td><td class="num">__ /10</td></tr>
+      <tr><td>10</td><td>QA / documentation</td><td>Full QA completed, implementation documented, monthly check scheduled</td><td class="num">__ /10</td></tr>
+    </tbody>
+  </table>
+  <div style="text-align:right; font-weight:800; font-size:12pt; margin-bottom:5mm">Total: ____ / 100</div>
+
+  <h3>Score bands</h3>
+  <div class="band"><span class="pill p1">90–100</span><span><b>Tracking foundation is strong.</b> Data can be relied on for optimisation and reporting decisions.</span></div>
+  <div class="band"><span class="pill p2">75–89</span><span><b>Good foundation with improvements required.</b> Address the lowest-scoring categories in order.</span></div>
+  <div class="band"><span class="pill p3">60–74</span><span><b>Important gaps exist.</b> Some reported figures will be incomplete or misleading. Fix before scaling spend.</span></div>
+  <div class="band"><span class="pill p4">Below 60</span><span><b>Tracking requires significant attention before relying heavily on performance data.</b> Decisions made on this data carry real risk of being wrong.</span></div>
+
+  <div class="warn">
+    <div class="label">Important qualification</div>
+    <p style="margin:0">This is a <b>Smart Pursuit internal scoring framework and is not an industry-standard certification or benchmark</b>. It exists to make tracking audits consistent between team members and to give clients a tangible measure of implementation quality. Do not present it as an external standard or certification of any kind.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Where new clients typically score</div>
+    <p style="margin:0">Most businesses arriving at an agency score poorly on categories 7 to 9 — the lead database, quality tracking and sales funnel — because those depend on internal process rather than installed code. That pattern is not a criticism of the client; it is the most common gap in the market and usually the largest available improvement. Categories 1 to 6 can be fixed in a week of technical work. Categories 7 to 9 take a month of habit-building and are worth considerably more.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">37</span></span></div>
+</section>
+
+<!-- ============ S34 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 34</div>
+  <h2 class="sec">Golden Rules</h2>
+  <p class="lead">Eight rules that govern how Smart Pursuit handles Solar measurement.</p>
+
+  <div class="rule"><div class="rn">Rule 1</div><div><b>Never optimize using incomplete data without understanding the limitations.</b><div class="smallnote" style="color:#A1A1AA; margin-top:1.5mm">Partial data is workable if its gaps are known. It becomes dangerous when treated as complete.</div></div></div>
+
+  <div class="rule"><div class="rn">Rule 2</div><div><b>A lead is not automatically a qualified lead.</b><div class="smallnote" style="color:#A1A1AA; margin-top:1.5mm">A form submission means someone typed their details. Qualification is a separate judgement made afterwards.</div></div></div>
+
+  <div class="rule"><div class="rn">Rule 3</div><div><b>A click is not automatically a conversion.</b><div class="smallnote" style="color:#A1A1AA; margin-top:1.5mm">Phone and WhatsApp clicks express intent. What happened next is unmeasured on the website.</div></div></div>
+
+  <div class="rule"><div class="rn">Rule 4</div><div><b>A conversion is not automatically a sale.</b><div class="smallnote" style="color:#A1A1AA; margin-top:1.5mm">Between the conversion and the revenue sit qualification, assessment, quotation and negotiation.</div></div></div>
+
+  <div class="rule"><div class="rn">Rule 5</div><div><b>Platform-reported conversions may differ from CRM and business records.</b><div class="smallnote" style="color:#A1A1AA; margin-top:1.5mm">Expected, not broken. Different attribution models produce different counts. The lead database decides.</div></div></div>
+
+  <div class="rule"><div class="rn">Rule 6</div><div><b>Always connect marketing data to sales outcomes where possible.</b><div class="smallnote" style="color:#A1A1AA; margin-top:1.5mm">Without the connection, the agency optimises toward leads rather than toward customers.</div></div></div>
+
+  <div class="rule"><div class="rn">Rule 7</div><div><b>Test tracking before trusting campaign data.</b><div class="smallnote" style="color:#A1A1AA; margin-top:1.5mm">Untested tracking produces confident numbers that may be measuring nothing at all.</div></div></div>
+
+  <div class="rule"><div class="rn">Rule 8</div><div><b>Use consistent naming conventions.</b><div class="smallnote" style="color:#A1A1AA; margin-top:1.5mm">Inconsistent naming cannot be repaired retrospectively. The cost is paid every month thereafter.</div></div></div>
+
+  <div class="callout">
+    <div class="label">How to use these</div>
+    <p style="margin:0">Rules 2, 3 and 4 are the ones to raise with clients, because they prevent the most common misunderstanding in lead generation — that a reported conversion is a customer. Rules 1, 5, 7 and 8 are internal discipline. Rule 6 is the standard that separates an agency reporting activity from one reporting value.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">38</span></span></div>
+</section>
+
+<!-- ============ S35 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Section 35</div>
+  <h2 class="sec">The Complete Smart Pursuit Solar System So Far</h2>
+
+  <div class="flow">
+    <div class="node acc">1 · SOLAR DEMO WEBSITE<small>The destination and proof of capability</small></div>
+    <div class="arw">↓</div>
+    <div class="node">2 · META ADS<small>Step 4B — demand creation</small></div>
+    <div class="arw">↓</div>
+    <div class="node">3 · GOOGLE ADS<small>Step 4C — demand capture</small></div>
+    <div class="arw">↓</div>
+    <div class="node">4 · LANDING PAGE + CRO<small>Step 4D — traffic becomes enquiries</small></div>
+    <div class="arw">↓</div>
+    <div class="node key">5 · TRACKING + ANALYTICS<small>Step 4E — the measurement layer</small></div>
+    <div class="arw">↓</div>
+    <div class="node">6 · LEAD<small>The marketing output</small></div>
+    <div class="arw">↓</div>
+    <div class="node">7 · QUALIFICATION<small>Step 4F — separating real opportunities</small></div>
+    <div class="arw">↓</div>
+    <div class="node win">8 · SALES PROCESS<small>Where revenue is produced</small></div>
+  </div>
+
+  <h3>Tracking is the measurement layer</h3>
+  <p>Components 1 to 4 generate and convert demand. Components 6 to 8 turn enquiries into revenue. Component 5 is different in kind: it does not create anything, it makes everything else visible.</p>
+
+  <p>Without it, the other seven components still operate — but nobody can tell which are working. Budget gets allocated on instinct, landing pages get changed on opinion, and a client who asks "is this working?" receives an answer based on impressions rather than evidence.</p>
+
+  <div class="principle">
+    <div class="label">Why this matters for a pre-client agency</div>
+    <p>Smart Pursuit cannot show Solar results yet. It can show that it will be able to measure them honestly from the first week.</p>
+  </div>
+
+  <p>That is a meaningful differentiator in a market where many agencies report platform-reported conversions as business outcomes and stop there. A prospect who has been burned by inflated reporting will recognise the difference immediately — and the Section 13 lead database is what makes the claim credible rather than rhetorical.</p>
+
+  <div class="warn">
+    <div class="label">Positioning note for client conversations</div>
+    <p style="margin:0">Present this system as Smart Pursuit's internal standard, not as evidence of past Solar performance. The honest framing is stronger than a vague one: <em>"we have no Solar client results yet, and here is the measurement system that means you will know exactly what your spend produced — including when the answer is unflattering."</em> Clients who have dealt with agencies before understand what that offer is worth.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">39</span></span></div>
+</section>
+
+<!-- ============ NEXT ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4E · v1.0</span></div>
+  <div class="secnum">Next Step</div>
+  <h2 class="sec">Step 4F — Lead Qualification + Sales Follow-Up System</h2>
+  <p class="lead">Step 4E ends where the lead arrives. Step 4F covers what happens in the minutes, days and weeks after.</p>
+
+  <p>This document has repeatedly identified the same boundary: the agency can deliver a qualified lead, and everything beyond that depends on how quickly and how well it is handled. Step 4F addresses that directly — not because it is the agency's job to run the client's sales team, but because marketing performance is judged on outcomes the sales process controls.</p>
+
+  <div class="card">
+    <div class="grid2">
+      <ol style="margin:0">
+        <li>Lead response SOP</li>
+        <li>5–10 minute response target</li>
+        <li>Lead qualification</li>
+        <li>Hot / Warm / Cold</li>
+        <li>Sales call script</li>
+        <li>WhatsApp follow-up</li>
+        <li>Follow-up schedule</li>
+        <li>Missed-call process</li>
+      </ol>
+      <ol start="9" style="margin:0">
+        <li>Site assessment booking</li>
+        <li>Quotation follow-up</li>
+        <li>Lead nurturing</li>
+        <li>CRM / Google Sheets pipeline</li>
+        <li>Sales activity tracking</li>
+        <li>Lost-lead analysis</li>
+        <li>Lead-to-sale feedback loop</li>
+      </ol>
+    </div>
+  </div>
+
+  <h3>System status</h3>
+  <ul class="checklist">
+    <li><div class="n">1</div><div><b>Solar Demo Website</b><div class="smallnote">Main site, three landing pages, thank-you page, estimator.</div></div><span class="st done">Built</span></li>
+    <li><div class="n">2</div><div><b>Meta Ads Lead Generation System</b><div class="smallnote">Step 4B — demand creation framework.</div></div><span class="st done">Built</span></li>
+    <li><div class="n">3</div><div><b>Google Ads Lead Generation System</b><div class="smallnote">Step 4C — demand capture framework.</div></div><span class="st done">Built</span></li>
+    <li><div class="n">4</div><div><b>Landing Page + CRO System</b><div class="smallnote">Step 4D — conversion framework.</div></div><span class="st done">Built</span></li>
+    <li><div class="n">5</div><div><b>Tracking &amp; Analytics System</b><div class="smallnote">Step 4E — this document.</div></div><span class="st this">This doc</span></li>
+    <li><div class="n">6</div><div><b>Lead Qualification + Sales Follow-Up</b><div class="smallnote">Step 4F — response SOP, scripts, pipeline, nurture.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">7</div><div><b>Reporting Dashboard</b><div class="smallnote">Step 4G — weekly and monthly templates built on Section 27.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">8</div><div><b>Solar Audit</b><div class="smallnote">The pre-sales diagnostic used to open conversations with prospects.</div></div><span class="st next">Next</span></li>
+  </ul>
+
+  <div style="margin-top:8mm; border-top:1px solid var(--line); padding-top:6mm; display:flex; justify-content:space-between; align-items:flex-end">
+    <div>
+      <div class="brandmark" style="filter:none">
+        <div class="dot" style="width:28px;height:28px;font-size:11pt">S</div>
+        <div><div class="name" style="color:var(--ink); font-size:10pt">Smart Pursuit</div>
+        <div class="sub" style="font-size:7pt">Solar Digital Marketing System</div></div>
+      </div>
+    </div>
+    <div class="smallnote" style="text-align:right">
+      <b>Step 4E — Tracking &amp; Analytics System</b><br>
+      India · Version 1.0 · Internal SOP &amp; Client Onboarding Reference<br>
+      Contains no client tracking or performance data.
+    </div>
+  </div>
+
+  <div class="runfoot"><span>Solar Measurement &amp; Attribution Framework</span><span>India · v1.0 · Page <span class="pg">40</span></span></div>
+</section>
+
+</body>
+</html>
