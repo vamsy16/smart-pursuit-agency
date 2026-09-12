@@ -17,6 +17,8 @@
 | **[`03-compliance-guardrails.md`](03-compliance-guardrails.md)** | Policy risk scan, banned vs. approved language, keyword boundaries, verified program facts + re-verification protocol, launch checklist, rollback plan, 3-lens QA | **Before every launch.** Non-optional |
 | **[`04-viewer-feedback.md`](04-viewer-feedback.md)** | Cold-read simulation across four audience personas — what converts, what leaks, and why | Read before writing any new creative |
 | **[`05-ad-scripts-v2-corrected.md`](05-ad-scripts-v2-corrected.md)** | **The corrected scripts — shoot these.** Four finished scripts (54s/48s/41s/47s) covering four segments, the Fit Report lead magnet, CTA system, proof rules, ad set routing | **Primary production reference.** Supersedes the scripts in `01-ad-scripts.md` |
+| **[`06-skills-traceability-audit.md`](06-skills-traceability-audit.md)** | Honest audit of which repo skills were actually run vs. only cited, including two wrong citations of my own, and the gaps that threaten the 200-lead target | Read to see what's real and what's outstanding |
+| **[`07-content-program.md`](07-content-program.md)** | The content-marketing skill run properly: Content Matrix by buyer stage, 3 full briefs (each with the ONE belief it must change), 150-word opening, 8-asset repurposing map | Feeds the nurture gap and the organic layer |
 
 ---
 
@@ -42,6 +44,12 @@
 2. **It's the only honest voice in a category full of guarantees.** The line *"your school authorizes CPT, not us"* is the most credible sentence in the feed, and it's what makes a nervous prospect hand over their phone number.
 3. **One word, one comment, zero friction.** "Comment DBA" removes every step between impulse and lead. No "link in bio" detour.
 4. **Everything is trackable.** Hook rate → CTR → qualified lead → application. The script exists to be killed and replaced weekly until the winner emerges.
+
+---
+
+## ⚠️ Outstanding skills not yet run
+
+Per `06-skills-traceability-audit.md`: **branding & creative direction** (the root cause of the "what is Future Wise?" feedback), **social media management** (no content pillars or community SOP — real PR exposure), **email automation**, **landing-page CRO**, **tracking infrastructure**, and **DPDP data-privacy** (the form collects phone + visa status + degree history).
 
 ---
 
