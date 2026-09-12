@@ -1,3 +1,6 @@
 .DS_Store
 Thumbs.db
 node_modules/
+sunvolt-solar-demo.zip
+sunvolt-solar-demo.tar.gz
+*.bundle
