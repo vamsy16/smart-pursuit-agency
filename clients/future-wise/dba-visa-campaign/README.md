@@ -15,6 +15,12 @@
 | **[`01-ad-scripts.md`](01-ad-scripts.md)** | 8-hook bank, 3 full scripts (55s / 48s / 52s) with timings + shot lists, Hinglish & Telugu variants, 15s/10s/7s cutdowns, editing brief, repurposing plan | **Start here.** Hand the script and editing brief straight to your videographer/editor |
 | **[`02-200-qualified-leads-plan.md`](02-200-qualified-leads-plan.md)** | Funnel math, channel architecture, targeting, the 40-second qualification form, WhatsApp follow-up sequence, creative testing plan, weekly dashboard | When you're setting up campaigns, budget, and the sales follow-up |
 | **[`03-compliance-guardrails.md`](03-compliance-guardrails.md)** | Policy risk scan, banned vs. approved language, keyword boundaries, verified program facts + re-verification protocol, launch checklist, rollback plan, 3-lens QA | **Before every launch.** Non-optional |
+| **[`04-viewer-feedback.md`](04-viewer-feedback.md)** | Cold-read simulation across four audience personas — what converts, what leaks, and why | Read before writing any new creative |
+| **[`05-ad-scripts-v2-corrected.md`](05-ad-scripts-v2-corrected.md)** | **The corrected scripts — shoot these.** Four finished scripts (54s/48s/41s/47s) covering four segments, the Fit Report lead magnet, CTA system, proof rules, ad set routing | **Primary production reference.** Supersedes the scripts in `01-ad-scripts.md` |
+
+---
+
+> **Note on versions:** `01-ad-scripts.md` holds the hook bank, editing brief, cutdowns and repurposing plan (all still current). Its *spoken scripts* were revised in `05-ad-scripts-v2-corrected.md` after the viewer feedback in `04-viewer-feedback.md`. **Shoot V2.**
 
 ---
 
