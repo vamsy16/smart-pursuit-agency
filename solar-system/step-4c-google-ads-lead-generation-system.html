@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Pursuit — Step 4C: Google Ads Lead Generation System (Solar, India, v1.0)</title>
+<style>
+:root{
+  --ink:#0A0A0A; --ink2:#111111; --white:#FFFFFF; --muted:#A1A1AA;
+  --accent:#7C3AED; --accent-soft:rgba(124,58,237,.12);
+  --solar:#C9A227; --leaf:#2F9E6E;
+  --line:#E6E6EA; --line-dark:#242428; --paper:#FFFFFF; --paper2:#FAFAFB;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:#EDEDF0; color:var(--ink);
+  font-family:"Inter","Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:11.2pt; line-height:1.62; letter-spacing:.001em;
+}
+.page{
+  width:210mm; min-height:297mm; margin:10mm auto; background:var(--paper);
+  padding:20mm 18mm 24mm; position:relative;
+  box-shadow:0 10px 40px rgba(0,0,0,.13);
+}
+/* ---------- header / footer ---------- */
+.runhead{
+  position:absolute; top:9mm; left:18mm; right:18mm;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:7.6pt; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:4px;
+}
+.runhead b{color:var(--ink); font-weight:700; letter-spacing:.16em}
+.runfoot{
+  position:absolute; bottom:10mm; left:18mm; right:18mm;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:7.6pt; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted); border-top:1px solid var(--line); padding-top:5px;
+}
+.pg{display:inline-block; min-width:22px; text-align:right; color:var(--ink); font-weight:700}
+/* ---------- cover ---------- */
+.cover{
+  background:var(--ink); color:var(--white); padding:0; overflow:hidden;
+}
+.cover-inner{padding:26mm 18mm 20mm; position:relative; min-height:297mm; display:flex; flex-direction:column}
+.cover:after{
+  content:""; position:absolute; right:-60mm; top:-60mm; width:150mm; height:150mm;
+  border-radius:50%; background:radial-gradient(circle at 35% 35%, rgba(124,58,237,.55), rgba(124,58,237,0) 62%);
+}
+.cover:before{
+  content:""; position:absolute; left:-40mm; bottom:-70mm; width:140mm; height:140mm;
+  border-radius:50%; background:radial-gradient(circle at 50% 50%, rgba(201,162,39,.28), rgba(201,162,39,0) 64%);
+}
+.brandmark{display:flex; align-items:center; gap:12px; position:relative; z-index:2}
+.brandmark .dot{width:34px;height:34px;border-radius:9px;background:linear-gradient(140deg,var(--accent),#4C1D95);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13pt}
+.brandmark .name{font-size:12pt;font-weight:700;letter-spacing:.28em;text-transform:uppercase}
+.brandmark .sub{font-size:7.6pt;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+.cover h1{font-size:34pt; line-height:1.06; margin:0 0 6mm; font-weight:800; letter-spacing:-.02em; position:relative; z-index:2}
+.cover h2{font-size:15pt; font-weight:600; color:#E4E4E7; margin:0 0 10mm; position:relative; z-index:2}
+.eyebrow{display:inline-block; font-size:8pt; letter-spacing:.26em; text-transform:uppercase; color:#DDD6FE; border:1px solid rgba(124,58,237,.6); background:rgba(124,58,237,.18); padding:5px 12px; border-radius:999px; margin-bottom:10mm; position:relative; z-index:2}
+.cover .lede{font-size:12.5pt; color:#D4D4D8; max-width:135mm; border-left:3px solid var(--accent); padding-left:14px; position:relative; z-index:2}
+.cover-meta{margin-top:auto; position:relative; z-index:2; display:grid; grid-template-columns:repeat(4,1fr); gap:8mm; border-top:1px solid var(--line-dark); padding-top:8mm}
+.cover-meta div span{display:block; font-size:7.4pt; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+.cover-meta div b{font-size:10.5pt; font-weight:700}
+.cover-note{margin-top:8mm; font-size:8.6pt; color:var(--muted); border:1px dashed var(--line-dark); border-radius:10px; padding:10px 14px; position:relative; z-index:2}
+/* ---------- typography ---------- */
+h2.sec{font-size:19pt; line-height:1.15; margin:0 0 3mm; font-weight:800; letter-spacing:-.015em}
+.secnum{font-size:8pt; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); font-weight:800; margin-bottom:3mm}
+h3{font-size:12.6pt; margin:9mm 0 3mm; font-weight:750; letter-spacing:-.01em}
+h4{font-size:10.4pt; margin:6mm 0 2mm; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#3F3F46}
+p{margin:0 0 3.4mm}
+ul,ol{margin:0 0 3.6mm; padding-left:5mm}
+li{margin-bottom:1.4mm}
+code,.kw{font-family:"JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size:9.4pt; background:#F4F4F6; border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:#3B0764}
+hr.div{border:0; height:1px; background:linear-gradient(90deg,var(--ink),var(--accent) 22%,var(--line) 60%,transparent); margin:10mm 0}
+.lead{font-size:12pt; color:#3F3F46}
+.toc{border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.toc div{display:flex; justify-content:space-between; gap:10px; padding:5px 12px; font-size:9.6pt; border-bottom:1px solid var(--line)}
+.toc div:last-child{border-bottom:0}
+.toc div b{font-weight:600}
+.toc span{color:var(--muted); font-variant-numeric:tabular-nums}
+/* ---------- components ---------- */
+.card{border:1px solid var(--line); border-radius:12px; padding:6mm 6mm 4mm; background:var(--paper2); margin:0 0 5mm}
+.card h4{margin-top:0}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:5mm}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:4mm}
+.callout{border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 12px 12px 0; padding:5mm 6mm; margin:5mm 0}
+.callout .label{font-size:7.6pt; letter-spacing:.22em; text-transform:uppercase; color:#5B21B6; font-weight:800; margin-bottom:2mm}
+.warn{border-left:4px solid var(--solar); background:rgba(201,162,39,.10); border-radius:0 12px 12px 0; padding:5mm 6mm; margin:5mm 0}
+.warn .label{font-size:7.6pt; letter-spacing:.22em; text-transform:uppercase; color:#8A6D06; font-weight:800; margin-bottom:2mm}
+.principle{background:var(--ink); color:var(--white); border-radius:16px; padding:9mm 8mm; margin:6mm 0; position:relative; overflow:hidden}
+.principle:after{content:""; position:absolute; right:-30mm; top:-30mm; width:80mm; height:80mm; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.45),transparent 65%)}
+.principle .label{font-size:7.6pt; letter-spacing:.24em; text-transform:uppercase; color:#C4B5FD; font-weight:800; margin-bottom:4mm; position:relative; z-index:2}
+.principle p{font-size:14.5pt; line-height:1.42; font-weight:650; margin:0; position:relative; z-index:2}
+.tag{display:inline-block; font-size:7.4pt; font-weight:800; letter-spacing:.16em; text-transform:uppercase; padding:3px 9px; border-radius:999px; vertical-align:middle}
+.tag-ex{background:#EDE9FE; color:#5B21B6; border:1px solid #DDD6FE}
+.tag-hy{background:#FEF3C7; color:#854D0E; border:1px solid #FDE68A}
+.tag-rec{background:#DCFCE7; color:#166534; border:1px solid #BBF7D0}
+.tag-data{background:#F4F4F5; color:#52525B; border:1px solid #E4E4E7}
+table{width:100%; border-collapse:collapse; margin:0 0 5mm; font-size:9.8pt}
+th{background:var(--ink); color:#fff; text-align:left; font-size:8pt; letter-spacing:.14em; text-transform:uppercase; padding:6px 9px; font-weight:700}
+td{border-bottom:1px solid var(--line); padding:6px 9px; vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--paper2)}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+.flow{margin:5mm 0; display:flex; flex-direction:column; align-items:center}
+.flow .node{
+  width:100%; max-width:118mm; text-align:center; border:1px solid var(--line);
+  border-radius:10px; padding:7px 12px; font-size:9.8pt; font-weight:650; background:#fff;
+}
+.flow .node.key{background:var(--ink); color:#fff; border-color:var(--ink)}
+.flow .node.acc{border-color:var(--accent); color:#4C1D95; background:#FAF5FF}
+.flow .node.win{border-color:var(--leaf); color:#14532D; background:#F0FDF4}
+.flow .node small{display:block; font-weight:400; color:var(--muted); font-size:8.2pt; margin-top:2px}
+.flow .node.key small{color:#A1A1AA}
+.flow .arw{color:var(--accent); font-size:11pt; line-height:1; margin:3px 0}
+.split{display:grid; grid-template-columns:1fr 1fr; gap:5mm; align-items:start}
+.chips span{display:inline-block; font-family:"JetBrains Mono",monospace; font-size:9pt; background:#fff; border:1px solid var(--line); border-radius:6px; padding:3px 8px; margin:0 4px 4px 0}
+.chips.neg span{border-color:#FCA5A5; background:#FEF2F2; color:#7F1D1D}
+.level{border:1px solid var(--line); border-left:5px solid var(--accent); border-radius:0 12px 12px 0; padding:5mm 6mm; margin-bottom:4mm; background:#fff}
+.level.l2{border-left-color:#8B5CF6}
+.level.l3{border-left-color:var(--solar)}
+.level.l4{border-left-color:#DC2626}
+.level .h{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2mm}
+.level .h b{font-size:11.4pt}
+.level .h em{font-style:normal; font-size:7.6pt; letter-spacing:.18em; text-transform:uppercase; color:var(--muted)}
+.wwh{border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:0 0 5mm}
+.wwh > div{padding:4mm 6mm; border-bottom:1px solid var(--line)}
+.wwh > div:last-child{border-bottom:0}
+.wwh .t{font-size:7.8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); font-weight:800; margin-bottom:1.5mm}
+.wwh > div:nth-child(4){background:#FAF5FF}
+.checklist{list-style:none; padding:0; margin:0}
+.checklist li{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:10px; padding:4mm 5mm; margin-bottom:3mm; background:#fff}
+.checklist .n{width:24px;height:24px;border-radius:7px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9pt;font-weight:800;flex:none}
+.st{font-size:7.6pt; font-weight:800; letter-spacing:.14em; text-transform:uppercase; padding:2px 8px; border-radius:999px; margin-left:auto; flex:none}
+.st.done{background:#DCFCE7;color:#166534}
+.st.prog{background:#FEF3C7;color:#854D0E}
+.st.this{background:#EDE9FE;color:#5B21B6}
+.st.next{background:#F4F4F5;color:#52525B}
+.quote{font-size:11.6pt; font-style:italic; color:#27272A; border-left:3px solid var(--solar); padding-left:12px; margin:0 0 4mm}
+.smallnote{font-size:8.8pt; color:#52525B}
+@media print{
+  body{background:#fff}
+  .page{margin:0; box-shadow:none; width:auto; min-height:auto; page-break-after:always; padding:20mm 16mm 24mm}
+  @page{size:A4; margin:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="page cover">
+  <div class="cover-inner">
+    <div class="brandmark">
+      <div class="dot">S</div>
+      <div>
+        <div class="name">Smart Pursuit</div>
+        <div class="sub">Performance Marketing</div>
+      </div>
+    </div>
+
+    <div style="height:30mm"></div>
+
+    <div class="eyebrow">Solar Digital Marketing System · Step 4C</div>
+    <h1>SOLAR DIGITAL<br>MARKETING SYSTEM</h1>
+    <h2>Step 4C — Google Ads Lead Generation System</h2>
+    <p class="lede">A practical framework for capturing high-intent Solar search demand and converting it into qualified enquiries.</p>
+
+    <div class="cover-meta">
+      <div><span>Agency</span><b>Smart Pursuit</b></div>
+      <div><span>Niche</span><b>Solar Marketing</b></div>
+      <div><span>Market</span><b>India</b></div>
+      <div><span>Version</span><b>1.0</b></div>
+    </div>
+
+    <div class="cover-note">
+      <b style="color:#fff">Status disclosure.</b> Smart Pursuit is currently at the pre-client / demo-system stage for the Solar niche.
+      This document contains no client performance data. Every number, city, keyword set and campaign structure inside is labelled as an
+      <b style="color:#DDD6FE">Example</b>, <b style="color:#FDE68A">Starting Hypothesis</b> or <b style="color:#BBF7D0">Recommendation</b>.
+      No CPL, lead volume, sale count or ROAS is promised anywhere in this system.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOC ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4C · v1.0</span></div>
+  <div class="secnum">Contents</div>
+  <h2 class="sec">What this document covers</h2>
+  <p class="lead">Step 4C is the demand-capture half of Smart Pursuit's Solar acquisition system. Step 4B covered Meta Ads (demand creation). This document covers Google Search — the channel that intercepts people who have already decided to look for Solar.</p>
+
+  <div class="toc">
+    <div><b>01 · Purpose of Google Ads</b><span>3</span></div>
+    <div><b>02 · The Google Ads Offer</b><span>4</span></div>
+    <div><b>03 · Primary Campaign Type</b><span>5</span></div>
+    <div><b>04 · Search Intent Framework (4 Levels)</b><span>6</span></div>
+    <div><b>05 · Campaign Structure</b><span>8</span></div>
+    <div><b>06–10 · Ad Group Blueprints 1–5</b><span>9</span></div>
+    <div><b>11 · Keyword Match Types</b><span>12</span></div>
+    <div><b>12 · Negative Keyword System</b><span>13</span></div>
+    <div><b>13 · Search Term Review Loop</b><span>14</span></div>
+    <div><b>14–17 · Search Ad Strategy, RSA, Descriptions, Location</b><span>15</span></div>
+    <div><b>18–19 · Landing Page Mapping &amp; Google Landing Page</b><span>18</span></div>
+    <div><b>20–21 · Call Intent &amp; WhatsApp</b><span>20</span></div>
+    <div><b>22–23 · Conversion Tracking Framework</b><span>21</span></div>
+    <div><b>24–25 · Budget Strategy &amp; Priority</b><span>23</span></div>
+    <div><b>26–27 · Google vs Meta, Combined System</b><span>24</span></div>
+    <div><b>28 · Google Retargeting</b><span>26</span></div>
+    <div><b>29 · Optimization Decision Rules</b><span>27</span></div>
+    <div><b>30–31 · Search Term → Sale Loop &amp; Weekly Report</b><span>28</span></div>
+    <div><b>32–33 · Core Principle &amp; Complete System Map</b><span>30</span></div>
+    <div><b>34 · Pre-Client Readiness Checklist</b><span>31</span></div>
+    <div><b>Next Step · 4D Preview</b><span>32</span></div>
+  </div>
+
+  <h3>How to read the labels</h3>
+  <table>
+    <thead><tr><th style="width:34%">Label</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag tag-ex">Example</span></td><td>An illustration written to teach the concept. Not drawn from any live account.</td></tr>
+      <tr><td><span class="tag tag-hy">Starting Hypothesis</span></td><td>A sensible assumption to begin with, to be replaced by real data as soon as the account produces it.</td></tr>
+      <tr><td><span class="tag tag-rec">Recommendation</span></td><td>Smart Pursuit's standard practice — what we would actually do on a client account.</td></tr>
+      <tr><td><span class="tag tag-data">Actual Data</span></td><td>Reserved. Nothing in v1.0 carries this label because no Solar client account exists yet.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">02</span></span></div>
+</section>
+
+<!-- ============ SECTION 1 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 01</span></div>
+  <div class="secnum">Section 01</div>
+  <h2 class="sec">Purpose of Google Ads</h2>
+  <p class="lead">Meta and Google do two different jobs in the same funnel. Confusing the two is the most common reason a Solar ad budget underperforms.</p>
+
+  <div class="split">
+    <div class="card">
+      <h4>Meta Ads</h4>
+      <p><b>Creates awareness and demand.</b> The user was not thinking about Solar. An ad in the feed interrupts them with a reason to think about it: rising electricity bills, rooftop space sitting idle, subsidy awareness, neighbours installing panels.</p>
+      <p class="smallnote">Job: make Solar feel relevant to someone who wasn't looking for it.</p>
+    </div>
+    <div class="card" style="border-color:#DDD6FE; background:#FAF5FF">
+      <h4>Google Ads</h4>
+      <p><b>Captures people already searching for Solar.</b> The user has typed the need themselves. We are not persuading them that Solar exists — we are competing to be the provider they contact.</p>
+      <p class="smallnote">Job: be present, relevant and easy to contact at the moment of search.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="label">The Google Ads Objective</div>
+    <p style="margin:0; font-size:12.2pt; font-weight:600">Capture relevant, high-intent Solar searches and convert them into qualified enquiries.</p>
+  </div>
+  <p>Note the two qualifiers. <b>Relevant</b> rules out the large volume of Solar searches made by job seekers, students and researchers. <b>Qualified</b> rules out enquiries that can never buy — wrong city, tenant with no roof rights, budget far below a real system cost.</p>
+
+  <h3>The demand-capture funnel</h3>
+  <div class="flow">
+    <div class="node key">GOOGLE SEARCH<small>A person types a Solar-related query</small></div><div class="arw">↓</div>
+    <div class="node acc">HIGH-INTENT KEYWORD<small>Our keyword matches that query</small></div><div class="arw">↓</div>
+    <div class="node">SEARCH AD<small>Headline, description and assets earn the click</small></div><div class="arw">↓</div>
+    <div class="node">DEDICATED LANDING PAGE<small>Page matches what was searched</small></div><div class="arw">↓</div>
+    <div class="node">CALL / FORM / WHATSAPP<small>Three contact routes, all tracked</small></div><div class="arw">↓</div>
+    <div class="node acc">LEAD QUALIFICATION<small>Location, property type, roof rights, timeline, budget band</small></div><div class="arw">↓</div>
+    <div class="node">SITE ASSESSMENT<small>Roof inspection, shading, sanctioned load, structure</small></div><div class="arw">↓</div>
+    <div class="node">QUOTATION<small>System size, components, subsidy position, price</small></div><div class="arw">↓</div>
+    <div class="node win">INSTALLATION<small>Revenue event — the only number that finally matters</small></div>
+  </div>
+
+  <table>
+    <thead><tr><th style="width:30%">Stage</th><th>What actually happens here</th></tr></thead>
+    <tbody>
+      <tr><td><b>Google Search</b></td><td>Demand already exists. We do not create it; we compete for it against other installers and aggregators.</td></tr>
+      <tr><td><b>High-intent keyword</b></td><td>Our filter. Choosing which searches we pay for is the single highest-leverage decision in the account.</td></tr>
+      <tr><td><b>Search ad</b></td><td>Confirms we do the exact thing searched, in the searcher's city, and states the offer.</td></tr>
+      <tr><td><b>Landing page</b></td><td>Continues the same promise. A mismatch here wastes the click we already paid for.</td></tr>
+      <tr><td><b>Call / form / WhatsApp</b></td><td>India-specific: many Solar searchers prefer to call or message rather than fill a form. All three must be tracked.</td></tr>
+      <tr><td><b>Lead qualification</b></td><td>Separates enquiries from opportunities. This is where "lead quality" is actually defined.</td></tr>
+      <tr><td><b>Site assessment</b></td><td>The real sales appointment for Solar. Booking rate is a better campaign health signal than raw lead count.</td></tr>
+      <tr><td><b>Quotation</b></td><td>Where price, system size and subsidy expectations meet reality.</td></tr>
+      <tr><td><b>Installation</b></td><td>The business outcome. Campaign decisions should eventually be judged against this, not against clicks.</td></tr>
+    </tbody>
+  </table>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">03</span></span></div>
+</section>
+
+<!-- ============ SECTION 2 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 02</span></div>
+  <div class="secnum">Section 02</div>
+  <h2 class="sec">The Google Ads Offer</h2>
+
+  <div class="principle">
+    <div class="label">Core Offer · used across the entire Solar system</div>
+    <p>FREE SOLAR ASSESSMENT</p>
+  </div>
+
+  <div class="wwh">
+    <div><div class="t">What it is</div><p style="margin:0">A no-cost, no-obligation review of the prospect's property and electricity usage that ends with a clear picture of what Solar would involve for them and what the next step is.</p></div>
+    <div><div class="t">Why it matters</div><p style="margin:0">"Get a quote" asks for a decision the prospect is not ready to make. "Understand your requirement" matches where a first-time Solar buyer actually is. It lowers the psychological cost of enquiring without lowering lead quality, because the person still has to describe a real property and a real bill.</p></div>
+    <div><div class="t">How it works</div><p style="margin:0">The same offer appears in the Meta ad, the Google ad, the landing page hero, the form button, the WhatsApp opener and the sales call script. One offer repeated everywhere is easier to measure, easier to script for the client's sales team, and removes the message break between ad and page.</p></div>
+    <div><div class="t">What Smart Pursuit should do</div><p style="margin:0"><span class="tag tag-rec">Recommendation</span> Lock "Free Solar Assessment" as the default offer for every Solar account unless the client already has a stronger, established offer. Never run a different offer on Google than on Meta in the same period — it makes channel comparison meaningless.</p></div>
+  </div>
+
+  <h3>What the prospect should understand</h3>
+  <p class="quote">"Tell us about your property and electricity usage, and we'll help you understand your Solar requirements and next steps."</p>
+
+  <h3>What the assessment can cover</h3>
+  <div class="grid2">
+    <div class="card" style="margin:0">
+      <ul style="margin:0">
+        <li><b>Property suitability</b> — independent house, villa, apartment, factory shed, commercial roof</li>
+        <li><b>Approximate Solar requirement</b> — indicative system size range</li>
+        <li><b>Electricity usage</b> — monthly units and bill pattern</li>
+        <li><b>Rooftop considerations</b> — usable area, shading, structure, access</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0">
+      <ul style="margin:0">
+        <li><b>Potential savings considerations</b> — the factors that influence savings</li>
+        <li><b>Installation considerations</b> — timelines, approvals, metering</li>
+        <li><b>Available options</b> — on-grid / hybrid / off-grid, component tiers</li>
+        <li><b>Next steps</b> — site assessment, then quotation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="warn">
+    <div class="label">Compliance note — savings language</div>
+    <p style="margin:0">Never present potential savings as guaranteed savings. Savings depend on consumption, tariff slab, generation, shading, system size, net-metering rules and DISCOM policy, all of which vary by state and by household. Write "understand your potential savings", never "save ₹X every month" or "recover cost in X years". The same restriction applies to subsidy claims: describe availability and eligibility as something to be checked, not promised.</p>
+  </div>
+
+  <h3>Why one offer across the system</h3>
+  <table>
+    <thead><tr><th style="width:34%">Benefit</th><th>Practical effect</th></tr></thead>
+    <tbody>
+      <tr><td>Clean channel comparison</td><td>If Meta and Google run the same offer, differences in cost per qualified lead reflect the channel, not the offer.</td></tr>
+      <tr><td>Consistent sales script</td><td>The client's team answers every lead the same way, whatever the source.</td></tr>
+      <tr><td>Faster learning</td><td>One offer collects data faster than three competing offers splitting the same budget.</td></tr>
+      <tr><td>Message match</td><td>Ad promise and landing page promise are identical, which supports both conversion rate and ad relevance.</td></tr>
+    </tbody>
+  </table>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">04</span></span></div>
+</section>
+
+<!-- ============ SECTION 3 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 03</span></div>
+  <div class="secnum">Section 03</div>
+  <h2 class="sec">Primary Google Campaign</h2>
+  <div class="principle" style="background:var(--ink2)">
+    <div class="label">Recommended starting campaign</div>
+    <p>SEARCH CAMPAIGN</p>
+  </div>
+
+  <p><span class="tag tag-rec">Recommendation</span> Start with a single Search campaign. Not Performance Max, not Display, not Demand Gen. Search is the only campaign type where we can see the exact query a person typed, exclude the queries we don't want, and control spend at the intent level. For a new Solar account with no conversion history, that control is worth more than reach.</p>
+
+  <h3>Why Search fits Solar specifically</h3>
+  <ul>
+    <li><b>Solar is a considered, high-ticket purchase.</b> A residential rooftop system is a significant household spend, so buyers research actively and search deliberately rather than impulse-buying from a feed.</li>
+    <li><b>It is a local service.</b> Installation requires a physical visit, so searches carry strong geographic intent — exactly what Search targeting handles well.</li>
+    <li><b>Demand already exists.</b> Rising tariffs, rooftop subsidy awareness and visible neighbourhood installations push people to search on their own.</li>
+    <li><b>Intent is readable.</b> "solar installer near me" and "solar training course" are completely different people, and Search lets us pay for only one of them.</li>
+  </ul>
+
+  <h3>What people actually search</h3>
+  <div class="chips">
+    <span>solar installation near me</span><span>rooftop solar installation</span><span>solar company near me</span>
+    <span>solar panels for home</span><span>solar installation Hyderabad</span>
+  </div>
+  <p class="smallnote"><span class="tag tag-ex">Example</span> Illustrative queries used throughout this document to teach structure. Real keyword sets must be built per client from Google Keyword Planner, the client's service area and, once live, the account's own Search Terms report.</p>
+
+  <div class="callout">
+    <div class="label">The central caution</div>
+    <p style="margin:0">Search intent varies enormously inside the single word "solar". The same word is typed by a homeowner with a ₹6,000 monthly bill, an ITI student looking for a course, an engineer looking for a job, and a school student writing a project report. <b>Keyword quality — not keyword volume — decides whether a Solar Search campaign works.</b></p>
+  </div>
+
+  <h3>What we deliberately postpone</h3>
+  <table>
+    <thead><tr><th style="width:26%">Campaign type</th><th style="width:22%">Status at launch</th><th>Reasoning</th></tr></thead>
+    <tbody>
+      <tr><td>Search</td><td><b>Launch now</b></td><td>Full query visibility and intent control.</td></tr>
+      <tr><td>Performance Max</td><td>Later</td><td>Needs reliable conversion data and a mature negative/brand-exclusion setup before it can be judged fairly.</td></tr>
+      <tr><td>Display</td><td>Later / retargeting only</td><td>Cheap clicks, weak intent. Useful for remarketing, not for first-touch Solar leads.</td></tr>
+      <tr><td>YouTube / Demand Gen</td><td>Later</td><td>Demand creation — overlaps with the Meta system already built in Step 4B.</td></tr>
+      <tr><td>Search remarketing lists</td><td>After traffic exists</td><td>Requires audience size; see Section 28.</td></tr>
+    </tbody>
+  </table>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">05</span></span></div>
+</section>
+
+<!-- ============ SECTION 4 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 04</span></div>
+  <div class="secnum">Section 04</div>
+  <h2 class="sec">Search Intent Framework</h2>
+  <p class="lead">Every Solar keyword Smart Pursuit considers must first be sorted into one of four intent levels. This framework decides what we bid on, what we postpone, and what we exclude outright.</p>
+
+  <div class="level">
+    <div class="h"><b>Level 1 — High Commercial Intent</b><em>Bid first · Highest priority</em></div>
+    <div class="chips">
+      <span>solar installation near me</span><span>rooftop solar installation</span><span>solar installer near me</span>
+      <span>solar company near me</span><span>rooftop solar company</span><span>solar panel installation</span>
+      <span>residential solar installation</span>
+    </div>
+    <p style="margin-top:3mm">These searches can indicate that the user is actively looking for a Solar provider or an installation, not just information. The words "installation", "installer", "company" and "near me" all point at hiring someone rather than learning something. Competition and cost per click are usually highest here — and that is normally acceptable, because this is the traffic most likely to become a site assessment.</p>
+    <p class="smallnote" style="margin:0"><b>Note:</b> "can indicate" is deliberate. Intent is a probability, not a certainty. Only the Search Terms report and the client's qualification notes confirm it.</p>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>Level 2 — Product / Solution Intent</b><em>Bid second · Valuable with context</em></div>
+    <div class="chips">
+      <span>rooftop solar panels</span><span>solar panels for home</span><span>home solar system</span>
+      <span>residential solar system</span><span>solar power system for home</span><span>5kw solar system</span>
+    </div>
+    <p style="margin-top:3mm">These users are researching a purchase rather than requesting one. They are working out what they need — panel type, system size, what "5kW" means for their bill. They can be very valuable, because the next step after understanding the product is usually contacting an installer. Their value depends on context: a person searching "5kw solar system" with a large independent house is closer to buying than someone comparing panel brands out of curiosity.</p>
+    <p class="smallnote" style="margin:0"><b>Handling:</b> route to an educational-but-converting page (see Section 18), and expect a longer lead-to-sale cycle than Level 1.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>Level 3 — Informational Intent</b><em>Postpone when budget is limited</em></div>
+    <div class="chips">
+      <span>how does rooftop solar work</span><span>solar panel benefits</span><span>how much electricity does solar generate</span>
+      <span>solar panel maintenance</span><span>solar system calculation</span>
+    </div>
+    <p style="margin-top:3mm">These users are earlier in the journey. Some will buy eventually; most are reading. On a limited budget they should be approached carefully — not because they are worthless, but because they consume clicks that Level 1 searches would convert faster. There is also a hidden trap: "solar panel maintenance" often comes from people who already own a system, and "solar system calculation" is frequently a student query.</p>
+    <p class="smallnote" style="margin:0"><b>Better home for this intent:</b> SEO content and Meta retargeting, not paid Search spend, until the account has proven Level 1 economics.</p>
+  </div>
+
+  <div class="level l4">
+    <div class="h"><b>Level 4 — Low / Irrelevant Intent</b><em>Exclude before launch</em></div>
+    <div class="chips neg">
+      <span>solar jobs</span><span>solar training</span><span>solar course</span><span>solar careers</span>
+      <span>solar government jobs</span><span>solar manufacturing jobs</span><span>solar project report</span><span>solar science project</span>
+    </div>
+    <p style="margin-top:3mm">These searches share our vocabulary but none of our commercial purpose. In India, Solar employment and Solar training queries carry heavy volume — an installer account left unguarded will attract clicks from job seekers, ITI and diploma students, and school project researchers. None of them can buy a rooftop system. Worse, this traffic often <i>clicks well</i>, which makes a report look healthy while producing zero enquiries.</p>
+    <p class="smallnote" style="margin:0"><b>Action:</b> these become the seed list for the negative keyword system in Section 12, added before the first rupee is spent.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">How to use this framework</div>
+    <p style="margin:0">Sort every candidate keyword into a level <i>before</i> it enters the account. Budget flows top-down: Level 1 fully funded, Level 2 funded once Level 1 is stable, Level 3 only with evidence, Level 4 never.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">06</span></span></div>
+</section>
+
+<!-- ============ SECTION 5 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 05</span></div>
+  <div class="secnum">Section 05</div>
+  <h2 class="sec">Campaign Structure</h2>
+
+  <div class="card" style="background:var(--ink); color:#fff; border-color:var(--ink)">
+    <div style="font-size:7.8pt; letter-spacing:.22em; text-transform:uppercase; color:#C4B5FD; font-weight:800">Campaign name</div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:15pt; font-weight:700; margin-top:3mm">SP_SOLAR_SEARCH_LEADS_V1</div>
+    <p class="smallnote" style="color:#A1A1AA; margin:3mm 0 0">Naming convention: <code style="background:#1C1C20;border-color:#2A2A30;color:#DDD6FE">AGENCY_NICHE_CHANNEL_OBJECTIVE_VERSION</code>. Versioning in the name keeps historical structures readable when V2 launches.</p>
+  </div>
+
+  <h3>Recommended initial ad groups</h3>
+  <table>
+    <thead><tr><th style="width:12%">#</th><th style="width:30%">Ad Group</th><th>Core intent it serves</th></tr></thead>
+    <tbody>
+      <tr><td><b>1</b></td><td><b>Solar Installation</b></td><td>"I need someone to install Solar."</td></tr>
+      <tr><td><b>2</b></td><td><b>Solar Company</b></td><td>"I am looking for a Solar provider."</td></tr>
+      <tr><td><b>3</b></td><td><b>Rooftop Solar</b></td><td>"I am interested in rooftop Solar."</td></tr>
+      <tr><td><b>4</b></td><td><b>Home Solar</b></td><td>"I am considering Solar for my home."</td></tr>
+      <tr><td><b>5</b></td><td><b>Local / City Solar</b></td><td>"I want a Solar company in my city."</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> Five ad groups is the starting structure, not a permanent one. It changes when data justifies change.</p>
+
+  <h3>Why not thirty tiny ad groups</h3>
+  <p>Single-keyword ad groups look disciplined on a spreadsheet and behave badly in a small account. Every ad group needs enough impressions and conversions for Google's systems — and for us — to learn anything. Split a modest Solar budget across thirty ad groups and each one collects a handful of clicks per week: no ad group ever reaches statistical meaning, responsive search ads never finish learning which asset combinations work, automated bidding has nothing to optimise against, and the weekly report becomes thirty rows of noise.</p>
+
+  <h3>The balance we are managing</h3>
+  <div class="split">
+    <div class="card" style="margin:0">
+      <h4 style="margin-top:0">Organization</h4>
+      <p style="margin:0">Keywords in an ad group should share one intent so a single set of headlines can honestly answer all of them. This drives relevance, Quality Score and message match.</p>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="margin-top:0">Sufficient conversion / data volume</h4>
+      <p style="margin:0">Each ad group needs enough traffic to produce readable signal. Too granular and every decision becomes a guess dressed as a metric.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <div class="label">Working rule</div>
+    <p style="margin:0">Split an ad group only when (a) its search terms clearly represent a <i>different</i> promise that needs different ad copy, and (b) it is already producing enough volume to survive on its own. Organisation serves measurement — never the other way round.</p>
+  </div>
+
+  <h3>Campaign settings at launch <span class="tag tag-rec">Recommendation</span></h3>
+  <table>
+    <thead><tr><th style="width:32%">Setting</th><th>Starting position &amp; why</th></tr></thead>
+    <tbody>
+      <tr><td>Networks</td><td>Search only. Turn off Search Partners and Display Expansion initially so all data is clean Google Search data.</td></tr>
+      <tr><td>Locations</td><td>Only the cities/areas the client genuinely services. Use "Presence: people in or regularly in your targeted locations" — not "interest" — to avoid out-of-area enquiries.</td></tr>
+      <tr><td>Languages</td><td>English plus the relevant regional language where the client's pages and sales team can actually handle it.</td></tr>
+      <tr><td>Bidding</td><td><span class="tag tag-hy">Starting Hypothesis</span> Begin on Maximise Clicks with a CPC cap or Manual CPC while conversion tracking proves itself; move to Maximise Conversions / Target CPA only after a meaningful conversion history exists.</td></tr>
+      <tr><td>Ad schedule</td><td>Start all-hours, then restrict once call-handling hours and lead-answer rates are known.</td></tr>
+      <tr><td>Ad rotation &amp; assets</td><td>One RSA per ad group at launch (Section 15), plus sitelinks, callouts, structured snippets, call and location assets.</td></tr>
+    </tbody>
+  </table>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">07</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 6-7 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 06–07</span></div>
+  <div class="secnum">Section 06 · Ad Group 1</div>
+  <h2 class="sec">Solar Installation</h2>
+  <div class="chips">
+    <span>solar installation</span><span>solar installation near me</span><span>rooftop solar installation</span>
+    <span>solar panel installation</span><span>solar installer</span><span>solar installers near me</span><span>rooftop solar installer</span>
+  </div>
+  <p class="quote">Primary intent: "I need someone to install Solar."</p>
+
+  <div class="wwh">
+    <div><div class="t">Why this theme is high value</div><p style="margin:0">The word "installation" describes a <b>service being hired</b>, not a product being studied. Someone typing it has already accepted that Solar is for them; the open question is who does the work. That is the shortest remaining distance to a site assessment of any keyword group in the account.</p></div>
+    <div><div class="t">What to expect</div><p style="margin:0"><span class="tag tag-hy">Starting Hypothesis</span> Highest CPC in the account and the highest share of genuine enquiries. We should be willing to pay more per click here than anywhere else, because cost per <i>qualified</i> lead — not cost per click — is the measure that matters.</p></div>
+    <div><div class="t">Copy angle</div><p style="margin:0">Lead with the service and the location: "Rooftop Solar Installation in Hyderabad". Do not lead with education — this person is past that stage.</p></div>
+    <div><div class="t">Landing page</div><p style="margin:0"><code>/solar-installation</code> or the city variant. Contact options visible above the fold on mobile.</p></div>
+  </div>
+
+  <div class="warn">
+    <div class="label">Watch-out</div>
+    <p style="margin:0">"Installation" also attracts installation <i>workers</i> — "solar installation technician", "solar installation job", "solar installation training". Employment and education negatives (Section 12) must be live before this ad group runs.</p>
+  </div>
+
+  <hr class="div">
+
+  <div class="secnum">Section 07 · Ad Group 2</div>
+  <h2 class="sec">Solar Company</h2>
+  <div class="chips">
+    <span>solar company near me</span><span>solar companies near me</span><span>solar company</span>
+    <span>rooftop solar company</span><span>best solar company</span><span>solar provider near me</span>
+  </div>
+  <p class="quote">Intent: "I am looking for a Solar provider."</p>
+
+  <p><b>The commercial intent here is provider selection.</b> The user is not asking what Solar is or which panel is better — they are compiling a shortlist of businesses to contact. They are effectively in comparison mode, which changes what the ad has to do: it must make the client look like a credible, contactable, locally-operating company, not just a cheap option.</p>
+
+  <table>
+    <thead><tr><th style="width:34%">What this searcher wants to see</th><th>How we supply it</th></tr></thead>
+    <tbody>
+      <tr><td>That the company serves their area</td><td>City in the headline; location assets; city landing page.</td></tr>
+      <tr><td>That the company is real and reachable</td><td>Call asset, business phone, physical address, working hours.</td></tr>
+      <tr><td>Scope of work</td><td>Callouts: residential &amp; commercial, on-grid / hybrid, end-to-end installation, after-installation support.</td></tr>
+      <tr><td>A low-friction first step</td><td>Free Solar Assessment rather than "Get Quote".</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">On "best solar company"</div>
+    <p style="margin:0">High intent, but treat superlatives carefully in ad copy. Claiming to be "the best" invites both scrutiny and policy risk. Answer the query with substance — scope, coverage, process — rather than by repeating the adjective. Also expect competitor-brand searches in this theme's search terms; decide deliberately whether bidding on competitor names fits the client's positioning and budget.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">08</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 8-9 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 08–09</span></div>
+  <div class="secnum">Section 08 · Ad Group 3</div>
+  <h2 class="sec">Rooftop Solar</h2>
+  <div class="chips">
+    <span>rooftop solar</span><span>rooftop solar panels</span><span>rooftop solar system</span>
+    <span>rooftop solar installation</span><span>rooftop solar company</span><span>rooftop solar for home</span>
+  </div>
+  <p class="quote">Intent: "I am interested in rooftop Solar."</p>
+
+  <h3>Product interest vs explicit installation intent</h3>
+  <table>
+    <thead><tr><th style="width:22%">Dimension</th><th style="width:39%">Product interest<br><span class="smallnote" style="font-weight:400">"rooftop solar panels"</span></th><th style="width:39%">Installation intent<br><span class="smallnote" style="font-weight:400">"rooftop solar installation"</span></th></tr></thead>
+    <tbody>
+      <tr><td>Question in their head</td><td>"What is this and is it right for my roof?"</td><td>"Who can do this for my roof?"</td></tr>
+      <tr><td>Stage</td><td>Evaluating the solution</td><td>Selecting a supplier</td></tr>
+      <tr><td>Right page</td><td>Explains suitability, system sizes, options — then converts</td><td>Straight to assessment booking</td></tr>
+      <tr><td>Expected cycle</td><td>Longer; may need follow-up and retargeting</td><td>Shorter</td></tr>
+      <tr><td>Reasonable CPL</td><td>Lower CPL tolerated, lower close rate expected</td><td>Higher CPL tolerated, higher close rate expected</td></tr>
+    </tbody>
+  </table>
+  <p>Both belong in the account. The mistake is treating them identically — sending a "what is rooftop solar" searcher to a bare quotation form usually produces a bounce, and sending a ready buyer through three paragraphs of education adds friction they didn't ask for.</p>
+  <p class="smallnote"><b>Note on overlap:</b> "rooftop solar installation" and "rooftop solar company" appear in more than one ad group. That is fine — Google serves the ad from whichever ad group has the most relevant keyword. Keep the duplicates only if the ad copy genuinely differs; otherwise remove them from the weaker ad group to avoid diluting data.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 09 · Ad Group 4</div>
+  <h2 class="sec">Home Solar</h2>
+  <div class="chips">
+    <span>solar panels for home</span><span>home solar system</span><span>residential solar</span>
+    <span>residential solar panels</span><span>solar system for house</span><span>solar for independent house</span>
+  </div>
+  <p class="quote">Intent: "I am considering Solar for my home."</p>
+
+  <div class="wwh">
+    <div><div class="t">Why residential deserves its own theme</div><p style="margin:0">Residential and commercial Solar are different products sold to different buyers with different objections, ticket sizes, decision cycles and approval processes. A homeowner asks about bill reduction, roof space and subsidy eligibility. A factory owner asks about sanctioned load, CAPEX vs OPEX and payback on the balance sheet. One set of headlines cannot serve both convincingly.</p></div>
+    <div><div class="t">When to split it out</div><p style="margin:0"><span class="tag tag-rec">Recommendation</span> Separate it when volume justifies it — when home-specific search terms are consistently appearing and can support their own copy and page. Before that, keep them together to protect data volume (Section 05).</p></div>
+    <div><div class="t">Qualification reality in India</div><p style="margin:0">Residential Solar traffic includes a meaningful share of apartment residents and tenants who cannot authorise a rooftop installation. This is not a campaign fault — it is a qualification step. The form and the call script must establish <b>property type and roof ownership early</b>, and "independent house" style keywords tend to pre-filter better than generic "solar for home".</p></div>
+    <div><div class="t">Landing page</div><p style="margin:0"><code>/residential-solar</code> — home-specific imagery, home-specific FAQs, home-specific assessment form fields (monthly bill, roof area, house type).</p></div>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">09</span></span></div>
+</section>
+
+<!-- ============ SECTION 10 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 10</span></div>
+  <div class="secnum">Section 10 · Ad Group 5</div>
+  <h2 class="sec">Local / City Solar</h2>
+  <p class="smallnote"><span class="tag tag-ex">Example</span> Hyderabad is used purely as a hypothetical market to demonstrate the structure. Substitute the client's real service cities.</p>
+
+  <h4>City-level keywords</h4>
+  <div class="chips">
+    <span>solar company Hyderabad</span><span>solar installation Hyderabad</span><span>rooftop solar Hyderabad</span>
+    <span>solar panels Hyderabad</span><span>solar installer Hyderabad</span>
+  </div>
+  <h4>Potential locality-level keywords</h4>
+  <div class="chips">
+    <span>solar installation Secunderabad</span><span>solar company Gachibowli</span><span>rooftop solar Kukatpally</span>
+  </div>
+
+  <div class="warn">
+    <div class="label">Non-negotiable rule</div>
+    <p style="margin:0">Only use locations the client actually services. Advertising "Solar Installation in Warangal" when the client's team cannot travel there produces enquiries that must be rejected — wasted spend, a frustrated prospect, and a sales team that starts distrusting the leads we send. Get a written service-area list during onboarding and build the location keyword set strictly from it.</p>
+  </div>
+
+  <h3>Why local intent matters so much for installers</h3>
+  <ul>
+    <li><b>The service is physically delivered.</b> A crew has to reach the roof. Geography is a hard constraint, not a preference.</li>
+    <li><b>City wording signals readiness.</b> Adding a city name to a query usually means the person is looking for a provider to contact now, not reading about technology.</li>
+    <li><b>Relevance is easy to win.</b> Many national aggregators run generic copy. A headline naming the user's city is often the most relevant result on the page.</li>
+    <li><b>Approvals and DISCOM processes are local.</b> Net metering and subsidy processing differ by state and utility; a local provider is genuinely more useful, and the copy can say so.</li>
+    <li><b>Cost control.</b> Tight geography prevents spend leaking into cities that can never be serviced.</li>
+  </ul>
+
+  <h3>City keywords vs location targeting</h3>
+  <p>These are two separate controls and both are needed. <b>Location targeting</b> decides who is eligible to see the ad. <b>City keywords</b> let us write copy that names the city, which lifts click-through and lets us send traffic to a matching city page. A person in Hyderabad searching "solar installation near me" is caught by location targeting; a person searching "solar installation Hyderabad" from anywhere is caught by the keyword.</p>
+
+  <table>
+    <thead><tr><th style="width:26%">Control</th><th style="width:37%">What it does</th><th style="width:37%">Setting <span class="tag tag-rec">Recommendation</span></th></tr></thead>
+    <tbody>
+      <tr><td>Location targeting</td><td>Restricts eligibility by user location</td><td>Client's serviced cities only; "Presence" option</td></tr>
+      <tr><td>Location exclusions</td><td>Blocks known non-serviceable areas</td><td>Exclude neighbouring districts the team won't travel to</td></tr>
+      <tr><td>City keywords</td><td>Matches queries containing the city</td><td>One ad group per city once each city has real volume</td></tr>
+      <tr><td>Location in copy</td><td>Raises relevance and pre-qualifies clicks</td><td>City in at least 2–3 RSA headlines (Section 17)</td></tr>
+      <tr><td>City landing page</td><td>Continues the promise</td><td><code>/solar-installation-hyderabad</code></td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><b>Scaling note:</b> Do not create one ad group per locality on day one. Start with the city ad group, read the search terms, and promote a locality into its own ad group only when that locality shows consistent volume.</p>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">10</span></span></div>
+</section>
+
+<!-- ============ SECTION 11 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 11</span></div>
+  <div class="secnum">Section 11</div>
+  <h2 class="sec">Keyword Match Types</h2>
+  <p class="lead">Match type controls how far Google may stray from the words we typed. It is a control dial for reach versus precision — not a ranking of good and bad.</p>
+
+  <div class="card">
+    <h4 style="margin-top:0">Exact Match <span class="tag tag-rec" style="margin-left:6px">Core at launch</span></h4>
+    <p>Useful for tightly controlled high-intent searches. Matches the keyword and close variants with the same meaning. Highest precision, narrowest reach, usually the highest CPC — and normally the best place to spend a limited Solar budget first.</p>
+    <p style="margin:0"><b>Example:</b> <code>[solar installation hyderabad]</code></p>
+  </div>
+
+  <div class="card">
+    <h4 style="margin-top:0">Phrase Match <span class="tag tag-rec" style="margin-left:6px">Core at launch</span></h4>
+    <p>Useful for controlled variations around a search theme. Matches queries that include the meaning of the phrase with additional words around it — "best solar installation hyderabad cost", "solar installation hyderabad for home". Wider than exact, still anchored to intent.</p>
+    <p style="margin:0"><b>Example:</b> <code>"solar installation hyderabad"</code></p>
+  </div>
+
+  <div class="card" style="border-color:#DDD6FE">
+    <h4 style="margin-top:0">Broad Match <span class="tag tag-hy" style="margin-left:6px">Test later</span></h4>
+    <p>Broad match is not inherently bad. It is a discovery tool that finds converting queries we never thought to write down, and it is the match type Google's automated bidding works with most freely. It simply requires infrastructure before it can be trusted.</p>
+    <p style="margin-bottom:2mm"><b>Test broad match once all four are true:</b></p>
+    <ul style="margin-bottom:0">
+      <li><b>Conversion tracking is reliable</b> — form, call and key WhatsApp events firing accurately and de-duplicated.</li>
+      <li><b>Negative keywords are maintained</b> — the Solar-specific job/course/project lists are live and being extended.</li>
+      <li><b>Enough data exists</b> — a conversion history the bidding can actually learn from.</li>
+      <li><b>Search-term monitoring is active</b> — someone is genuinely reviewing terms on a fixed schedule, not occasionally.</li>
+    </ul>
+  </div>
+
+  <h3>Comparison</h3>
+  <table>
+    <thead><tr><th style="width:18%">Match type</th><th style="width:16%">Reach</th><th style="width:16%">Control</th><th>Best use in a Solar account</th></tr></thead>
+    <tbody>
+      <tr><td><code>[exact]</code></td><td>Low</td><td>High</td><td>Proven, high-intent, city-specific installation queries.</td></tr>
+      <tr><td><code>"phrase"</code></td><td>Medium</td><td>Medium</td><td>Theme coverage around installation, company and rooftop terms.</td></tr>
+      <tr><td><code>broad</code></td><td>High</td><td>Low</td><td>Controlled discovery once tracking, negatives and data are in place.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Match type strategy should evolve</div>
+    <p style="margin:0">The launch mix is a hypothesis, not a doctrine. <span class="tag tag-hy">Starting Hypothesis</span> Begin with exact + phrase on Level 1 and Level 2 themes. As the Search Terms report reveals what really converts, promote winning queries to exact, prune phrase keywords that only attract noise, and open a small, ring-fenced broad-match test — ideally in its own ad group or campaign so its spend and results stay separately readable. Let the account's own data set the mix.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">11</span></span></div>
+</section>
+
+<!-- ============ SECTION 12 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 12</span></div>
+  <div class="secnum">Section 12</div>
+  <h2 class="sec">Negative Keyword System</h2>
+  <p class="lead">For Solar in India, the negative keyword list is not housekeeping — it is a primary performance control. The word "solar" is shared by an installation market, a jobs market, a training market and an academic market. Without exclusions, a lead-generation budget quietly funds the other three.</p>
+
+  <div class="grid2">
+    <div class="card" style="margin:0">
+      <h4 style="margin-top:0">Employment</h4>
+      <div class="chips neg"><span>jobs</span><span>job</span><span>careers</span><span>career</span><span>vacancy</span><span>vacancies</span><span>salary</span><span>recruitment</span><span>hiring</span></div>
+      <p class="smallnote" style="margin:0">Solar is a growing employment category; this is often the single largest source of wasted clicks.</p>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="margin-top:0">Education</h4>
+      <div class="chips neg"><span>course</span><span>courses</span><span>training</span><span>certification</span><span>classes</span><span>institute</span><span>college</span><span>diploma</span></div>
+      <p class="smallnote" style="margin:0">Students researching Solar technology, not buying a system.</p>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="margin-top:0">DIY / Free Information</h4>
+      <div class="chips neg"><span>diy</span><span>how to make</span><span>homemade</span><span>project</span><span>science project</span></div>
+      <p class="smallnote" style="margin:0">People intending to build it themselves are not hiring an installer.</p>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="margin-top:0">Academic / Research</h4>
+      <div class="chips neg"><span>pdf</span><span>thesis</span><span>research paper</span><span>ppt</span><span>presentation</span></div>
+      <p class="smallnote" style="margin:0">Document-seeking queries almost never convert to enquiries.</p>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="margin-top:0">Used / Second-Hand <span class="smallnote" style="font-weight:400">(where appropriate)</span></h4>
+      <div class="chips neg"><span>used solar panels</span><span>second hand solar</span><span>old solar panels</span></div>
+      <p class="smallnote" style="margin:0">Exclude only if the client does not deal in used equipment — confirm first.</p>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="margin-top:0">Manufacturing <span class="smallnote" style="font-weight:400">(if installer, not manufacturer)</span></h4>
+      <div class="chips neg"><span>solar panel manufacturing</span><span>solar cell manufacturing</span><span>solar factory</span><span>solar manufacturing jobs</span></div>
+      <p class="smallnote" style="margin:0">B2B manufacturing queries look commercial but serve a different business entirely.</p>
+    </div>
+  </div>
+
+  <h3>How to run the list</h3>
+  <table>
+    <thead><tr><th style="width:26%">Practice</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Use a shared list</td><td>Maintain one account-level negative list for the permanent categories above, applied to every campaign. Keep campaign-level negatives for client-specific exclusions (non-serviced cities, products not offered).</td></tr>
+      <tr><td>Choose match type deliberately</td><td>Broad negatives for clearly dead categories (<code>jobs</code>, <code>course</code>); phrase or exact negatives where a word could appear in a legitimate query.</td></tr>
+      <tr><td>Protect cross-ad-group traffic</td><td>Use negatives between ad groups only when it genuinely improves message match — over-sculpting starves ad groups of data.</td></tr>
+      <tr><td>Review cadence</td><td><span class="tag tag-rec">Recommendation</span> Weekly during the first 4–6 weeks, then fortnightly once the term profile stabilises.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Two cautions</div>
+    <p style="margin:0 0 2mm"><b>1. Negatives must evolve.</b> The list above is a launch seed built from expected Indian Solar search behaviour — a <span class="tag tag-hy">Starting Hypothesis</span>, not a finished asset. The real list is written by the account's own Search Terms report.</p>
+    <p style="margin:0"><b>2. Do not blindly exclude every unusual search.</b> An odd query is not automatically a bad one. "solar without subsidy", "solar for 3bhk", "solar emi" and "solar for borewell" all look unusual and all may be genuine buyers. Exclude on <i>evidence of low value</i> — clicks with no enquiries, or enquiries the sales team consistently rejects — not on first impression.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">12</span></span></div>
+</section>
+
+<!-- ============ SECTION 13 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 13</span></div>
+  <div class="secnum">Section 13</div>
+  <h2 class="sec">Search Term Review</h2>
+  <p class="lead">The Search Terms report is the most valuable screen in a Solar Google Ads account. Keywords are what we <i>guessed</i> people search. Search terms are what they <i>actually</i> searched.</p>
+
+  <div class="flow">
+    <div class="node key">SEARCH TERM<small>The real query typed by a real person</small></div><div class="arw">↓</div>
+    <div class="node acc">REVIEW INTENT<small>Which of the four levels does it belong to?</small></div><div class="arw">↓</div>
+    <div style="display:flex; gap:5mm; width:100%; max-width:150mm">
+      <div class="node win" style="flex:1">KEEP</div>
+      <div class="node" style="flex:1; border-color:#DC2626; color:#7F1D1D; background:#FEF2F2">ADD AS NEGATIVE</div>
+      <div class="node acc" style="flex:1">ADD AS KEYWORD</div>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th style="width:22%">Decision</th><th style="width:34%">When</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><b>Keep</b></td><td>Relevant and commercially useful. Matches Level 1 or 2 intent and is already served well by an existing keyword and ad.</td><td>No change. Let it accumulate data.</td></tr>
+      <tr><td><b>Add as negative</b></td><td>Irrelevant, or consistently low-value over a meaningful number of clicks — jobs, courses, projects, out-of-area, wrong product.</td><td>Add to the shared or campaign negative list at the appropriate match type.</td></tr>
+      <tr><td><b>Add as keyword</b></td><td>A valuable search theme discovered through real user behaviour that is currently being matched loosely.</td><td>Add as exact (and phrase if the theme is wide) in the best-fitting ad group, so it gets its own bid, its own copy match and its own reporting row.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why search terms beat assumptions</h3>
+  <ul>
+    <li><b>Real vocabulary.</b> Indian Solar buyers search in ways a keyword planner rarely surfaces — "solar for 2bhk", "solar panel price 3kw", mixed-language and transliterated queries, locality names we didn't list.</li>
+    <li><b>It reveals hidden waste.</b> A keyword can look fine at the keyword level while most of its spend goes to one bad query underneath it.</li>
+    <li><b>It validates intent levels.</b> Our four-level framework is a prediction; search terms tell us whether the prediction held.</li>
+    <li><b>It compounds.</b> Every review makes the next week's traffic cleaner. This is the main engine of improvement in the first three months.</li>
+  </ul>
+
+  <div class="callout">
+    <div class="label">Review discipline <span class="tag tag-rec" style="margin-left:6px">Recommendation</span></div>
+    <p style="margin:0">Fixed weekly slot. Sort by cost descending, not by impressions. Judge on <b>enquiries and qualified enquiries</b>, not clicks. Give a term enough clicks before killing it — a single click with no conversion proves nothing. Log every negative added and every keyword promoted with the date and reason, so the account has a decision history rather than a mystery.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">13</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 14-15 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 14–15</span></div>
+  <div class="secnum">Section 14</div>
+  <h2 class="sec">Search Ad Strategy</h2>
+  <p>A Solar search ad has one job: confirm, in under a second, that this result answers the query. A good ad connects five elements.</p>
+
+  <table>
+    <thead><tr><th style="width:22%">Element</th><th style="width:30%">Question it answers</th><th>Example fragment <span class="tag tag-ex">Example</span></th></tr></thead>
+    <tbody>
+      <tr><td><b>Search intent</b></td><td>"Do they do the thing I searched?"</td><td>Solar Installation</td></tr>
+      <tr><td><b>Location</b></td><td>"Do they work where I live?"</td><td>in Hyderabad</td></tr>
+      <tr><td><b>Offer</b></td><td>"What do I get if I click?"</td><td>Free Solar Assessment</td></tr>
+      <tr><td><b>Benefit</b></td><td>"Why is that useful?"</td><td>Understand your Solar requirement</td></tr>
+      <tr><td><b>CTA</b></td><td>"What do I do now?"</td><td>Request a consultation</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card" style="border-left:5px solid var(--solar)">
+    <h4 style="margin-top:0">Assembled example <span class="tag tag-ex">Example</span></h4>
+    <p style="font-size:12pt; margin:0 0 1mm"><b>Solar Installation in Hyderabad</b></p>
+    <p style="margin:0 0 1mm">Get a Free Solar Assessment</p>
+    <p style="margin:0 0 1mm">Understand Your Solar Requirement</p>
+    <p style="margin:0">Request a Consultation</p>
+  </div>
+  <p class="smallnote">Notice what is absent: no savings promise, no "best in India", no exclamation marks. The ad is specific, local and honest — which also makes the click more likely to be a real prospect.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 15</div>
+  <h2 class="sec">Responsive Search Ad</h2>
+  <p class="smallnote"><span class="tag tag-ex">Example</span> Written for a hypothetical Hyderabad installer. Adapt city, scope and services to the real client before use.</p>
+
+  <table>
+    <thead><tr><th style="width:8%" class="num">#</th><th style="width:52%">Headline</th><th>Role in the mix</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td><b>Solar Installation in Hyderabad</b></td><td>Intent + location</td></tr>
+      <tr><td class="num">2</td><td>Rooftop Solar Installation</td><td>Core service</td></tr>
+      <tr><td class="num">3</td><td>Solar Company Near You</td><td>Provider-selection intent</td></tr>
+      <tr><td class="num">4</td><td><b>Get a Free Solar Assessment</b></td><td>Offer</td></tr>
+      <tr><td class="num">5</td><td>Solar for Homes &amp; Businesses</td><td>Scope</td></tr>
+      <tr><td class="num">6</td><td>Check Your Solar Requirement</td><td>Benefit</td></tr>
+      <tr><td class="num">7</td><td>Residential Solar Solutions</td><td>Segment</td></tr>
+      <tr><td class="num">8</td><td>Explore Rooftop Solar</td><td>Soft entry for researchers</td></tr>
+      <tr><td class="num">9</td><td>Solar Installation Experts</td><td>Capability</td></tr>
+      <tr><td class="num">10</td><td>Request a Solar Assessment</td><td>CTA</td></tr>
+      <tr><td class="num">11</td><td>Understand Your Solar Options</td><td>Benefit</td></tr>
+      <tr><td class="num">12</td><td>Solar System for Your Property</td><td>Personalisation</td></tr>
+      <tr><td class="num">13</td><td>Get a Solar Site Assessment</td><td>Next-step clarity</td></tr>
+      <tr><td class="num">14</td><td>Start Your Solar Assessment</td><td>CTA</td></tr>
+      <tr><td class="num">15</td><td>Explore Solar for Your Home</td><td>Residential entry</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">How Google uses these</div>
+    <p style="margin:0">Google combines headlines dynamically, showing different permutations to different searchers and learning which combinations perform. This has two consequences. <b>First, every headline must make sense next to every other headline</b> — no half-sentences that only work in one order. <b>Second, avoid stuffing every headline with the same keyword.</b> Fifteen variations of "Solar Installation Hyderabad" give the system nothing to test and read as spam to the user. Cover distinct angles instead: service, location, offer, benefit, segment, CTA. Pin only when something must always appear (a legal requirement or the city name), and accept that heavy pinning reduces the system's ability to learn.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">14</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 16-17 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 16–17</span></div>
+  <div class="secnum">Section 16</div>
+  <h2 class="sec">Description Examples</h2>
+  <p class="smallnote"><span class="tag tag-ex">Example</span> Four descriptions for the RSA above.</p>
+
+  <div class="card"><h4 style="margin-top:0">Description 1</h4><p style="margin:0">Thinking about Solar for your home or business? Understand your Solar requirement and property suitability before requesting a quotation.</p></div>
+  <div class="card"><h4 style="margin-top:0">Description 2</h4><p style="margin:0">Get a Solar assessment based on your electricity usage, property type and rooftop considerations. Enquire today.</p></div>
+  <div class="card"><h4 style="margin-top:0">Description 3</h4><p style="margin:0">Looking for rooftop Solar installation? Speak with a Solar specialist about your property and installation requirements.</p></div>
+  <div class="card"><h4 style="margin-top:0">Description 4</h4><p style="margin:0">Explore Solar options for your property. Submit your details and discuss your requirements with a Solar specialist.</p></div>
+
+  <h3>What descriptions are actually for</h3>
+  <p>Headlines win attention; descriptions <b>filter and reinforce</b>. In a lead-generation account, a description that attracts fewer but better clicks is worth more than one that attracts everyone.</p>
+  <ul>
+    <li><b>Qualifying the click.</b> "home or business", "electricity usage", "property type", "rooftop considerations" — each phrase tells a job seeker or student that this page is not for them, and tells a homeowner that it is.</li>
+    <li><b>Setting expectations.</b> "before requesting a quotation" makes clear this is an assessment, not an instant price. Fewer disappointed form-fills, fewer angry calls.</li>
+    <li><b>Reinforcing intent.</b> Repeating the searcher's own frame ("rooftop Solar installation") confirms they are in the right place.</li>
+    <li><b>Naming the next step.</b> "Enquire today", "Submit your details and discuss your requirements" — the user knows exactly what happens after the click.</li>
+  </ul>
+  <p class="smallnote"><b>Craft notes:</b> write each description to stand alone, since Google may show only one. Keep the most important words early in case of truncation on mobile. Avoid savings figures, subsidy promises and urgency tricks.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 17</div>
+  <h2 class="sec">Location in Ad Copy</h2>
+  <p>Naming the service location does three things at once: it raises relevance for city searches, it pre-qualifies the click by discouraging out-of-area users, and it signals a local business rather than a national lead aggregator — which matters to a buyer who wants someone accountable for the roof.</p>
+  <p class="quote"><span class="tag tag-ex" style="margin-right:6px">Example</span>Rooftop Solar Installation in Hyderabad</p>
+
+  <h3>The consistency chain</h3>
+  <div class="flow">
+    <div class="node key">SEARCH<small>"rooftop solar installation hyderabad"</small></div><div class="arw">↓</div>
+    <div class="node acc">AD<small>"Rooftop Solar Installation in Hyderabad"</small></div><div class="arw">↓</div>
+    <div class="node win">LANDING PAGE<small>H1: "Rooftop Solar Installation in Hyderabad" · /solar-installation-hyderabad</small></div>
+  </div>
+  <p>Each step must repeat the same promise in the same words. When the chain holds, the user never has to re-orient — they recognise their own query and the only remaining decision is whether to contact. When it breaks — city in the ad, generic homepage after the click — the user has to work out whether they are in the right place, and a share of them leave. We have already paid for that click either way.</p>
+  <div class="warn">
+    <div class="label">Implementation notes</div>
+    <p style="margin:0">Only put a city in copy if location targeting and the landing page agree with it. If the client serves five cities, either build five city ad groups with matching pages, or keep copy city-neutral and rely on "near you" phrasing. Dynamic location insertion can help at scale but must be tested — a mis-inserted locality name damages credibility faster than a generic headline.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">15</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 18-19 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 18–19</span></div>
+  <div class="secnum">Section 18</div>
+  <h2 class="sec">Landing Page Mapping</h2>
+  <p class="lead">Different search intents deserve different pages. The page should answer the question that was typed, not the average of all questions.</p>
+
+  <table>
+    <thead><tr><th style="width:38%">Keyword theme</th><th style="width:30%">Destination</th><th>Page's primary job</th></tr></thead>
+    <tbody>
+      <tr><td>Solar installation keywords</td><td><code>/solar-installation</code></td><td>Prove installation capability, show process, book assessment.</td></tr>
+      <tr><td>Residential solar keywords</td><td><code>/residential-solar</code></td><td>Home-specific suitability, roof area, household bill framing.</td></tr>
+      <tr><td>Commercial solar keywords</td><td><code>/commercial-solar</code></td><td>Business framing: load, scale, CAPEX/OPEX, site survey.</td></tr>
+      <tr><td>Hyderabad keywords <span class="tag tag-ex">Example</span></td><td><code>/solar-installation-hyderabad</code></td><td>Local proof, service area, local contact.</td></tr>
+      <tr><td>Assessment-focused campaigns</td><td><code>/solar-assessment</code></td><td>Single-purpose conversion page for the core offer.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why the homepage is the wrong default</h3>
+  <ul>
+    <li><b>It answers nobody specifically.</b> A homepage serves existing customers, job applicants, vendors and buyers at once, so the paid visitor has to find their own path.</li>
+    <li><b>It breaks message match.</b> The ad promised "Rooftop Solar Installation in Hyderabad"; the homepage says "Welcome to [Company]". The user pauses, and some leave.</li>
+    <li><b>It dilutes the action.</b> Navigation menus, blog links and company pages compete with the one action we are paying for.</li>
+    <li><b>It weakens measurement.</b> When every ad group lands on one page, we cannot tell which intent the page fails.</li>
+    <li><b>It affects ad relevance.</b> Landing page experience is part of how Google judges an ad; a mismatched page can raise costs as well as lower conversion.</li>
+  </ul>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> Build pages in order of spend: start with <code>/solar-installation</code> and the main city page, add residential and commercial as those themes earn budget. Two well-built pages beat six thin ones. Full architecture is covered in Step 4D.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 19</div>
+  <h2 class="sec">Google Landing Page</h2>
+  <div class="card" style="border-left:5px solid var(--accent)">
+    <h4 style="margin-top:0">Recommended hero <span class="tag tag-ex">Example</span></h4>
+    <p style="font-size:15pt; font-weight:750; margin:0 0 2mm">Solar Installation for Your Home or Business</p>
+    <p style="margin:0 0 4mm; color:#3F3F46">Understand your Solar requirement, property suitability and installation options before making a decision.</p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+      <span style="background:var(--accent); color:#fff; border-radius:8px; padding:8px 14px; font-weight:700; font-size:9.6pt">GET A FREE SOLAR ASSESSMENT</span>
+      <span style="border:1.5px solid var(--ink); border-radius:8px; padding:8px 14px; font-weight:700; font-size:9.6pt">CALL NOW</span>
+      <span style="border:1.5px solid var(--leaf); color:#14532D; border-radius:8px; padding:8px 14px; font-weight:700; font-size:9.6pt">WHATSAPP US</span>
+    </div>
+  </div>
+  <p>The H1 states the service and who it is for. The supporting line restates the offer's real value — clarity before commitment — which is what a first-time Solar buyer actually wants. The primary CTA is the assessment; the secondary CTAs exist because a meaningful share of Indian Solar searchers would rather call or message than type into a form.</p>
+
+  <h3>Mobile-first is not optional</h3>
+  <p>Most Search traffic in this market arrives on a phone, often one-handed, often on a patchy connection. Design for that first and adapt upward.</p>
+  <table>
+    <thead><tr><th style="width:34%">Requirement</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Offer + CTA above the fold</td><td>No scrolling to find out what the page wants.</td></tr>
+      <tr><td>Tap-to-call in the header</td><td>Call intent is highest immediately after the click.</td></tr>
+      <tr><td>Sticky bottom action bar</td><td>Call / WhatsApp / Form reachable at any scroll depth.</td></tr>
+      <tr><td>Short form</td><td>Name, phone, city, property type, approximate monthly bill. Add fields only if the sales team uses them.</td></tr>
+      <tr><td>Fast load</td><td>Compress images, defer scripts. Slow pages lose paid clicks before the page renders.</td></tr>
+      <tr><td>Legible typography &amp; large tap targets</td><td>Reduces accidental taps and abandonment.</td></tr>
+      <tr><td>No surprise price claims</td><td>Keeps the page consistent with the ad's honest framing.</td></tr>
+    </tbody>
+  </table>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">16</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 20-21 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 20–21</span></div>
+  <div class="secnum">Section 20</div>
+  <h2 class="sec">Call Intent</h2>
+  <p>Some Solar searches carry strong call intent. A person typing <code>solar installer near me</code> on a phone frequently wants to speak to someone now, not complete a form and wait. Forcing that person through a form is friction we chose to add.</p>
+
+  <h4>Recommended assets <span class="tag tag-rec">Recommendation</span></h4>
+  <table>
+    <thead><tr><th style="width:32%">Asset</th><th>Setup note</th></tr></thead>
+    <tbody>
+      <tr><td>Call asset (call extension)</td><td>Attach at campaign level; schedule it to the client's actual answering hours.</td></tr>
+      <tr><td>Phone CTA on the landing page</td><td>Visible in the hero, not buried in a footer.</td></tr>
+      <tr><td>Mobile sticky call button</td><td>Persistent bottom bar so the number is always one tap away.</td></tr>
+      <tr><td>Call conversion tracking</td><td>Calls from ads and calls from the website number, using Google forwarding numbers or a call-tracking platform, with a minimum call duration threshold to filter accidental taps.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Why calls must be measured, not assumed</div>
+    <p style="margin:0">If calls are untracked, the campaign is judged on form fills alone. Every ad group whose audience prefers to phone looks like a failure — and the natural response is to cut exactly the highest-intent keywords in the account. Tracked calls also let automated bidding optimise toward them, and let us hold the sales side accountable: answer rate and missed-call rate become visible numbers instead of an invisible leak. A missed call on a high-intent Solar keyword is a paid click thrown away.</p>
+  </div>
+  <p class="smallnote"><b>Operational prerequisite:</b> agree with the client, in writing, who answers the phone, during which hours, and what happens to missed calls. Advertising cannot fix an unanswered phone.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 21</div>
+  <h2 class="sec">WhatsApp</h2>
+  <p>WhatsApp is a default communication channel in India and often the lowest-friction way for a prospect to start a conversation — no form, no phone call, no commitment. For Solar it is particularly useful because prospects can send photographs of the roof and the electricity bill, which speeds up the assessment considerably.</p>
+
+  <h4>What can be tracked</h4>
+  <table>
+    <thead><tr><th style="width:34%">Stage</th><th>Measurability</th></tr></thead>
+    <tbody>
+      <tr><td>WhatsApp click</td><td>Reliably measurable as an on-site click event.</td></tr>
+      <tr><td>Conversation started</td><td>Measurable where the setup technically allows it (e.g. WhatsApp Business API / CRM integration). A click is not proof of a conversation.</td></tr>
+      <tr><td>Qualified WhatsApp enquiry</td><td>Recorded by the sales team in the CRM after qualification.</td></tr>
+      <tr><td>Site assessment</td><td>CRM stage.</td></tr>
+      <tr><td>Sale</td><td>CRM stage; the only true business outcome.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Do not let WhatsApp replace lead tracking</div>
+    <p style="margin:0">A WhatsApp click is a <b>secondary</b> signal, not a lead. If a campaign is optimised to WhatsApp clicks, it will find people who tap and never write. Every WhatsApp conversation must be logged into the same CRM as form and call leads, with source attribution, so all three channels are counted once and compared fairly. Also respect data handling: chats contain personal details, addresses and bill information, and should be treated under the same privacy standards as any other lead record.</p>
+  </div>
+  <p class="smallnote"><b>Practical tip:</b> pre-fill the WhatsApp message ("Hi, I'd like a Free Solar Assessment for my home in Hyderabad") so the conversation starts already qualified, and use distinct pre-filled text per landing page to identify the source.</p>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">17</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 22-23 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 22–23</span></div>
+  <div class="secnum">Section 22</div>
+  <h2 class="sec">Google Conversion Tracking</h2>
+  <p class="lead">Conversion tracking is what the bidding algorithm learns from. Tell it the wrong thing and it will get very good at producing the wrong result.</p>
+
+  <div class="split">
+    <div class="card" style="margin:0; border-left:5px solid var(--leaf)">
+      <h4 style="margin-top:0">Primary conversions</h4>
+      <ul style="margin:0">
+        <li>Lead form submission</li>
+        <li>Qualified enquiry</li>
+        <li>Phone call <span class="smallnote">(above a minimum duration)</span></li>
+        <li>Site assessment booking</li>
+      </ul>
+      <p class="smallnote" style="margin:3mm 0 0">Counted as conversions. Used for bidding.</p>
+    </div>
+    <div class="card" style="margin:0; border-left:5px solid var(--muted)">
+      <h4 style="margin-top:0">Secondary conversions</h4>
+      <ul style="margin:0">
+        <li>WhatsApp click</li>
+        <li>Contact page visit</li>
+        <li>Form start</li>
+        <li>Calculator completion</li>
+      </ul>
+      <p class="smallnote" style="margin:3mm 0 0">Observation only. Not used for bidding.</p>
+    </div>
+  </div>
+
+  <h3>Why every interaction cannot be a conversion</h3>
+  <p>Google's automated bidding buys more of whatever we call a conversion. If a contact-page visit and a booked site assessment are both "conversions", the system treats them as equally valuable and will happily buy a thousand page views instead of ten assessments — and the report will show a spectacular cost per conversion that produces no revenue. Counting everything also destroys the cost-per-lead number the client cares about, because the denominator is full of things that are not leads.</p>
+
+  <table>
+    <thead><tr><th style="width:26%">Setting</th><th style="width:24%">Primary</th><th>Secondary</th></tr></thead>
+    <tbody>
+      <tr><td>"Include in Conversions"</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Used by Smart Bidding</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Counting</td><td>One per click/interaction for lead events</td><td>Typically one per click</td></tr>
+      <tr><td>Value</td><td>Assign values once lead-to-sale rates are known</td><td>No value</td></tr>
+      <tr><td>Reported to client as "leads"</td><td>Yes</td><td>No — reported as engagement</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><b>Hygiene:</b> de-duplicate form + thank-you-page firing, exclude internal traffic, verify on a real mobile device, and confirm offline stages (qualified, assessment, sale) flow back from the CRM so the account can eventually optimise on business outcomes. Implement consent-aware tracking in line with applicable privacy requirements.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 23</div>
+  <h2 class="sec">Primary vs Secondary Conversions</h2>
+  <table>
+    <thead><tr><th style="width:16%">&nbsp;</th><th style="width:42%">Primary</th><th style="width:42%">Secondary</th></tr></thead>
+    <tbody>
+      <tr><td><b>Definition</b></td><td>Actions that represent meaningful business value — a person the sales team can actually work with.</td><td>Engagement signals that help us understand user behaviour on the way to that action.</td></tr>
+      <tr><td><b>Examples</b></td><td>Form submission, qualified enquiry, tracked call, assessment booked</td><td>WhatsApp click, contact page view, form start, calculator completion</td></tr>
+      <tr><td><b>Used for bidding</b></td><td>Yes</td><td>No</td></tr>
+      <tr><td><b>Question it answers</b></td><td>"Is this campaign producing business?"</td><td>"Where are people getting stuck?"</td></tr>
+      <tr><td><b>If it moves</b></td><td>Change budget and bidding decisions</td><td>Change page, form or copy — investigate, don't re-bid</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Why the distinction matters in practice</div>
+    <p style="margin:0">Secondary events are diagnostic gold precisely because they are <i>not</i> used for bidding. A high form-start rate with a low submission rate points at the form, not the keywords. Many calculator completions with few enquiries points at a missing CTA after the result. Keeping these separate gives Smart Pursuit two clean instruments: primary conversions to steer spend, secondary conversions to diagnose the funnel — instead of one blurred number that does neither job well.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">18</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 24-25 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 24–25</span></div>
+  <div class="secnum">Section 24</div>
+  <h2 class="sec">Budget Strategy</h2>
+  <p>There is no universal correct Solar budget. It depends on:</p>
+  <div class="grid2">
+    <div class="card" style="margin:0"><ul style="margin:0">
+      <li><b>Search volume</b> in the target area</li>
+      <li><b>Location</b> — metro CPCs differ from tier-2 CPCs</li>
+      <li><b>Competition</b> — local installers plus national aggregators</li>
+      <li><b>Average Solar order value</b></li>
+    </ul></div>
+    <div class="card" style="margin:0"><ul style="margin:0">
+      <li><b>Sales capacity</b> — how many site assessments the team can actually do per week</li>
+      <li><b>Target revenue</b></li>
+      <li><b>Historical performance</b>, once it exists</li>
+    </ul></div>
+  </div>
+
+  <div class="warn">
+    <div class="label">Never promise this</div>
+    <p style="margin:0; font-size:11.5pt"><s>"₹20,000 = X leads"</s> — No agency can know this before the account has run. Any such promise is either a guess presented as a fact or a commitment we cannot control, since lead volume depends on auction prices, competitors, seasonality and the client's own sales response.</p>
+  </div>
+
+  <div class="principle">
+    <div class="label">Say this instead</div>
+    <p>Start with a controlled test budget, collect search and conversion data, then scale according to qualified lead economics.</p>
+  </div>
+
+  <h3>Budget follows evidence</h3>
+  <table>
+    <thead><tr><th style="width:18%">Phase</th><th style="width:30%">Purpose</th><th>What must be true before moving on</th></tr></thead>
+    <tbody>
+      <tr><td><b>Test</b></td><td>Learn which searches exist, convert and qualify</td><td>Tracking verified; search terms reviewed; a first read on cost per qualified lead</td></tr>
+      <tr><td><b>Stabilise</b></td><td>Clean the traffic and fix the page</td><td>Negatives working; lead quality acceptable to the sales team; landing page converting predictably</td></tr>
+      <tr><td><b>Scale</b></td><td>Increase spend on what works</td><td>Qualified-lead economics make sense against order value; sales team has capacity to handle more assessments</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-hy">Starting Hypothesis</span> A common starting approach is to set a daily budget that can realistically produce a few clicks per day on Level 1 keywords in the target city, hold it steady long enough to gather search-term and conversion data, and change one major variable at a time. The correct figure is derived per client from local CPCs and the client's sales capacity — not copied from another account. <b>Scale only when the constraint is demand, never when it is still lead quality or sales follow-up.</b></p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 25</div>
+  <h2 class="sec">Budget Priority</h2>
+  <table>
+    <thead><tr><th style="width:10%" class="num">Rank</th><th style="width:38%">Spend on</th><th>Reasoning</th></tr></thead>
+    <tbody>
+      <tr><td class="num"><b>1</b></td><td><b>High-intent installation searches</b></td><td>Shortest path to a site assessment. Level 1.</td></tr>
+      <tr><td class="num"><b>2</b></td><td><b>Local Solar searches</b></td><td>Service-area intent; strong relevance advantage.</td></tr>
+      <tr><td class="num"><b>3</b></td><td><b>Residential / commercial purchase-intent searches</b></td><td>Segment-specific buyers with a clear property in mind.</td></tr>
+      <tr><td class="num"><b>4</b></td><td><b>Broader product searches</b></td><td>Level 2 research traffic; useful once the top tiers are funded.</td></tr>
+      <tr><td class="num"><b>5</b></td><td><b>Informational searches</b></td><td>Level 3; longest cycle. Fund only with evidence, or serve via SEO and retargeting.</td></tr>
+    </tbody>
+  </table>
+  <p>When the goal is immediate lead generation, high-intent searches deserve priority because they convert on a shorter timeline and give the account usable conversion data fastest — which is what unlocks everything else, from Smart Bidding to a broad-match test. A smaller budget concentrated on Level 1 produces a readable result; the same budget spread thinly across all four levels usually produces an unreadable one. This is a sequencing decision, not a permanent exclusion: as the account matures and the top tiers saturate, expanding down the list is how it grows.</p>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">19</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 26-27 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 26–27</span></div>
+  <div class="secnum">Section 26</div>
+  <h2 class="sec">Google vs Meta</h2>
+  <table>
+    <thead><tr><th style="width:24%">Factor</th><th style="width:32%">Meta</th><th>Google</th></tr></thead>
+    <tbody>
+      <tr><td><b>User intent</b></td><td>Lower / latent</td><td>Higher / active</td></tr>
+      <tr><td><b>Main role</b></td><td>Create demand</td><td>Capture demand</td></tr>
+      <tr><td><b>Creative importance</b></td><td>Very high</td><td>Moderate</td></tr>
+      <tr><td><b>Search keywords</b></td><td>No</td><td>Yes</td></tr>
+      <tr><td><b>Visual content</b></td><td>Very important</td><td>Less important</td></tr>
+      <tr><td><b>Landing page</b></td><td>Important</td><td>Extremely important</td></tr>
+      <tr><td><b>Retargeting</b></td><td>Important</td><td>Important</td></tr>
+      <tr><td><b>Lead quality</b></td><td>Variable</td><td>Can be stronger for high-intent searches</td></tr>
+      <tr><td><b>Best use</b></td><td>Education + discovery</td><td>Existing demand</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Do not claim Google always produces better leads</div>
+    <p style="margin:0 0 2mm">It often produces higher-intent leads on Level 1 keywords. It also produces weak leads when negatives are missing, the page is generic or the geography is wrong. Meanwhile a well-built Meta campaign with a strong offer can produce excellent Solar leads in markets where search volume is thin.</p>
+    <p style="margin:0"><b>Performance depends on:</b> market · competition · search intent · offer · targeting · landing page · sales process. Six of those seven are not the ad platform. Smart Pursuit's position with a client should always be: we will measure both against qualified leads and let the account decide, rather than declaring a winner in advance.</p>
+  </div>
+
+  <hr class="div">
+
+  <div class="secnum">Section 27</div>
+  <h2 class="sec">Meta + Google Combined System</h2>
+  <div class="flow">
+    <div class="node key">META<small>Paid social · demand creation</small></div><div class="arw">↓</div>
+    <div class="node">Customer discovers Solar</div><div class="arw">↓</div>
+    <div class="node">EDUCATION<small>Bills, rooftop suitability, options, subsidy awareness</small></div><div class="arw">↓</div>
+    <div class="node">Customer develops interest</div><div class="arw">↓</div>
+    <div class="node key" style="background:var(--accent); border-color:var(--accent)">GOOGLE<small>Paid search · demand capture</small></div><div class="arw">↓</div>
+    <div class="node acc">Customer searches: "solar installation near me"</div><div class="arw">↓</div>
+    <div class="node">SEARCH AD</div><div class="arw">↓</div>
+    <div class="node">LANDING PAGE</div><div class="arw">↓</div>
+    <div class="node">LEAD</div><div class="arw">↓</div>
+    <div class="node">QUALIFICATION</div><div class="arw">↓</div>
+    <div class="node">SITE ASSESSMENT</div><div class="arw">↓</div>
+    <div class="node">QUOTATION</div><div class="arw">↓</div>
+    <div class="node win">SALE</div>
+  </div>
+  <p>Meta and Google are sequential, not competing. Meta reaches people who were not searching and gives them a reason to start; Google is waiting when they do. This has a measurement consequence worth explaining to clients early: <b>last-click reporting will credit Google for demand that Meta created.</b> If Meta is judged on last-click leads alone and switched off, Google's search volume and branded searches often decline afterwards — a pattern worth watching rather than assuming. Review both channels together at the qualified-lead and sale level, and treat the combined cost per sale as the real scoreboard.</p>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">20</span></span></div>
+</section>
+
+<!-- ============ SECTION 28-29 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 28–29</span></div>
+  <div class="secnum">Section 28</div>
+  <h2 class="sec">Google Retargeting</h2>
+  <p>Solar is rarely bought on the first visit. A homeowner comparing three installers, waiting for a spouse's agreement or checking subsidy eligibility may take weeks. Remarketing keeps the client present during that gap.</p>
+
+  <table>
+    <thead><tr><th style="width:32%">Audience</th><th style="width:22%">Signal strength</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td>Website visitors</td><td>Low–medium</td><td>Broad reminder; largest pool.</td></tr>
+      <tr><td>Assessment-page visitors</td><td>High</td><td>Saw the offer, didn't take it. Highest-priority audience.</td></tr>
+      <tr><td>Form starters</td><td>Very high</td><td>Began and abandoned — usually the cheapest recoverable leads.</td></tr>
+      <tr><td>High-engagement users</td><td>Medium–high</td><td>Long time on page, calculator used, multiple pages viewed.</td></tr>
+      <tr><td>Converters</td><td>—</td><td><b>Exclude</b> from prospecting remarketing to avoid paying to re-reach existing leads.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card" style="border-left:5px solid var(--solar)">
+    <h4 style="margin-top:0">Message <span class="tag tag-ex">Example</span></h4>
+    <p style="font-size:13pt; font-weight:700; margin:0 0 1mm">Still considering Solar?</p>
+    <p style="margin:0 0 3mm; color:#3F3F46">Understand your Solar requirement before you decide.</p>
+    <span style="background:var(--accent); color:#fff; border-radius:8px; padding:7px 13px; font-weight:700; font-size:9.6pt">GET FREE ASSESSMENT</span>
+  </div>
+  <p class="smallnote"><b>Note:</b> audience eligibility, minimum list sizes, tag/consent setup and the applicable advertising and privacy policies must be reviewed before launching remarketing. Frequency should be capped — a reminder is useful, a pursuit is not.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 29</div>
+  <h2 class="sec">Optimization Rules</h2>
+  <p>Diagnose at the stage that is actually failing. Each symptom below points to a specific part of the system.</p>
+
+  <div class="grid2">
+    <div class="card" style="margin:0"><h4 style="margin-top:0">If impressions are low</h4>
+      <ul style="margin:0"><li>Search volume in the area</li><li>Location targeting too narrow</li><li>Keyword targeting / match types too restrictive</li><li>Bid strategy and bid levels</li><li>Budget limiting delivery</li><li>Ad eligibility &amp; policy status</li></ul></div>
+    <div class="card" style="margin:0"><h4 style="margin-top:0">If clicks are low</h4>
+      <ul style="margin:0"><li>Ad relevance to the query</li><li>Headlines — location, offer, service clarity</li><li>Search intent mismatch</li><li>Keyword selection</li><li>Ad rank and position</li></ul></div>
+    <div class="card" style="margin:0"><h4 style="margin-top:0">If clicks are high but leads are low</h4>
+      <ul style="margin:0"><li>Landing page relevance</li><li>Message match with the ad</li><li>Offer strength and clarity</li><li>CTA visibility</li><li>Form length and fields</li><li>Page speed</li><li>Mobile UX</li></ul></div>
+    <div class="card" style="margin:0"><h4 style="margin-top:0">If leads are high but quality is poor</h4>
+      <ul style="margin:0"><li>Search terms report</li><li>Negative keywords</li><li>Match types too loose</li><li>Location targeting and exclusions</li><li>Ad messaging attracting the wrong person</li><li>Qualification questions on the form</li></ul></div>
+  </div>
+  <div class="card" style="border-left:5px solid var(--solar)"><h4 style="margin-top:0">If qualified leads are good but sales are poor</h4>
+    <ul style="margin:0"><li><b>Speed-to-lead</b> — how many minutes until first contact</li><li><b>Follow-up</b> — number of attempts, across call and WhatsApp</li><li><b>Sales process</b> — consistency and scripting</li><li><b>Pricing</b> — position against local competitors</li><li><b>Site assessment</b> — scheduling delays and no-shows</li><li><b>Quotation process</b> — turnaround time and clarity</li></ul></div>
+
+  <div class="warn">
+    <div class="label">Important</div>
+    <p style="margin:0">Do not automatically blame advertising for poor downstream sales performance — and do not automatically blame the client either. Follow the chain: if search terms are clean, leads are in-area with real properties and the assessment booking rate is healthy, the constraint is not the campaign. Bring the evidence, not an opinion, and agree the fix jointly.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">21</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 30-31 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 30–31</span></div>
+  <div class="secnum">Section 30</div>
+  <h2 class="sec">Search Term → Lead → Sale Loop</h2>
+  <div class="flow">
+    <div class="node key">SEARCH TERM</div><div class="arw">↓</div>
+    <div class="node">KEYWORD</div><div class="arw">↓</div>
+    <div class="node">AD</div><div class="arw">↓</div>
+    <div class="node">LANDING PAGE</div><div class="arw">↓</div>
+    <div class="node">LEAD</div><div class="arw">↓</div>
+    <div class="node acc">QUALIFIED LEAD</div><div class="arw">↓</div>
+    <div class="node">SITE VISIT</div><div class="arw">↓</div>
+    <div class="node">QUOTATION</div><div class="arw">↓</div>
+    <div class="node win">SALE</div><div class="arw">↓</div>
+    <div class="node win" style="background:var(--ink); color:#fff; border-color:var(--ink)">REVENUE</div>
+  </div>
+  <p>Most agencies stop measuring at "lead" because that is where the ad platform stops reporting. That is a reporting boundary, not a business boundary. Two keywords can produce identical CPLs while one fills the pipeline with apartment tenants and the other fills it with independent-house owners ready to install — and only the stages below "lead" reveal the difference.</p>
+  <p><b>Smart Pursuit should eventually optimise at the business-outcome level.</b> Practically, that means feeding CRM stages back into the account — qualified lead, assessment booked, quotation sent, sale — so that keyword decisions are made on revenue contribution rather than click volume. Until offline data flows back, use qualified leads and assessments booked as the best available proxy, and be explicit with the client that this is the goal we are building toward.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 31</div>
+  <h2 class="sec">Weekly Google Ads Report</h2>
+  <p class="smallnote">Standard reporting template. All cells are blank because <b>no Solar client data exists</b> — this is the format, not a result.</p>
+  <table>
+    <thead><tr><th style="width:46%">Metric</th><th class="num" style="width:26%">Result</th><th style="width:28%">Tier</th></tr></thead>
+    <tbody>
+      <tr><td>Spend</td><td class="num">₹</td><td>Input</td></tr>
+      <tr><td>Impressions</td><td class="num"></td><td>Reach</td></tr>
+      <tr><td>Clicks</td><td class="num"></td><td>Reach</td></tr>
+      <tr><td>CTR</td><td class="num">%</td><td>Reach</td></tr>
+      <tr><td>CPC</td><td class="num">₹</td><td>Efficiency</td></tr>
+      <tr><td>Landing page visits</td><td class="num"></td><td>Site</td></tr>
+      <tr><td><b>Leads</b></td><td class="num"></td><td>Outcome</td></tr>
+      <tr><td><b>CPL</b></td><td class="num">₹</td><td>Outcome</td></tr>
+      <tr><td><b>Qualified leads</b></td><td class="num"></td><td>Outcome</td></tr>
+      <tr><td><b>CPQL</b></td><td class="num">₹</td><td>Outcome</td></tr>
+      <tr><td>Calls</td><td class="num"></td><td>Outcome</td></tr>
+      <tr><td>WhatsApp enquiries</td><td class="num"></td><td>Outcome</td></tr>
+      <tr><td>Site visits</td><td class="num"></td><td>Pipeline</td></tr>
+      <tr><td>Quotations</td><td class="num"></td><td>Pipeline</td></tr>
+      <tr><td><b>Sales</b></td><td class="num"></td><td>Business</td></tr>
+      <tr><td><b>Revenue</b></td><td class="num">₹</td><td>Business</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="label">As the account matures, add</div>
+    <p style="margin:0"><b>Cost per Sale</b> · <b>Revenue</b> · <b>ROAS</b> — plus lead-to-qualified rate, qualified-to-assessment rate and assessment-to-sale rate, which are what actually explain a change in cost per sale. Report these only when the underlying CRM data is real; never model them as projections and present them as results.</p>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">22</span></span></div>
+</section>
+
+<!-- ============ SECTIONS 32-33 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Sections 32–33</span></div>
+  <div class="secnum">Section 32</div>
+  <h2 class="sec">Smart Pursuit Google Ads Principle</h2>
+  <div class="principle">
+    <div class="label">Operating principle</div>
+    <p>The objective is not to get as many clicks as possible. The objective is to capture relevant Solar search demand and turn it into qualified business opportunities.</p>
+  </div>
+  <p>Clicks are an <b>intermediate metric</b>. They are easy to buy, easy to increase and easy to mistake for progress. Lowering bids, loosening match types or writing vaguer headlines will all raise click volume — and every one of those moves can simultaneously reduce qualified enquiries. A report showing more clicks and fewer site assessments is a report of decline, presented as growth.</p>
+  <p>Clicks matter only as a <i>step</i>: a paid permission to present the offer. Their value is entirely determined by what happens next. So Smart Pursuit judges a Solar account in this order — <b>qualified enquiries first, assessments booked second, sales third, clicks last</b> — and any optimisation that improves clicks while worsening the first three is rejected, regardless of how good it looks on the surface of the dashboard.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 33</div>
+  <h2 class="sec">Complete Google Ads System</h2>
+  <div class="flow">
+    <div class="node key">RESEARCH<small>Market, competitors, service area, order value</small></div><div class="arw">↓</div>
+    <div class="node">SEARCH INTENT<small>Four-level classification</small></div><div class="arw">↓</div>
+    <div class="node">KEYWORD STRATEGY<small>Themes and match types</small></div><div class="arw">↓</div>
+    <div class="node">NEGATIVE KEYWORDS<small>Jobs, courses, projects, manufacturing</small></div><div class="arw">↓</div>
+    <div class="node acc">CAMPAIGN STRUCTURE<small>SP_SOLAR_SEARCH_LEADS_V1</small></div><div class="arw">↓</div>
+    <div class="node">AD GROUPS<small>Five intent-based groups</small></div><div class="arw">↓</div>
+    <div class="node">SEARCH ADS<small>RSA + assets</small></div><div class="arw">↓</div>
+    <div class="node">LANDING PAGE<small>Intent-matched, mobile-first</small></div><div class="arw">↓</div>
+    <div class="node acc">CONVERSION TRACKING<small>Primary vs secondary</small></div><div class="arw">↓</div>
+    <div class="node">LEAD QUALIFICATION<small>Area, property, roof rights, timeline</small></div><div class="arw">↓</div>
+    <div class="node">SALES FOLLOW-UP<small>Speed-to-lead and persistence</small></div><div class="arw">↓</div>
+    <div class="node">SEARCH-TERM OPTIMIZATION<small>Keep / negative / promote</small></div><div class="arw">↓</div>
+    <div class="node">REPORTING<small>Weekly, outcome-weighted</small></div><div class="arw">↓</div>
+    <div class="node win">SCALING<small>Only when demand is the constraint</small></div>
+  </div>
+  <p class="smallnote">This is a loop, not a line. Search-term optimisation feeds back into keyword strategy and negatives every week; reporting feeds back into budget priority; qualification feeds back into ad copy and targeting.</p>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">23</span></span></div>
+</section>
+
+<!-- ============ SECTION 34 + NEXT ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Step 4C — Google Ads Lead Generation System</span><span>Section 34 · Next Step</span></div>
+  <div class="secnum">Section 34</div>
+  <h2 class="sec">What Smart Pursuit Should Have Before Approaching a Client</h2>
+  <ul class="checklist">
+    <li><div class="n">1</div><div><b>Demo Solar Website</b><div class="smallnote">A working example site that shows what we build, without claiming it is a client.</div></div><span class="st prog">Being built</span></li>
+    <li><div class="n">2</div><div><b>Meta Ads System</b><div class="smallnote">Step 4B — demand creation framework.</div></div><span class="st done">Completed</span></li>
+    <li><div class="n">3</div><div><b>Google Ads System</b><div class="smallnote">Step 4C — this document.</div></div><span class="st this">This document</span></li>
+    <li><div class="n">4</div><div><b>Landing Page Framework</b><div class="smallnote">Step 4D — architecture, CRO and conversion flows.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">5</div><div><b>Tracking Framework</b><div class="smallnote">Events, call tracking, CRM mapping, consent handling.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">6</div><div><b>Lead Qualification SOP</b><div class="smallnote">Questions, scoring, handover rules, speed-to-lead standard.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">7</div><div><b>Reporting Dashboard</b><div class="smallnote">Weekly template through to sales, per Section 31.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">8</div><div><b>Solar Audit</b><div class="smallnote">The pre-sales diagnostic used to open conversations with prospects.</div></div><span class="st next">Next</span></li>
+  </ul>
+
+  <p>Together these eight components are Smart Pursuit's Solar marketing service. Individually, each is only a deliverable; combined, they are a system a client can be shown end to end — how demand is created, how it is captured, where it lands, how it is tracked, how it is qualified, how it is reported and how it is improved. That completeness is what allows a pre-client agency to sell competence honestly: we are not claiming Solar results we do not have, we are demonstrating a method we can execute from day one and measure from week one.</p>
+  <p class="smallnote"><b>Positioning note:</b> in client conversations, present these as Smart Pursuit's internal standards and frameworks. Never present the examples inside them as campaign results.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Next Step</div>
+  <h2 class="sec">Step 4D — Solar Landing Page + CRO System</h2>
+  <p>Step 4C ends at the click. Step 4D covers everything that happens after it — the page, the form, and the conversion path that decides whether a paid click becomes an enquiry.</p>
+  <div class="card">
+    <div class="grid2">
+      <ol style="margin:0">
+        <li>Landing Page Architecture</li>
+        <li>Above-the-Fold Structure</li>
+        <li>Solar Headlines</li>
+        <li>CTA Strategy</li>
+        <li>Trust Elements</li>
+        <li>Solar Calculator</li>
+        <li>Lead Forms</li>
+        <li>Mobile UX</li>
+        <li>Form Optimization</li>
+      </ol>
+      <ol start="10" style="margin:0">
+        <li>Message Matching</li>
+        <li>CRO Principles</li>
+        <li>Conversion Events</li>
+        <li>A/B Testing</li>
+        <li>Solar Landing Page Audit</li>
+        <li>Meta Landing Page</li>
+        <li>Google Landing Page</li>
+        <li>Thank-You Page</li>
+        <li>WhatsApp &amp; Call Conversion Flow</li>
+      </ol>
+    </div>
+  </div>
+
+  <div style="margin-top:12mm; border-top:1px solid var(--line); padding-top:6mm; display:flex; justify-content:space-between; align-items:flex-end">
+    <div>
+      <div class="brandmark" style="filter:none">
+        <div class="dot" style="width:28px;height:28px;font-size:11pt">S</div>
+        <div><div class="name" style="color:var(--ink); font-size:10pt">Smart Pursuit</div>
+        <div class="sub" style="font-size:7pt">Solar Digital Marketing System</div></div>
+      </div>
+    </div>
+    <div class="smallnote" style="text-align:right">
+      <b>Step 4C — Google Ads Lead Generation System</b><br>
+      India · Version 1.0 · Internal SOP &amp; Client Strategy Framework<br>
+      Contains no client performance data.
+    </div>
+  </div>
+  <div class="runfoot"><span>Solar Growth &amp; Customer Acquisition Framework</span><span>India · v1.0 · Page <span class="pg">24</span></span></div>
+</section>
+
+</body>
+</html>

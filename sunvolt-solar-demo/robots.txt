@@ -1,0 +1,11 @@
+# SunVolt Solar — demonstration project
+# SunVolt Solar is a fictional brand created as a solar marketing concept.
+
+User-agent: *
+Allow: /
+
+# Paid-traffic landing page and conversion page kept out of the index
+Disallow: /solar-assessment
+Disallow: /thank-you
+
+Sitemap: https://www.sunvoltsolar.example/sitemap.xml
