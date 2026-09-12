@@ -63,18 +63,18 @@ That belief shift is the whole campaign. It converts, because it flips the viewe
 
 ## 3. SCRIPT B — "The 3 Questions" (43 seconds, authority angle)
 
-**Word count: 126 → 43s at 175 wpm.** No news hook — this one runs on credential and curiosity, so it holds up long after the August memo stops being fresh.
+**Word count: 126 → 43s at 175 wpm.** Beat timings below are indicative; the word count is the control. No news hook — this one runs on credential and curiosity, so it holds up long after the August memo stops being fresh.
 
 Use for retargeting, LinkedIn, and cold traffic that doesn't respond to urgency.
 
 | Time | Spoken (VO) | On-screen |
 |---|---|---|
-| 0:00–0:06 | "I've reviewed hundreds of DBA applications. The students who get burned never ask question two." | "The question nobody asks" |
-| 0:06–0:16 | "Question one: does the practicum requirement apply to every student in the program — or did you find a job first and then go looking for a course to attach to it?" | **Q1 — Required for every student?** |
-| 0:16–0:27 | "Question two: is the practical training tied to your major and written into the syllabus — or is it an elective credit you bolted on afterwards?" | **Q2 — Tied to your major, in writing?** |
-| 0:27–0:37 | "Question three: will the school email you its CPT policy in writing before you pay the deposit? If the answer is no — that's your answer." | **Q3 — Policy in writing, before you pay?** |
-| 0:37–0:46 | "DBA. IT track or management track. Indiana Wesleyan, Westcliff, Sofia, National Louis — compared on these three questions, not on tuition." | Four names → "Compared on compliance, not price" |
-| 0:46–0:48 | "Comment 'DBA'. The checklist is free." | **COMMENT "DBA"** |
+| 0:00–0:05 | "I've reviewed hundreds of DBA applications. The students who get burned never ask question two." | "The question nobody asks" |
+| 0:05–0:16 | "Question one: does the practicum requirement apply to every student in the program — or did you find a job first and then go looking for a course to attach to it?" | **Q1 — Required for every student?** |
+| 0:16–0:25 | "Question two: is the practical training tied to your major and written into the syllabus — or is it an elective credit you bolted on afterwards?" | **Q2 — Tied to your major, in writing?** |
+| 0:25–0:34 | "Question three: will the school email you its CPT policy in writing before you pay the deposit? If the answer is no — that's your answer." | **Q3 — Policy in writing, before you pay?** |
+| 0:34–0:42 | "DBA. IT track or management track. Indiana Wesleyan, Westcliff, Sofia, National Louis — compared on these three questions, not on tuition." | Four names → "Compared on compliance, not price" |
+| 0:42–0:43 | "Comment 'DBA'. The checklist is free." | **COMMENT "DBA"** |
 
 ---
 
@@ -88,10 +88,10 @@ Highest intent hook in the bank — run this to warm audiences and lookalikes.
 |---|---|---|
 | 0:00–0:05 | "OPT ends in 90 days. Your manager wants to keep you. Here's the decision tree." | "90 days left." |
 | 0:05–0:20 | "Option one: leave and hope for a lottery you can't control. Option two: enroll somewhere cheap and hope nobody audits your paperwork. Option three: move up a degree level, into a doctorate whose practicum is required for every student." | Three-branch visual: ❌ lottery / ⚠️ cheap+risky / ✅ structured |
-| 0:20–0:30 | "Option three is why people choose a DBA. It's also where it goes wrong — when the program's structure doesn't match what the regulation actually requires." | "Structure > cheap tuition" |
-| 0:30–0:36 | "Four universities. IT track, management track. Online classes, one campus visit a term." | Names + "IT / Management" |
-| 0:36–0:45 | "Before you pick one: is the practicum required, is it tied to your major, is the policy in writing?" | Three checkmarks |
-| 0:45–0:52 | "Comment 'DBA' — Future Wise sends the checklist and your next intake window. Free." | **COMMENT "DBA"** |
+| 0:20–0:29 | "Option three is why people choose a DBA. It's also where it goes wrong — when the program's structure doesn't match what the regulation actually requires." | "Structure > cheap tuition" |
+| 0:29–0:34 | "Four universities. IT track, management track. Online classes, one campus visit a term." | Names + "IT / Management" |
+| 0:34–0:41 | "Before you pick one: is the practicum required, is it tied to your major, is the policy in writing?" | Three checkmarks |
+| 0:41–0:46 | "Comment 'DBA' — Future Wise sends the checklist and your next intake window. Free." | **COMMENT "DBA"** |
 
 ---
 
@@ -121,7 +121,7 @@ Highest intent hook in the bank — run this to warm audiences and lookalikes.
 
 | Length | Use | What's kept |
 |---|---|---|
-| **15s** | Google/YouTube pre-roll, LinkedIn | 0:00–0:05 hook + 0:33–0:43 three questions + CTA card |
+| **15s** | Google/YouTube pre-roll, LinkedIn | 0:00–0:04 hook + 0:28–0:38 three questions + CTA card |
 | **10s** | Retargeting (LP visitors, video viewers) | "Three questions before you enroll" + the three checkmarks + **COMMENT "DBA"** |
 | **7s** | Bumper / story ad | Hook line + end card only |
 | **Silent / no-VO** | Feeds where audio is off | Text-on-screen only: hook card → 3 questions → CTA. Captions must carry it alone. |
@@ -144,9 +144,9 @@ Highest intent hook in the bank — run this to warm audiences and lookalikes.
 
 | # | Asset | Source |
 |---|---|---|
-| 1 | Master 55s Reel (Script A) | Full footage |
-| 2 | Script B 48s Reel | Same set, second take |
-| 3 | Script C 52s Reel | Same set, third take |
+| 1 | Master 52s Reel (Script A) | Full footage |
+| 2 | Script B 43s Reel | Same set, second take |
+| 3 | Script C 43s Reel | Same set, third take |
 | 4 | 15s pre-roll cutdown | Script A cut |
 | 5 | 10s retargeting cutdown | Script A cut |
 | 6 | 6 static quote cards | "1. Required for all? 2. Tied to your major? 3. In writing?" |
@@ -157,3 +157,5 @@ Highest intent hook in the bank — run this to warm audiences and lookalikes.
 ---
 
 *All program facts used in these scripts (formats, modalities, tracks) are listed with their verification source in `03-compliance-guardrails.md` §4. Re-verify before every launch — university program pages change, and an outdated claim is both a conversion killer and a compliance risk.*
+
+> **Runtime rule for the whole pack:** the word count is the source of truth, not the timecodes. At 175 wpm, 175 words = 60 seconds. Every script here sits between 126 and 153 words — all under one minute, with headroom.
