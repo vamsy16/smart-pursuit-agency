@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Pursuit — Step 4D: Solar Landing Page + CRO System (Solar, India, v1.0)</title>
+<style>
+:root{
+  --ink:#0A0A0A; --ink2:#111111; --white:#FFFFFF; --muted:#A1A1AA;
+  --accent:#7C3AED; --accent-soft:rgba(124,58,237,.12);
+  --solar:#C9A227; --leaf:#2F9E6E;
+  --line:#E6E6EA; --line-dark:#242428; --paper:#FFFFFF; --paper2:#FAFAFB;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:#EDEDF0; color:var(--ink);
+  font-family:"Inter","Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:11.2pt; line-height:1.62; letter-spacing:.001em;
+}
+.page{
+  width:210mm; min-height:297mm; margin:10mm auto; background:var(--paper);
+  padding:20mm 18mm 24mm; position:relative;
+  box-shadow:0 10px 40px rgba(0,0,0,.13);
+}
+/* ---------- header / footer ---------- */
+.runhead{
+  position:absolute; top:9mm; left:18mm; right:18mm;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:7.6pt; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:4px;
+}
+.runhead b{color:var(--ink); font-weight:700; letter-spacing:.16em}
+.runfoot{
+  position:absolute; bottom:10mm; left:18mm; right:18mm;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:7.6pt; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted); border-top:1px solid var(--line); padding-top:5px;
+}
+.pg{display:inline-block; min-width:22px; text-align:right; color:var(--ink); font-weight:700}
+/* ---------- cover ---------- */
+.cover{ background:var(--ink); color:var(--white); padding:0; overflow:hidden; }
+.cover-inner{padding:26mm 18mm 20mm; position:relative; min-height:297mm; display:flex; flex-direction:column}
+.cover:after{
+  content:""; position:absolute; right:-60mm; top:-60mm; width:150mm; height:150mm;
+  border-radius:50%; background:radial-gradient(circle at 35% 35%, rgba(124,58,237,.55), rgba(124,58,237,0) 62%);
+}
+.cover:before{
+  content:""; position:absolute; left:-40mm; bottom:-70mm; width:140mm; height:140mm;
+  border-radius:50%; background:radial-gradient(circle at 50% 50%, rgba(201,162,39,.28), rgba(201,162,39,0) 64%);
+}
+.brandmark{display:flex; align-items:center; gap:12px; position:relative; z-index:2}
+.brandmark .dot{width:34px;height:34px;border-radius:9px;background:linear-gradient(140deg,var(--accent),#4C1D95);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13pt}
+.brandmark .name{font-size:12pt;font-weight:700;letter-spacing:.28em;text-transform:uppercase}
+.brandmark .sub{font-size:7.6pt;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+.cover h1{font-size:34pt; line-height:1.06; margin:0 0 6mm; font-weight:800; letter-spacing:-.02em; position:relative; z-index:2}
+.cover h2{font-size:15pt; font-weight:600; color:#E4E4E7; margin:0 0 10mm; position:relative; z-index:2}
+.eyebrow{display:inline-block; font-size:8pt; letter-spacing:.26em; text-transform:uppercase; color:#DDD6FE; border:1px solid rgba(124,58,237,.6); background:rgba(124,58,237,.18); padding:5px 12px; border-radius:999px; margin-bottom:10mm; position:relative; z-index:2}
+.cover .lede{font-size:12.5pt; color:#D4D4D8; max-width:135mm; border-left:3px solid var(--accent); padding-left:14px; position:relative; z-index:2}
+.cover-meta{margin-top:auto; position:relative; z-index:2; display:grid; grid-template-columns:repeat(4,1fr); gap:8mm; border-top:1px solid var(--line-dark); padding-top:8mm}
+.cover-meta div span{display:block; font-size:7.4pt; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+.cover-meta div b{font-size:10.5pt; font-weight:700}
+.cover-note{margin-top:8mm; font-size:8.6pt; color:var(--muted); border:1px dashed var(--line-dark); border-radius:10px; padding:10px 14px; position:relative; z-index:2}
+/* ---------- typography ---------- */
+h2.sec{font-size:19pt; line-height:1.15; margin:0 0 3mm; font-weight:800; letter-spacing:-.015em}
+.secnum{font-size:8pt; letter-spacing:.24em; text-transform:uppercase; color:var(--accent); font-weight:800; margin-bottom:3mm}
+h3{font-size:12.6pt; margin:9mm 0 3mm; font-weight:750; letter-spacing:-.01em}
+h4{font-size:10.4pt; margin:6mm 0 2mm; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#3F3F46}
+p{margin:0 0 3.4mm}
+ul,ol{margin:0 0 3.6mm; padding-left:5mm}
+li{margin-bottom:1.4mm}
+code,.kw{font-family:"JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size:9.4pt; background:#F4F4F6; border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:#3B0764}
+hr.div{border:0; height:1px; background:linear-gradient(90deg,var(--ink),var(--accent) 22%,var(--line) 60%,transparent); margin:10mm 0}
+.lead{font-size:12pt; color:#3F3F46}
+.toc{border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.toc div{display:flex; justify-content:space-between; gap:10px; padding:5px 12px; font-size:9.6pt; border-bottom:1px solid var(--line)}
+.toc div:last-child{border-bottom:0}
+.toc div b{font-weight:600}
+.toc span{color:var(--muted); font-variant-numeric:tabular-nums}
+/* ---------- components ---------- */
+.card{border:1px solid var(--line); border-radius:12px; padding:6mm 6mm 4mm; background:var(--paper2); margin:0 0 5mm}
+.card h4{margin-top:0}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:5mm}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:4mm}
+.callout{border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 12px 12px 0; padding:5mm 6mm; margin:5mm 0}
+.callout .label{font-size:7.6pt; letter-spacing:.22em; text-transform:uppercase; color:#5B21B6; font-weight:800; margin-bottom:2mm}
+.warn{border-left:4px solid var(--solar); background:rgba(201,162,39,.10); border-radius:0 12px 12px 0; padding:5mm 6mm; margin:5mm 0}
+.warn .label{font-size:7.6pt; letter-spacing:.22em; text-transform:uppercase; color:#8A6D06; font-weight:800; margin-bottom:2mm}
+.principle{background:var(--ink); color:var(--white); border-radius:16px; padding:9mm 8mm; margin:6mm 0; position:relative; overflow:hidden}
+.principle:after{content:""; position:absolute; right:-30mm; top:-30mm; width:80mm; height:80mm; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.45),transparent 65%)}
+.principle .label{font-size:7.6pt; letter-spacing:.24em; text-transform:uppercase; color:#C4B5FD; font-weight:800; margin-bottom:4mm; position:relative; z-index:2}
+.principle p{font-size:14.5pt; line-height:1.42; font-weight:650; margin:0; position:relative; z-index:2}
+.tag{display:inline-block; font-size:7.4pt; font-weight:800; letter-spacing:.16em; text-transform:uppercase; padding:3px 9px; border-radius:999px; vertical-align:middle}
+.tag-ex{background:#EDE9FE; color:#5B21B6; border:1px solid #DDD6FE}
+.tag-hy{background:#FEF3C7; color:#854D0E; border:1px solid #FDE68A}
+.tag-rec{background:#DCFCE7; color:#166534; border:1px solid #BBF7D0}
+.tag-data{background:#F4F4F5; color:#52525B; border:1px solid #E4E4E7}
+table{width:100%; border-collapse:collapse; margin:0 0 5mm; font-size:9.8pt}
+th{background:var(--ink); color:#fff; text-align:left; font-size:8pt; letter-spacing:.14em; text-transform:uppercase; padding:6px 9px; font-weight:700}
+td{border-bottom:1px solid var(--line); padding:6px 9px; vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--paper2)}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+.flow{margin:5mm 0; display:flex; flex-direction:column; align-items:center}
+.flow .node{
+  width:100%; max-width:118mm; text-align:center; border:1px solid var(--line);
+  border-radius:10px; padding:7px 12px; font-size:9.8pt; font-weight:650; background:#fff;
+}
+.flow .node.key{background:var(--ink); color:#fff; border-color:var(--ink)}
+.flow .node.acc{border-color:var(--accent); color:#4C1D95; background:#FAF5FF}
+.flow .node.win{border-color:var(--leaf); color:#14532D; background:#F0FDF4}
+.flow .node.bad{border-color:#FCA5A5; color:#7F1D1D; background:#FEF2F2}
+.flow .node small{display:block; font-weight:400; color:var(--muted); font-size:8.2pt; margin-top:2px}
+.flow .node.key small{color:#A1A1AA}
+.flow .arw{color:var(--accent); font-size:11pt; line-height:1; margin:3px 0}
+/* funnel */
+.funnel{margin:5mm 0; display:flex; flex-direction:column; align-items:center; gap:2.4mm}
+.funnel .fr{border-radius:8px; padding:6px 12px; text-align:center; font-size:9.6pt; font-weight:650; border:1px solid var(--line); background:#fff; position:relative}
+.funnel .fr small{display:block; font-weight:400; font-size:8pt; color:var(--muted)}
+.funnel .fr.a{background:#FAF5FF; border-color:#DDD6FE; color:#4C1D95}
+.funnel .fr.b{background:var(--ink); color:#fff; border-color:var(--ink)}
+.funnel .fr.b small{color:#A1A1AA}
+.funnel .fr.c{background:#F0FDF4; border-color:#BBF7D0; color:#14532D}
+.split{display:grid; grid-template-columns:1fr 1fr; gap:5mm; align-items:start}
+.chips span{display:inline-block; font-family:"JetBrains Mono",monospace; font-size:9pt; background:#fff; border:1px solid var(--line); border-radius:6px; padding:3px 8px; margin:0 4px 4px 0}
+.chips.neg span{border-color:#FCA5A5; background:#FEF2F2; color:#7F1D1D}
+.level{border:1px solid var(--line); border-left:5px solid var(--accent); border-radius:0 12px 12px 0; padding:5mm 6mm; margin-bottom:4mm; background:#fff}
+.level.l2{border-left-color:#8B5CF6}
+.level.l3{border-left-color:var(--solar)}
+.level.l4{border-left-color:#DC2626}
+.level .h{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2mm}
+.level .h b{font-size:11.4pt}
+.level .h em{font-style:normal; font-size:7.6pt; letter-spacing:.18em; text-transform:uppercase; color:var(--muted)}
+.wwh{border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:0 0 5mm}
+.wwh > div{padding:4mm 6mm; border-bottom:1px solid var(--line)}
+.wwh > div:last-child{border-bottom:0}
+.wwh .t{font-size:7.8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); font-weight:800; margin-bottom:1.5mm}
+.wwh > div:nth-child(4){background:#FAF5FF}
+.checklist{list-style:none; padding:0; margin:0}
+.checklist li{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:10px; padding:4mm 5mm; margin-bottom:3mm; background:#fff}
+.checklist .n{width:24px;height:24px;border-radius:7px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9pt;font-weight:800;flex:none}
+.st{font-size:7.6pt; font-weight:800; letter-spacing:.14em; text-transform:uppercase; padding:2px 8px; border-radius:999px; margin-left:auto; flex:none}
+.st.done{background:#DCFCE7;color:#166534}
+.st.prog{background:#FEF3C7;color:#854D0E}
+.st.this{background:#EDE9FE;color:#5B21B6}
+.st.next{background:#F4F4F5;color:#52525B}
+.quote{font-size:11.6pt; font-style:italic; color:#27272A; border-left:3px solid var(--solar); padding-left:12px; margin:0 0 4mm}
+.smallnote{font-size:8.8pt; color:#52525B}
+/* checkbox list */
+.cbx{list-style:none; padding:0; margin:0 0 4mm; column-gap:6mm}
+.cbx li{font-size:9.6pt; margin-bottom:1.6mm; padding-left:7mm; position:relative; break-inside:avoid}
+.cbx li:before{content:""; position:absolute; left:0; top:2.6px; width:12px; height:12px; border:1.5px solid var(--ink); border-radius:3px}
+.cbx.two{column-count:2}
+/* wireframe */
+.wire{border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:0 0 5mm; background:#fff}
+.wire .band{padding:4mm 6mm; border-bottom:1px solid var(--line); display:flex; gap:5mm; align-items:flex-start}
+.wire .band:last-child{border-bottom:0}
+.wire .idx{font-size:7.6pt; font-weight:800; letter-spacing:.14em; color:var(--accent); flex:none; width:14mm; padding-top:1mm}
+.wire .band.hero{background:#FAFAFB}
+.wire b{font-size:10.4pt}
+.wire .why{font-size:8.8pt; color:#52525B; margin-top:1mm}
+/* score table */
+.score td:first-child{font-weight:600}
+.band{display:flex; align-items:center; gap:8px; padding:3mm 4mm; border:1px solid var(--line); border-radius:9px; margin-bottom:2.4mm; font-size:9.6pt; background:#fff}
+.band .pill{font-size:8pt; font-weight:800; padding:2px 9px; border-radius:999px; flex:none; min-width:22mm; text-align:center}
+.p1{background:#DCFCE7;color:#166534}
+.p2{background:#EDE9FE;color:#5B21B6}
+.p3{background:#FEF3C7;color:#854D0E}
+.p4{background:#FEE2E2;color:#991B1B}
+.copybox{border:1px solid var(--line); border-left:4px solid var(--leaf); border-radius:0 10px 10px 0; background:#fff; padding:4mm 5mm; margin:0 0 4mm}
+.copybox .lb{font-size:7.4pt; letter-spacing:.2em; text-transform:uppercase; color:var(--leaf); font-weight:800; margin-bottom:2mm}
+.copybox.bad{border-left-color:#DC2626}
+.copybox.bad .lb{color:#DC2626}
+.mono{font-family:"JetBrains Mono",monospace; font-size:9.2pt}
+@media print{
+  body{background:#fff}
+  .page{margin:0; box-shadow:none; width:auto; min-height:auto; page-break-after:always; padding:20mm 16mm 24mm}
+  @page{size:A4; margin:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="page cover">
+  <div class="cover-inner">
+    <div class="brandmark">
+      <div class="dot">S</div>
+      <div>
+        <div class="name">Smart Pursuit</div>
+        <div class="sub">Performance Marketing</div>
+      </div>
+    </div>
+
+    <div style="height:30mm"></div>
+
+    <div class="eyebrow">Solar Digital Marketing System · Step 4D</div>
+    <h1>SOLAR DIGITAL<br>MARKETING SYSTEM</h1>
+    <h2>Step 4D — Landing Page + CRO System</h2>
+    <p class="lede">Turning Solar advertising traffic into qualified enquiries through better landing-page strategy, user experience and conversion optimization.</p>
+
+    <div class="cover-meta">
+      <div><span>Agency</span><b>Smart Pursuit</b></div>
+      <div><span>Framework</span><b>Conversion &amp; Lead Gen</b></div>
+      <div><span>Market</span><b>India</b></div>
+      <div><span>Version</span><b>1.0</b></div>
+    </div>
+
+    <div class="cover-note">
+      <b style="color:#fff">Status disclosure.</b> Smart Pursuit is currently at the pre-client / demo-system stage for the Solar niche.
+      This document contains no client performance data. Every conversion rate, traffic figure, lead count, system size and savings
+      reference inside is labelled as an <b style="color:#DDD6FE">Example</b>, <b style="color:#FDE68A">Starting Hypothesis</b> or
+      <b style="color:#BBF7D0">Recommendation</b>. No conversion rate, CPL, lead volume or sale count is promised anywhere in this system.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOC ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Contents</div>
+  <h2 class="sec">What this document covers</h2>
+  <p class="lead">Steps 4B and 4C covered how Solar traffic is created and captured. Step 4D covers what that traffic lands on. It is the difference between paying for attention and converting it.</p>
+
+  <div class="toc">
+    <div><b>01 · Why Landing Pages Matter</b><span>3</span></div>
+    <div><b>02 · What Is CRO?</b><span>4</span></div>
+    <div><b>03 · The Solar Conversion Funnel</b><span>5</span></div>
+    <div><b>04 · The Core Landing Page Offer</b><span>6</span></div>
+    <div><b>05 · Landing Page Types</b><span>7</span></div>
+    <div><b>06 · Landing Page Architecture</b><span>8</span></div>
+    <div><b>07–08 · Above the Fold &amp; Hero Design</b><span>9</span></div>
+    <div><b>09 · Message Match</b><span>11</span></div>
+    <div><b>10 · Solar Landing Page Copy</b><span>12</span></div>
+    <div><b>11–12 · Trust Elements &amp; Social Proof</b><span>14</span></div>
+    <div><b>13–14 · Benefits &amp; System Options</b><span>16</span></div>
+    <div><b>15 · Savings Calculator</b><span>17</span></div>
+    <div><b>16–17 · Lead Form Strategy &amp; Optimization</b><span>18</span></div>
+    <div><b>18 · CTA Strategy</b><span>20</span></div>
+    <div><b>19–20 · Mobile CRO &amp; Page Speed</b><span>21</span></div>
+    <div><b>21 · Trust + Friction Audit</b><span>23</span></div>
+    <div><b>22–23 · Objections &amp; FAQ Strategy</b><span>24</span></div>
+    <div><b>24–25 · WhatsApp &amp; Call Conversion Flows</b><span>26</span></div>
+    <div><b>26 · Thank-You Page</b><span>27</span></div>
+    <div><b>27–28 · Conversion Tracking &amp; CRO Metrics</b><span>28</span></div>
+    <div><b>29–30 · CRO Formula &amp; A/B Testing</b><span>30</span></div>
+    <div><b>31–32 · Priority Framework &amp; Audit Score</b><span>31</span></div>
+    <div><b>33–35 · Meta vs Google Landing Pages</b><span>33</span></div>
+    <div><b>36–37 · CRO Process &amp; Smart Pursuit SOP</b><span>35</span></div>
+    <div><b>38 · Pre-Launch Checklist</b><span>36</span></div>
+    <div><b>39–40 · CRO Principle &amp; System Map</b><span>37</span></div>
+    <div><b>Next · Step 4E Preview</b><span>38</span></div>
+  </div>
+
+  <hr class="div">
+
+  <h3>How to read this document</h3>
+  <p>This is written to be used, not filed. Sections 1–3 explain the concepts. Sections 4–20 are the build specification for a Solar landing page. Sections 21–32 are the optimization and audit system applied after launch. Sections 33–40 tie the page back to the Meta and Google campaigns that feed it.</p>
+
+  <div class="callout">
+    <div class="label">Labelling convention used throughout</div>
+    <p style="margin:0">Because Smart Pursuit has no Solar client data, every figure in this document carries a tag.
+    <span class="tag tag-ex">Example</span> means a constructed illustration.
+    <span class="tag tag-hy">Hypothesis</span> means a starting assumption to be tested.
+    <span class="tag tag-rec">Recommendation</span> means a Smart Pursuit standard.
+    <span class="tag tag-data">Actual Data</span> appears nowhere in v1.0 and is reserved for future client reporting.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">2</span></span></div>
+</section>
+
+<!-- ============ S1 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 01</div>
+  <h2 class="sec">Why Landing Pages Matter</h2>
+  <p class="lead">Ads generate traffic. Landing pages convert traffic. These are two different jobs, and they fail independently of each other.</p>
+
+  <p>An agency can build a well-structured campaign, write relevant ads, and win the click at a sensible cost — and still produce nothing, because the page the click lands on does not do its half of the work. This is the most common place a Solar campaign quietly loses money, and it is also the place clients are least likely to look when results disappoint.</p>
+
+  <div class="principle">
+    <div class="label">The governing idea of Step 4D</div>
+    <p>Good advertising cannot compensate indefinitely for a poor landing page.</p>
+  </div>
+
+  <p>Spending more can mask a weak page for a while. It cannot fix it. Every additional rupee flows through the same broken step, so the waste scales with the budget rather than being absorbed by it.</p>
+
+  <h3>The conversion path</h3>
+  <div class="flow">
+    <div class="node">AD<small>Creative or search listing earns attention</small></div>
+    <div class="arw">↓</div>
+    <div class="node">CLICK<small>Cost is incurred here, regardless of outcome</small></div>
+    <div class="arw">↓</div>
+    <div class="node acc">LANDING PAGE<small>The page must confirm relevance within seconds</small></div>
+    <div class="arw">↓</div>
+    <div class="node">FORM / CALL / WHATSAPP<small>The visitor chooses a contact method</small></div>
+    <div class="arw">↓</div>
+    <div class="node win">QUALIFIED LEAD<small>The only step with commercial value</small></div>
+  </div>
+
+  <h3>What can go wrong at each stage</h3>
+  <table>
+    <thead><tr><th style="width:22%">Stage</th><th style="width:38%">Failure mode</th><th>Consequence</th></tr></thead>
+    <tbody>
+      <tr><td><b>Ad</b></td><td>Promises something the page does not deliver</td><td>Click is paid for, expectation is broken on arrival</td></tr>
+      <tr><td><b>Click</b></td><td>Slow page, visitor leaves before it renders</td><td>Full cost, zero engagement, no data</td></tr>
+      <tr><td><b>Landing page</b></td><td>Offer unclear, or generic company homepage</td><td>Visitor cannot tell what to do next and exits</td></tr>
+      <tr><td><b>Contact step</b></td><td>Long form, broken validation, no phone option</td><td>Interested visitor abandons at the final step</td></tr>
+      <tr><td><b>Lead</b></td><td>Enquiry arrives but nobody follows up quickly</td><td>Marketing cost incurred, commercial value lost</td></tr>
+    </tbody>
+  </table>
+
+  <div class="flow">
+    <div class="node">Ad gets clicks but page does not match the ad</div>
+    <div class="arw">↓</div>
+    <div class="node">User becomes confused</div>
+    <div class="arw">↓</div>
+    <div class="node bad">User leaves</div>
+  </div>
+
+  <p>The two statements that follow from this are worth stating plainly to clients, because they reset the conversation away from traffic volume and toward outcomes:</p>
+
+  <div class="grid2">
+    <div class="card" style="text-align:center"><b style="font-size:15pt">Traffic ≠ Leads</b><div class="smallnote" style="margin-top:2mm">Visitors are an input, not a result.</div></div>
+    <div class="card" style="text-align:center"><b style="font-size:15pt">Clicks ≠ Customers</b><div class="smallnote" style="margin-top:2mm">A click is a cost until the page earns something.</div></div>
+  </div>
+
+  <div class="warn">
+    <div class="label">Agency positioning note</div>
+    <p style="margin:0">When a Solar client says "the leads are not coming", the instinct is to change the ads. Check the page first. It is cheaper to fix, faster to test, and more often the actual constraint.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">3</span></span></div>
+</section>
+
+<!-- ============ S2 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 02</div>
+  <h2 class="sec">What Is CRO?</h2>
+
+  <div class="wwh">
+    <div>
+      <div class="t">What it is</div>
+      <p style="margin:0">Conversion Rate Optimization is the process of improving a website or landing page so that a greater percentage of relevant visitors complete the desired action. The emphasis on <b>relevant</b> matters: the goal is not to convert everybody, it is to convert more of the people who should be converting.</p>
+    </div>
+    <div>
+      <div class="t">Why it matters for Solar</div>
+      <p style="margin:0">Solar is a considered purchase with a long decision cycle and a high ticket value. Traffic is expensive and the buyer is cautious. Improving the page improves every campaign pointed at it at once — without raising media spend.</p>
+    </div>
+    <div>
+      <div class="t">How it works</div>
+      <p style="margin:0">Observe behaviour, find where people hesitate or leave, form a hypothesis about why, change one thing, measure the result, keep what works. It is a loop, not a project.</p>
+    </div>
+    <div>
+      <div class="t">What Smart Pursuit should do</div>
+      <p style="margin:0">Build every Solar page against the architecture in Section 6, instrument it with the events in Section 27 from day one, and run the audit in Section 32 before launch and monthly afterwards. Without tracking in place first, CRO becomes guesswork.</p>
+    </div>
+  </div>
+
+  <h3>For Solar, the desired action could be</h3>
+  <div class="chips">
+    <span>Solar assessment request</span><span>Lead form submission</span><span>Phone call</span><span>WhatsApp enquiry</span><span>Site assessment booking</span>
+  </div>
+
+  <p>A page may legitimately support several of these. What it must not do is present them with equal weight — that forces the visitor to make a decision about <em>how</em> to enquire before deciding <em>whether</em> to enquire. One primary action, one or two clearly secondary ones.</p>
+
+  <h3>What CRO is not</h3>
+  <div class="grid2">
+    <div class="copybox bad">
+      <div class="lb">The common misreading</div>
+      <p style="margin:0">"Make the page look better."</p>
+      <p class="smallnote" style="margin:2mm 0 0">Redesigns driven by taste change everything at once, which means nothing is learned and any improvement cannot be attributed.</p>
+    </div>
+    <div class="copybox">
+      <div class="lb">The working definition</div>
+      <p style="margin:0">Understand visitor behaviour → identify friction → test improvements → measure conversion → improve.</p>
+      <p class="smallnote" style="margin:2mm 0 0">Changes are deliberate, isolated where practical, and judged against data rather than opinion.</p>
+    </div>
+  </div>
+
+  <h3>Friction, in practical terms</h3>
+  <p>Friction is anything that makes the next step harder than it needs to be. On a Solar page it usually appears as one of these:</p>
+  <table>
+    <thead><tr><th style="width:30%">Type of friction</th><th>How it shows up on a Solar landing page</th></tr></thead>
+    <tbody>
+      <tr><td><b>Cognitive</b></td><td>Visitor cannot tell what the company does, or what "assessment" involves</td></tr>
+      <tr><td><b>Trust</b></td><td>No verifiable company information, no address, unverifiable claims</td></tr>
+      <tr><td><b>Effort</b></td><td>Twelve form fields when five would qualify the lead adequately</td></tr>
+      <tr><td><b>Technical</b></td><td>Slow load on mobile data, form that fails silently, broken WhatsApp link</td></tr>
+      <tr><td><b>Anxiety</b></td><td>Unclear what happens after submission, or fear of aggressive sales calls</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Beginner note</div>
+    <p style="margin:0">CRO does not require expensive software to begin. For a first Solar client, the ordered priority is: correct event tracking, then a page built to a sound structure, then observation of where people drop off, and only then formal A/B testing. Testing without traffic produces confident conclusions from insufficient data, which is worse than not testing.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">4</span></span></div>
+</section>
+
+<!-- ============ S3 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 03</div>
+  <h2 class="sec">The Solar Conversion Funnel</h2>
+  <p class="lead">CRO is usually discussed as though it affects one step. In Solar it affects most of them, because the journey continues well past the form submission.</p>
+
+  <div class="funnel">
+    <div class="fr a" style="width:100%">TRAFFIC<small>Paid clicks, organic visits, referrals</small></div>
+    <div class="fr a" style="width:93%">LANDING PAGE VISITOR<small>Page actually rendered and seen</small></div>
+    <div class="fr a" style="width:86%">ENGAGED VISITOR<small>Scrolled, read, interacted with the calculator</small></div>
+    <div class="fr" style="width:76%">FORM START / CTA CLICK<small>Declared intent — the first real signal</small></div>
+    <div class="fr b" style="width:66%">LEAD<small>Contact details submitted</small></div>
+    <div class="fr b" style="width:56%">QUALIFIED LEAD<small>Genuine property, genuine intent, in service area</small></div>
+    <div class="fr c" style="width:46%">SITE ASSESSMENT<small>Physical visit or detailed remote evaluation</small></div>
+    <div class="fr c" style="width:36%">QUOTATION<small>Formal proposal with system design and pricing</small></div>
+    <div class="fr c" style="width:26%">SALE<small>Order confirmed</small></div>
+  </div>
+
+  <p class="smallnote" style="text-align:center">Funnel shape is illustrative of narrowing, not of any specific drop-off rate. <span class="tag tag-ex">Example</span></p>
+
+  <h3>Where CRO can act</h3>
+  <table>
+    <thead><tr><th style="width:34%">Funnel step</th><th style="width:33%">CRO lever</th><th>Owned by</th></tr></thead>
+    <tbody>
+      <tr><td>Traffic → Visitor</td><td>Page speed, mobile rendering, no interstitials</td><td>Agency</td></tr>
+      <tr><td>Visitor → Engaged</td><td>Message match, hero clarity, scannable structure</td><td>Agency</td></tr>
+      <tr><td>Engaged → Form start</td><td>CTA placement and wording, calculator, trust signals</td><td>Agency</td></tr>
+      <tr><td>Form start → Lead</td><td>Field count, validation quality, mobile keyboard types</td><td>Agency</td></tr>
+      <tr><td>Lead → Qualified lead</td><td>Qualification fields, targeting, honest ad copy</td><td>Shared</td></tr>
+      <tr><td>Qualified → Assessment</td><td>Speed of follow-up, thank-you page expectation setting</td><td>Client sales</td></tr>
+      <tr><td>Assessment → Quotation</td><td>Sales process quality, proposal turnaround</td><td>Client sales</td></tr>
+      <tr><td>Quotation → Sale</td><td>Pricing, financing options, competitor comparison</td><td>Client</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Scope boundary — state this early with clients</div>
+    <p style="margin:0">Smart Pursuit can materially influence the top six steps. The final three depend on the client's sales team, pricing and product. Making this distinction at the start of an engagement prevents a situation later where advertising is blamed for a downstream sales problem — and equally prevents the agency from taking credit it has not earned.</p>
+  </div>
+
+  <h3>The two ratios worth separating</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Page conversion rate</h4>
+      <p style="margin:0">Visitors who become leads. Measures the page. Improves with clarity, speed and reduced friction.</p>
+    </div>
+    <div class="card">
+      <h4>Lead quality rate</h4>
+      <p style="margin:0">Leads that become qualified leads. Measures targeting and honesty of the offer. Improves with better qualification and tighter audience definition.</p>
+    </div>
+  </div>
+  <p>Optimising the first while ignoring the second is the classic CRO failure: more leads, worse leads, unchanged or worse revenue. Section 28 returns to this.</p>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">5</span></span></div>
+</section>
+
+<!-- ============ S4 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 04</div>
+  <h2 class="sec">The Core Landing Page Offer</h2>
+
+  <div class="principle">
+    <div class="label">Primary offer across all Solar landing pages</div>
+    <p>FREE SOLAR ASSESSMENT</p>
+  </div>
+
+  <h3>Why this, and not a direct sale</h3>
+  <p>A rooftop Solar system in India is a significant capital decision — typically a multi-lakh purchase, installed on the buyer's own roof, with a payback period measured in years. Nobody makes that decision from an advertisement. Asking them to is asking for a commitment the visitor is not in a position to give.</p>
+
+  <div class="grid2">
+    <div class="copybox bad">
+      <div class="lb">Asks for too much, too early</div>
+      <p style="margin:0"><b>Buy Solar Panels Now</b></p>
+      <p class="smallnote" style="margin:2mm 0 0">Requires the visitor to have already decided on solar, on a system size, on a budget and on a supplier. The overwhelming majority have not.</p>
+    </div>
+    <div class="copybox">
+      <div class="lb">Matches where the visitor actually is</div>
+      <p style="margin:0"><b>Get a Free Solar Assessment</b></p>
+      <p class="smallnote" style="margin:2mm 0 0">Asks only for a conversation about suitability. Low commitment, genuinely useful, and a natural first step toward a purchase.</p>
+    </div>
+  </div>
+
+  <p>The assessment works as an offer because it is the step the buyer actually needs next. It is not a marketing device wrapped around a sales call — it answers a real question the homeowner cannot answer alone: <em>will this work on my roof, and what would it involve?</em></p>
+
+  <h3>What the assessment can help the prospect understand</h3>
+  <table>
+    <thead><tr><th style="width:34%">Area</th><th>What gets clarified</th></tr></thead>
+    <tbody>
+      <tr><td><b>Electricity usage</b></td><td>Current consumption pattern and how much of it solar could realistically offset</td></tr>
+      <tr><td><b>Property type</b></td><td>Whether an independent house, villa, shop, office or commercial building changes the approach</td></tr>
+      <tr><td><b>Rooftop suitability</b></td><td>Available area, orientation, shading from adjacent buildings or water tanks, structural condition</td></tr>
+      <tr><td><b>Approximate system requirement</b></td><td>An indicative capacity range based on usage and available roof area</td></tr>
+      <tr><td><b>Installation considerations</b></td><td>Access, mounting approach, wiring routes, meter and inverter placement</td></tr>
+      <tr><td><b>Potential savings considerations</b></td><td>The factors that would determine savings — not a promised figure</td></tr>
+      <tr><td><b>Next steps</b></td><td>What a site visit, design and quotation process would involve</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Non-negotiable compliance rule</div>
+    <p style="margin:0">Never present estimated savings as guaranteed savings. Every savings reference on a Smart Pursuit Solar page must be framed as potential, indicative or illustrative, and must be accompanied by the factors it depends on — consumption, tariff, system design, generation and site conditions. This applies to page copy, calculator output, ad copy and sales scripts equally.</p>
+  </div>
+
+  <h3>Secondary offers worth considering</h3>
+  <p>The assessment remains primary, but for some traffic a lighter alternative can capture visitors not yet ready to speak to anyone. <span class="tag tag-rec">Recommendation</span></p>
+  <ul>
+    <li><b>Savings estimate via calculator</b> — self-service, no contact required, captures the email only if the visitor chooses.</li>
+    <li><b>Rooftop suitability check over WhatsApp</b> — lower perceived commitment than a form, suits mobile-first Meta traffic.</li>
+    <li><b>Callback at a chosen time</b> — addresses the visitor who wants to talk but not right now.</li>
+  </ul>
+  <p class="smallnote">Each additional offer adds a decision for the visitor. Add one only if there is a clear reason, and never let a secondary offer compete visually with the primary CTA.</p>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">6</span></span></div>
+</section>
+
+<!-- ============ S5 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 05</div>
+  <h2 class="sec">Landing Page Types</h2>
+  <p class="lead">Three pages cover the realistic traffic sources for a Solar client. Each exists because the visitor arrives in a measurably different state of mind.</p>
+
+  <div class="level">
+    <div class="h"><b>Page 1 — Solar Assessment</b><em>Meta &amp; general campaigns</em></div>
+    <p class="mono" style="margin:0 0 2mm">/solar-assessment</p>
+    <p style="margin:0 0 2mm"><b>Primary purpose:</b> capture assessment leads from Meta and general campaigns.</p>
+    <p style="margin:0"><b>Visitor state:</b> was not searching for solar. Saw something in a feed that raised the possibility. Needs the problem framed before the offer will mean anything.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Implication:</b> more education, stronger visual communication, the problem stated before the solution. Navigation stripped so the only paths are convert or leave.</p>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>Page 2 — Solar Installation</b><em>Google Search</em></div>
+    <p class="mono" style="margin:0 0 2mm">/solar-installation</p>
+    <p style="margin:0 0 2mm"><b>Primary purpose:</b> capture high-intent Google Search traffic.</p>
+    <p style="margin:0"><b>Visitor state:</b> actively looking. Typed something specific. Already past the "is solar worth it" stage and into "who should do this for me".</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Implication:</b> confirm relevance immediately, lead with service and process rather than education, make contact options prominent and immediate.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>Page 3 — Local Solar</b><em>Location-specific search</em></div>
+    <p class="mono" style="margin:0 0 2mm">/solar-installation-hyderabad</p>
+    <p style="margin:0 0 2mm"><b>Primary purpose:</b> capture location-specific Solar searches.</p>
+    <p style="margin:0"><b>Visitor state:</b> looking for someone who works in their area. Proximity and local credibility are the deciding factors.</p>
+    <p class="smallnote" style="margin:2mm 0 0"><b>Implication:</b> name the specific areas served, reference local conditions honestly, make the service radius unambiguous.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">On location pages — the most common mistake</div>
+    <p style="margin:0">A location page must be genuinely useful for that location. It should not simply duplicate content with the city name changed. Swapping "Hyderabad" for "Pune" across an otherwise identical page produces thin, near-duplicate content that serves the visitor poorly and gives search engines no reason to rank either page.</p>
+  </div>
+
+  <h3>What makes a location page genuinely local</h3>
+  <table>
+    <thead><tr><th style="width:32%">Element</th><th>What real localisation looks like</th></tr></thead>
+    <tbody>
+      <tr><td><b>Areas served</b></td><td>Named localities the client actually covers — for a Hyderabad client that might be Secunderabad, Rangareddy, Medchal, Sangareddy. Never list areas the client cannot service.</td></tr>
+      <tr><td><b>Local context</b></td><td>Regional factors that genuinely differ: typical property types in that market, local climate patterns affecting generation, the relevant state distribution utility.</td></tr>
+      <tr><td><b>Regulatory framing</b></td><td>Reference that net metering and approvals are handled through the applicable state utility and that requirements vary by state — without stating specific rules that may change.</td></tr>
+      <tr><td><b>Proof</b></td><td>Where the client has genuine completed installations in that city, reference them with verified details. Where they do not, say nothing rather than implying coverage.</td></tr>
+      <tr><td><b>Contact</b></td><td>Local office address if one exists. A real address is a strong local trust signal.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Scaling rule</div>
+    <p style="margin:0">Build a location page only where the client can genuinely service the area and where there is enough search demand to justify it. Three strong location pages outperform fifteen thin ones — in ranking, in conversion, and in the credibility of the client's own business.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">7</span></span></div>
+</section>
+
+<!-- ============ S6 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 06</div>
+  <h2 class="sec">Landing Page Architecture</h2>
+  <p class="lead">A recommended full structure. Treat it as a menu with a fixed order, not a mandatory checklist.</p>
+
+  <div class="wire">
+    <div class="band hero"><div class="idx">01</div><div><b>Hero</b><div class="why">Offer, audience, primary CTA. Decides whether the rest of the page gets read.</div></div></div>
+    <div class="band"><div class="idx">02</div><div><b>Problem / Why Solar</b><div class="why">Names the situation the visitor recognises — rising bills, unpredictable usage. Essential for Meta, often skippable for high-intent search.</div></div></div>
+    <div class="band"><div class="idx">03</div><div><b>Why Get an Assessment?</b><div class="why">Justifies the specific action being asked for, rather than assuming its value is obvious.</div></div></div>
+    <div class="band"><div class="idx">04</div><div><b>How the Assessment Works</b><div class="why">Removes fear of the unknown. The single most effective anxiety reducer on a lead-gen page.</div></div></div>
+    <div class="band"><div class="idx">05</div><div><b>Solar Benefits / Considerations</b><div class="why">Balanced case. Includes what solar does not solve, which builds more credibility than it costs.</div></div></div>
+    <div class="band"><div class="idx">06</div><div><b>System Options</b><div class="why">Orients the visitor on scale — 3 kW, 5 kW, 10 kW — without quoting fixed outcomes.</div></div></div>
+    <div class="band"><div class="idx">07</div><div><b>Savings / Estimation Tool</b><div class="why">Interactive engagement. Converts passive readers into participants and generates a strong intent signal.</div></div></div>
+    <div class="band"><div class="idx">08</div><div><b>Property Suitability</b><div class="why">Answers "will this work for me specifically" — the question blocking most Solar enquiries.</div></div></div>
+    <div class="band"><div class="idx">09</div><div><b>Trust / Proof</b><div class="why">Verifiable company substance. Placed after interest is established, before the form.</div></div></div>
+    <div class="band"><div class="idx">10</div><div><b>FAQ</b><div class="why">Handles remaining objections without a salesperson. Doubles as useful search content.</div></div></div>
+    <div class="band"><div class="idx">11</div><div><b>Lead Form</b><div class="why">The conversion point. Also reachable from every CTA above via anchor link.</div></div></div>
+    <div class="band"><div class="idx">12</div><div><b>Final CTA</b><div class="why">Catches the visitor who read everything before deciding. Restates the offer and contact options.</div></div></div>
+  </div>
+
+  <h3>Page length should follow traffic source and intent</h3>
+  <p>The exact page length should depend on traffic source and user intent. Do not force unnecessary sections onto every landing page — each section the visitor must scroll past is a small cost, justified only when it does work.</p>
+
+  <table>
+    <thead><tr><th style="width:26%">Page</th><th style="width:37%">Sections typically included</th><th>Sections typically dropped</th></tr></thead>
+    <tbody>
+      <tr><td><b>Meta — assessment</b></td><td>1, 2, 3, 4, 5, 7, 9, 10, 11</td><td>6 and 8 where they add length without reducing hesitation</td></tr>
+      <tr><td><b>Google — installation</b></td><td>1, 3, 4, 5, 6, 8, 9, 10, 11, 12</td><td>2 — the visitor already accepts the premise, restating it delays them</td></tr>
+      <tr><td><b>Location page</b></td><td>1, 3, 4, 6, 8, 9, 10, 11</td><td>2 and 7 where local proof and process matter more</td></tr>
+      <tr><td><b>Remarketing</b></td><td>1, 9, 10, 11</td><td>Most education — the visitor has seen it already</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> Starting structures. Adjust based on observed scroll depth and drop-off once the page has traffic.</p>
+
+  <div class="callout">
+    <div class="label">Ordering principle</div>
+    <p style="margin:0">The sequence answers the visitor's questions in the order they naturally arise: <b>What is this? → Does it apply to me? → How does it work? → What will it cost me to find out? → Can I trust these people? → What if I have concerns? → How do I start?</b> Reordering sections tends to fail because it answers questions the visitor has not asked yet.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">8</span></span></div>
+</section>
+
+<!-- ============ S7 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 07</div>
+  <h2 class="sec">Above-the-Fold Structure</h2>
+  <p class="lead">The visible area before any scrolling carries more weight than the rest of the page combined, because it determines whether the rest of the page exists for that visitor.</p>
+
+  <div class="card" style="background:#fff">
+    <div style="border:1px dashed var(--line); border-radius:10px; padding:6mm; background:var(--paper2)">
+      <div class="smallnote" style="letter-spacing:.2em; text-transform:uppercase; font-size:7.4pt; color:var(--accent); font-weight:800; margin-bottom:3mm">Recommended hero — assessment page</div>
+      <div style="font-size:20pt; font-weight:800; line-height:1.15; letter-spacing:-.02em; margin-bottom:3mm">Is Solar Right For Your Property?</div>
+      <p style="font-size:11.4pt; color:#3F3F46; margin:0 0 5mm">Understand your Solar requirement, rooftop suitability and installation options before making a decision.</p>
+      <div style="display:flex; gap:4mm; flex-wrap:wrap; margin-bottom:4mm">
+        <div style="background:var(--solar); color:#1a1a1a; font-weight:800; font-size:10pt; padding:9px 18px; border-radius:8px; letter-spacing:.02em">GET MY FREE SOLAR ASSESSMENT</div>
+        <div style="border:1.5px solid var(--ink); color:var(--ink); font-weight:700; font-size:10pt; padding:9px 18px; border-radius:8px">WHATSAPP US</div>
+      </div>
+      <div class="smallnote" style="font-size:8.6pt">No-obligation consultation · Site assessment · Personalized recommendation</div>
+    </div>
+  </div>
+
+  <h3>The four questions the hero must answer</h3>
+  <table>
+    <thead><tr><th style="width:8%">#</th><th style="width:30%">Question</th><th>How the hero above answers it</th></tr></thead>
+    <tbody>
+      <tr><td><b>1</b></td><td><b>What is being offered?</b></td><td>A free solar assessment — stated in the CTA, reinforced in the supporting line</td></tr>
+      <tr><td><b>2</b></td><td><b>Who is it for?</b></td><td>Property owners considering solar — "your property", "your rooftop suitability"</td></tr>
+      <tr><td><b>3</b></td><td><b>What happens next?</b></td><td>A consultation and assessment, signalled by the microcopy beneath the buttons</td></tr>
+      <tr><td><b>4</b></td><td><b>Why should the visitor care?</b></td><td>It helps them decide before committing — "before making a decision"</td></tr>
+    </tbody>
+  </table>
+
+  <p>All four must be answerable without scrolling. A visitor who has to scroll to work out what the page is offering has already been given a reason to leave.</p>
+
+  <h3>Headline variants by page</h3>
+  <table>
+    <thead><tr><th style="width:24%">Page</th><th style="width:38%">H1</th><th>Reasoning</th></tr></thead>
+    <tbody>
+      <tr><td>Meta assessment</td><td>Is Solar Right For Your Property?</td><td>A question invites engagement from someone who has not yet decided</td></tr>
+      <tr><td>Google installation</td><td>Rooftop Solar Installation for Homes and Businesses</td><td>Confirms the service searched for; no cleverness, just relevance</td></tr>
+      <tr><td>Hyderabad location</td><td>Rooftop Solar Installation in Hyderabad</td><td>Matches the search term almost exactly, including the city</td></tr>
+      <tr><td>Main site</td><td>Power Your Home With Solar. Reduce Your Electricity Costs.</td><td>Broader positioning statement for mixed traffic</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> Starting headlines for testing, per Section 30.</p>
+
+  <div class="warn">
+    <div class="label">Microcopy under the CTA</div>
+    <p style="margin:0">The line <b>"No-obligation consultation · Site assessment · Personalized recommendation"</b> does more work than its size suggests. The most common unspoken hesitation before clicking a Solar CTA is "am I committing to something, and will I be pursued?" One line answers it. Keep it factual — if the client does charge for site visits in some circumstances, the copy must reflect that.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">9</span></span></div>
+</section>
+
+<!-- ============ S8 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 08</div>
+  <h2 class="sec">Hero Design</h2>
+
+  <h3>Visual direction</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Use</h4>
+      <ul style="margin:0">
+        <li>Real Indian residential rooftop Solar imagery</li>
+        <li>Indian home or property context — recognisable architecture</li>
+        <li>Professional Solar technician at work, where appropriate</li>
+        <li>Clean composition with space for the headline to sit legibly</li>
+        <li>Strong, visually dominant CTA</li>
+        <li>Minimal distraction around the primary action</li>
+      </ul>
+    </div>
+    <div class="card" style="background:#FEF2F2; border-color:#FCA5A5">
+      <h4 style="color:#991B1B">Avoid</h4>
+      <ul style="margin:0">
+        <li>American or European suburban housing — visibly wrong market</li>
+        <li>Obviously AI-generated panels with impossible geometry</li>
+        <li>Cartoon or vector solar illustrations on a lead-gen hero</li>
+        <li>Generic stock-business imagery: handshakes, boardrooms</li>
+        <li>Busy collages that leave no clean area for text</li>
+        <li>Carousels and auto-playing video in the hero slot</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>The hero image is a credibility signal before it is a decorative one. An Indian homeowner comparing suppliers reads an American suburban roof as evidence the company is not local — which is precisely the opposite of what a location-targeted campaign needs to establish.</p>
+
+  <div class="warn">
+    <div class="label">Imagery integrity rules</div>
+    <p style="margin:0 0 2mm">Do <b>not</b> use fake customer photos or fake project imagery. If a photograph is stock or representative rather than the client's own work, it must never be captioned or implied as a completed project by that company.</p>
+    <p style="margin:0">Where representative imagery is used on a demonstration build, label it plainly — for example <b>"Representative Solar installation examples"</b> — and state that the images are not presented as the company's own projects.</p>
+  </div>
+
+  <h3>Claims that must not appear unless verifiable</h3>
+  <div class="chips neg">
+    <span>10,000+ customers</span><span>500+ installations</span><span>15 years experience</span><span>Best Solar company</span><span>India's #1 Solar company</span><span>MW installed</span><span>Award-winning</span><span>Government approved partner</span>
+  </div>
+  <p>None of these may be used unless the actual client can verify them and would stand behind them in writing. This is not only an ethical position — unverifiable superlatives are a disclosure risk, they invite competitor complaints, and Indian Solar buyers have become notably sceptical of them.</p>
+
+  <div class="callout">
+    <div class="label">What to use instead when the client is new</div>
+    <p style="margin:0">A newer Solar company is not without credible things to say. Verifiable substance beats invented scale: registered company details, a real office address, named service areas, the actual installation process, the specific warranty terms offered, the panel and inverter brands supplied, and the qualifications of the installation team. These are checkable, which is exactly what makes them persuasive. Section 11 develops this.</p>
+  </div>
+
+  <h3>Hero layout — mobile first</h3>
+  <table>
+    <thead><tr><th style="width:22%">Element</th><th style="width:39%">Mobile treatment</th><th>Desktop treatment</th></tr></thead>
+    <tbody>
+      <tr><td>Image</td><td>Cropped to a shorter aspect; subject kept in frame</td><td>Wider crop, image beside or behind the text block</td></tr>
+      <tr><td>H1</td><td>Around 26–30px, two or three lines maximum</td><td>Around 44–56px, one or two lines</td></tr>
+      <tr><td>Supporting copy</td><td>One sentence; second sentence moved below the fold</td><td>One or two sentences</td></tr>
+      <tr><td>CTAs</td><td>Full-width stacked, primary first, minimum 48px tall</td><td>Side by side, primary visually dominant</td></tr>
+      <tr><td>Trust microcopy</td><td>Single line, kept visible</td><td>Single line under the CTAs</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-rec">Recommendation</span> Verify the CTA is visible without scrolling on a 360×640 viewport — still a common screen size in the Indian market.</p>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">10</span></span></div>
+</section>
+
+<!-- ============ S9 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 09</div>
+  <h2 class="sec">Message Match</h2>
+  <p class="lead">One of the most important CRO principles, and one of the cheapest to fix. The visitor should immediately recognise that they reached the page they expected.</p>
+
+  <div class="flow">
+    <div class="node acc">AD<small>Sets an expectation</small></div>
+    <div class="arw">↓</div>
+    <div class="node key">LANDING PAGE<small>Must confirm that expectation within about five seconds</small></div>
+  </div>
+
+  <h3>Matched examples</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Meta</h4>
+      <p style="margin:0 0 2mm"><b>Ad:</b> Get a Free Solar Assessment</p>
+      <p style="margin:0"><b>Page:</b> Get Your Free Solar Assessment</p>
+      <p class="smallnote" style="margin:2mm 0 0">Near-identical phrasing. The visitor recognises it without reading carefully.</p>
+    </div>
+    <div class="card">
+      <h4>Google</h4>
+      <p style="margin:0 0 2mm"><b>Ad:</b> Solar Installation in Hyderabad</p>
+      <p style="margin:0"><b>Page:</b> Solar Installation in Hyderabad</p>
+      <p class="smallnote" style="margin:2mm 0 0">Exact match including the city. The search term, the ad and the H1 form one continuous line of thought.</p>
+    </div>
+  </div>
+
+  <h3>A mismatched example</h3>
+  <div class="copybox bad">
+    <div class="lb">What creates friction</div>
+    <p style="margin:0 0 2mm"><b>Ad:</b> Free Solar Assessment</p>
+    <p style="margin:0"><b>Landing page:</b> Welcome to XYZ Energy — India's Leading Solar Company</p>
+  </div>
+  <p>Three separate problems are created at once:</p>
+  <ol>
+    <li><b>The promised offer has vanished.</b> The visitor clicked for an assessment and arrived at a company introduction. They must now search the page for the thing they were promised.</li>
+    <li><b>The subject has changed.</b> The ad was about the visitor's property. The page is about the company. Attention shifts from "what do I get" to "who are these people", which is a weaker starting position.</li>
+    <li><b>An unverifiable claim opens the relationship.</b> "India's Leading Solar Company" invites scepticism at the exact moment the page should be building confidence.</li>
+  </ol>
+
+  <p>The cost is not only lost conversions. On Google, landing page experience is a component of Ad Rank, so poor message match can raise what the client pays per click while simultaneously reducing what each click is worth.</p>
+
+  <h3>Match at four levels</h3>
+  <table>
+    <thead><tr><th style="width:22%">Level</th><th style="width:34%">What must align</th><th>Common failure</th></tr></thead>
+    <tbody>
+      <tr><td><b>Wording</b></td><td>Headline echoes the ad's core phrase</td><td>Page uses a company slogan instead of the offer</td></tr>
+      <tr><td><b>Offer</b></td><td>The thing promised is the thing available</td><td>Ad offers an assessment, page pushes a product catalogue</td></tr>
+      <tr><td><b>Visual</b></td><td>Hero image resembles the ad creative</td><td>Ad shows an Indian rooftop, page shows a solar farm</td></tr>
+      <tr><td><b>Location</b></td><td>City in the ad appears in the page</td><td>City-targeted ad points to a generic national page</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Smart Pursuit working rule</div>
+    <p style="margin:0">Before any Solar campaign goes live, open each ad next to its landing page on a phone screen. Read the ad headline, then the page H1. If the connection is not obvious in a single glance, the match is not close enough. This five-minute check catches more lost conversion than most optimisation work performed afterwards.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">11</span></span></div>
+</section>
+
+<!-- ============ S10 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 10</div>
+  <h2 class="sec">Solar Landing Page Copy</h2>
+  <p class="lead">Recommended copy for each major block. Written to be used directly, adjusted for the client's verified details.</p>
+
+  <div class="copybox">
+    <div class="lb">Hero</div>
+    <p style="margin:0 0 2mm"><b>H1:</b> Is Solar Right For Your Property?</p>
+    <p style="margin:0 0 2mm"><b>Sub:</b> Understand your Solar requirement, rooftop suitability and installation options before making a decision.</p>
+    <p style="margin:0"><b>CTA:</b> GET MY FREE SOLAR ASSESSMENT &nbsp;·&nbsp; <b>Secondary:</b> WHATSAPP US</p>
+  </div>
+
+  <div class="copybox">
+    <div class="lb">Problem section</div>
+    <p style="margin:0 0 2mm"><b>H2:</b> Is Your Electricity Bill Getting Harder to Manage?</p>
+    <p style="margin:0">Electricity costs tend to rise over time, while most households have limited control over the tariff they pay. Air conditioning, water heating and daytime appliance use push consumption higher during exactly the hours when rooftop solar generates most. For many properties, that overlap is what makes solar worth evaluating — though whether it makes sense for yours depends on your consumption, your roof and your site conditions.</p>
+  </div>
+
+  <div class="copybox">
+    <div class="lb">Assessment section</div>
+    <p style="margin:0 0 2mm"><b>H2:</b> Why Start With an Assessment?</p>
+    <p style="margin:0">Every roof is different. Available area, shading, orientation and your actual electricity usage determine whether solar suits your property and what size system would be appropriate. An assessment answers those questions specifically for your property, so any decision you make afterwards is based on your situation rather than a general estimate.</p>
+  </div>
+
+  <div class="copybox">
+    <div class="lb">How it works</div>
+    <p style="margin:0 0 2mm"><b>H2:</b> How the Assessment Works</p>
+    <p style="margin:0 0 1mm"><b>1. Share your details.</b> Your location, property type and approximate monthly electricity bill.</p>
+    <p style="margin:0 0 1mm"><b>2. Initial discussion.</b> A specialist calls to understand your usage pattern and what you are hoping to achieve.</p>
+    <p style="margin:0 0 1mm"><b>3. Site assessment.</b> We evaluate your roof area, shading, orientation and structural suitability.</p>
+    <p style="margin:0"><b>4. Recommendation.</b> An indicative system size, the installation approach, and what the next step would involve.</p>
+  </div>
+
+  <div class="copybox">
+    <div class="lb">Benefits</div>
+    <p style="margin:0 0 2mm"><b>H2:</b> Why Consider Rooftop Solar?</p>
+    <p style="margin:0"><b>Lower grid dependence</b> — generate a portion of your own electricity during daylight hours. <b>Potential long-term cost reduction</b> — savings depend on consumption, tariff and system design. <b>Productive use of unused roof area</b> — space that currently earns nothing. <b>Renewable generation</b> — reduced reliance on conventional sources. <b>Greater energy independence</b> — more predictable costs over the system's operating life.</p>
+  </div>
+
+  <div class="copybox">
+    <div class="lb">FAQ — tone sample</div>
+    <p style="margin:0 0 2mm"><b>Q: Will solar eliminate my electricity bill?</b></p>
+    <p style="margin:0">Usually not entirely. Solar generates during daylight hours, while most homes also draw power at night. How much of your bill it offsets depends on your consumption pattern, system size, tariff structure and actual generation. An assessment gives you a realistic picture for your property rather than a general figure.</p>
+  </div>
+
+  <div class="copybox">
+    <div class="lb">Final CTA</div>
+    <p style="margin:0 0 2mm"><b>H2:</b> Find Out What Solar Would Look Like on Your Roof</p>
+    <p style="margin:0">Share a few details and a specialist will get in touch to discuss your property, your electricity usage and whether solar is a sensible fit. No obligation, and no cost for the initial consultation.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Copy standards</div>
+    <p style="margin:0">Human, specific, concise, trustworthy, Indian-market relevant and conversion-focused. Avoid exaggerated marketing language. Banned openings and phrases across all Smart Pursuit Solar pages: "Welcome to our website", "We are the best", "world-class solutions", "Leverage renewable energy", "Revolutionize your energy journey", "Cutting-edge solutions". These signal a template rather than a business, and a cautious buyer notices.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">12</span></span></div>
+</section>
+
+<!-- ============ S10b ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 10 · continued</div>
+  <h2 class="sec">Copy Patterns Worth Reusing</h2>
+
+  <h3>The hedging vocabulary</h3>
+  <p>Solar marketing copy lives or dies on how claims are framed. These substitutions keep the page persuasive while remaining defensible:</p>
+  <table>
+    <thead><tr><th style="width:44%">Do not write</th><th>Write instead</th></tr></thead>
+    <tbody>
+      <tr><td>Save 90% on your electricity bill</td><td>Reduce the electricity you draw from the grid — potential savings depend on your usage and system size</td></tr>
+      <tr><td>Guaranteed savings of ₹5,000 per month</td><td>Illustrative savings range, based on stated assumptions</td></tr>
+      <tr><td>Eliminate your electricity bill</td><td>Offset a portion of your daytime consumption</td></tr>
+      <tr><td>Get government subsidy of ₹78,000</td><td>Subsidy eligibility depends on applicable government policies, regulations, location and system requirements</td></tr>
+      <tr><td>Payback in 3 years</td><td>Payback period varies with consumption, tariff, system cost and generation</td></tr>
+      <tr><td>Works on every roof</td><td>Suitability depends on available area, shading, orientation and structural condition</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Subsidies and incentives — standing rule</div>
+    <p style="margin:0">Never publish specific subsidy amounts, scheme names with figures, or eligibility promises on a landing page. Government schemes change, vary by state and system size, and are frequently misreported. The safe formulation: <em>"Eligibility for government incentives depends on applicable policies, regulations, your location and system requirements. We can explain what may apply to your property during the assessment."</em> Accurate, useful, and it moves the conversation to the call — which is where it belongs.</p>
+  </div>
+
+  <h3>Sentence-level habits that make copy read as human</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Do</h4>
+      <ul style="margin:0">
+        <li>Use "your roof", "your bill", "your property"</li>
+        <li>Name specifics — shading, orientation, roof area</li>
+        <li>Admit limits: "usually not entirely"</li>
+        <li>Keep paragraphs to three or four lines on mobile</li>
+        <li>Use plain numbers: 3 kW, not "three kilowatt peak"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Avoid</h4>
+      <ul style="margin:0">
+        <li>Stacked adjectives: "premium world-class expert"</li>
+        <li>Exclamation marks in body copy</li>
+        <li>Emoji in headings on a considered-purchase page</li>
+        <li>Repeating the same benefit in three sections</li>
+        <li>Jargon without explanation: "net metering", "kWp"</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Explaining technical terms inline</h3>
+  <p>Solar copy unavoidably contains technical vocabulary. Explain it in the sentence rather than in a glossary nobody opens:</p>
+  <ul>
+    <li><b>kW / kWp</b> — "a 5 kW system, which is a common size for an independent house"</li>
+    <li><b>Net metering</b> — "net metering, where excess generation you export is credited against what you draw from the grid, subject to your state utility's rules"</li>
+    <li><b>Inverter</b> — "the inverter, which converts the panels' output into the power your home uses"</li>
+    <li><b>Generation</b> — "generation, meaning the units the system actually produces, which varies with season and weather"</li>
+  </ul>
+
+  <div class="callout">
+    <div class="label">A test for finished copy</div>
+    <p style="margin:0">Read the page aloud. Anywhere the phrasing would be awkward to say to a homeowner standing in front of you, rewrite it. Landing page copy that cannot be spoken naturally is usually copy written to impress rather than to inform — and on a high-value considered purchase, that reads as evasive.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">13</span></span></div>
+</section>
+
+<!-- ============ S11 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 11</div>
+  <h2 class="sec">Trust Elements</h2>
+  <p class="lead">How to build trust without fake claims — the constraint that shapes every Smart Pursuit Solar build.</p>
+
+  <p>Trust on a Solar landing page is not built by asserting trustworthiness. It is built by being specific in ways a dishonest company would find inconvenient. Verifiable detail is the signal; superlatives are noise.</p>
+
+  <h3>Legitimate trust elements</h3>
+  <table>
+    <thead><tr><th style="width:30%">Element</th><th style="width:40%">What makes it credible</th><th>Verification required</th></tr></thead>
+    <tbody>
+      <tr><td>Real company information</td><td>Registered name, GST/CIN where applicable</td><td>Client provides registration documents</td></tr>
+      <tr><td>Real office / location</td><td>Full street address, not just a city</td><td>Confirm the office exists and is staffed</td></tr>
+      <tr><td>Real team photographs</td><td>Actual employees, named where they consent</td><td>Photos taken at the client's premises</td></tr>
+      <tr><td>Real installation photographs</td><td>The client's own completed work</td><td>Confirm each project is theirs</td></tr>
+      <tr><td>Real certifications</td><td>Named certifying body and current validity</td><td>Sight the certificate; check expiry</td></tr>
+      <tr><td>Real manufacturer partnerships</td><td>Named brands the client is authorised to supply</td><td>Dealership or authorisation letter</td></tr>
+      <tr><td>Real warranties</td><td>Specific terms and durations, stated plainly</td><td>Written warranty document</td></tr>
+      <tr><td>Real process</td><td>The actual steps the company follows</td><td>Walk through it with the operations team</td></tr>
+      <tr><td>Real service areas</td><td>Areas the client genuinely covers</td><td>Confirm with the client directly</td></tr>
+      <tr><td>Real customer reviews</td><td>Genuine, attributable, ideally platform-sourced</td><td>Link to the source where possible</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">The rule that governs this entire section</div>
+    <p style="margin:0">Only use information that can be verified by the actual client. If the client has no testimonials yet, do <b>not</b> invent them. This holds even when the client suggests it, and even when competitors are visibly doing it. A fabricated testimonial is a liability the agency creates and the client carries.</p>
+  </div>
+
+  <h3>When the client has no proof yet</h3>
+  <p>A new Solar company can still fill the trust section credibly. Substitute substance for scale:</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>Transparent process</h4>
+      <p style="margin:0">Show every step from enquiry to commissioning, including timelines the client can actually meet. Specificity reads as competence.</p>
+    </div>
+    <div class="card">
+      <h4>Company details</h4>
+      <p style="margin:0">Registered name, address, registration numbers. A company willing to be identified is a company that can be held accountable.</p>
+    </div>
+    <div class="card">
+      <h4>Contact information</h4>
+      <p style="margin:0">Phone, WhatsApp, email and address, all visible without scrolling to the footer. Easy contact is itself a trust signal.</p>
+    </div>
+    <div class="card">
+      <h4>Service areas</h4>
+      <p style="margin:0">Named localities. A defined coverage area suggests an operating business rather than a lead reseller.</p>
+    </div>
+    <div class="card">
+      <h4>Installation process</h4>
+      <p style="margin:0">Mounting approach, wiring standards, safety practices, who performs the work.</p>
+    </div>
+    <div class="card">
+      <h4>Product and warranty information</h4>
+      <p style="margin:0">Panel and inverter brands supplied, the warranty terms, and what after-sales support covers.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="label">Why this works commercially, not just ethically</div>
+    <p style="margin:0">Indian Solar buyers have encountered inflated claims repeatedly and have adjusted. A page that says "we have completed 47 installations across Hyderabad and Secunderabad since 2023" is more persuasive than one claiming "10,000+ happy customers" — because the first sounds like a real business counting real work, and the second sounds like a template. Precision is more credible than magnitude.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">14</span></span></div>
+</section>
+
+<!-- ============ S12 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 12</div>
+  <h2 class="sec">Social Proof</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>If genuine reviews exist — show</h4>
+      <ul style="margin:0">
+        <li>Customer name (with consent)</li>
+        <li>The review text, unedited in substance</li>
+        <li>Date, where appropriate</li>
+        <li>Source or platform, where appropriate</li>
+      </ul>
+      <p class="smallnote" style="margin:3mm 0 0">A Google review with a visible source is worth several unattributed quotes.</p>
+    </div>
+    <div class="card">
+      <h4>If genuine project data exists — show</h4>
+      <ul style="margin:0">
+        <li>Location (locality level is sufficient)</li>
+        <li>Property type</li>
+        <li>System size</li>
+        <li>Installation photographs</li>
+        <li>Other relevant verified details</li>
+      </ul>
+      <p class="smallnote" style="margin:3mm 0 0">Get written consent before publishing a customer's property details.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="label">Absolute rule</div>
+    <p>If no genuine proof exists, do not fabricate it.</p>
+  </div>
+
+  <h3>Handling the gap honestly in layout</h3>
+  <p>A page designed with a testimonial block creates pressure to fill it. Two acceptable approaches:</p>
+  <ol>
+    <li><b>Remove the section.</b> A page without testimonials is unremarkable. A page with invented ones is a problem waiting to surface.</li>
+    <li><b>Replace it with verifiable substance.</b> Process detail, warranty terms, service areas and product information occupy the same visual space and do comparable work.</li>
+  </ol>
+  <p>On a demonstration build where a layout placeholder is genuinely needed, label it explicitly — <b>"Example testimonial placeholder"</b> or <b>"Representative project information"</b> — so it cannot be mistaken for a real customer statement at any point, including internally.</p>
+
+  <h3>Proof strength, ranked</h3>
+  <table>
+    <thead><tr><th style="width:10%">Rank</th><th style="width:36%">Proof type</th><th>Why it carries weight</th></tr></thead>
+    <tbody>
+      <tr><td><b>1</b></td><td>Platform reviews with public source</td><td>Independently verifiable by the visitor</td></tr>
+      <tr><td><b>2</b></td><td>Named customer with photo and consent</td><td>A real identifiable person stands behind it</td></tr>
+      <tr><td><b>3</b></td><td>Own installation photos with location and size</td><td>Demonstrates the company does the work it advertises</td></tr>
+      <tr><td><b>4</b></td><td>Manufacturer authorisations and certifications</td><td>Third-party validation, checkable</td></tr>
+      <tr><td><b>5</b></td><td>Documented process and warranty terms</td><td>Shows operational maturity; available to any honest company</td></tr>
+      <tr><td><b>6</b></td><td>Unattributed quotes and star graphics</td><td>Weak. Widely recognised as easy to fabricate.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Onboarding action for a first Solar client</div>
+    <p style="margin:0">Set up review collection in week one, before campaigns launch. A short WhatsApp message to recent customers requesting a Google review typically produces the client's first genuine social proof within a month — and it compounds. Building this habit early is more valuable than any copy change made later.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">15</span></span></div>
+</section>
+
+<!-- ============ S13-14 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 13</div>
+  <h2 class="sec">Solar Benefits Section</h2>
+  <p class="lead">A balanced benefits section converts better than an enthusiastic one, because the reader is already sceptical.</p>
+
+  <div class="grid2">
+    <div class="card"><h4>Lower grid dependence</h4><p style="margin:0">Generate a portion of your own electricity during daylight hours, reducing what you draw from the distribution utility.</p></div>
+    <div class="card"><h4>Potential long-term cost reduction</h4><p style="margin:0">Over the system's operating life, self-generated units can reduce electricity costs. The extent depends on consumption, tariff and system design.</p></div>
+    <div class="card"><h4>Renewable generation</h4><p style="margin:0">Electricity produced without ongoing fuel input, reducing reliance on conventional generation.</p></div>
+    <div class="card"><h4>Rooftop utilisation</h4><p style="margin:0">Puts otherwise unused roof area to productive use, without occupying usable floor space.</p></div>
+    <div class="card"><h4>Greater energy independence</h4><p style="margin:0">More predictable energy costs over time, with less exposure to future tariff revisions.</p></div>
+    <div class="card"><h4>Low operational demand</h4><p style="margin:0">Routine maintenance is generally limited to periodic cleaning and inspection. Specific requirements vary by system and site.</p></div>
+  </div>
+
+  <div class="warn">
+    <div class="label">Claims to avoid in this section</div>
+    <p style="margin:0 0 2mm">Do not write: <b>"Solar will eliminate your electricity bill."</b> Most systems offset a portion of consumption, not all of it, and night-time usage still draws from the grid.</p>
+    <p style="margin:0">Avoid guaranteed savings claims of any form, including implied ones such as "start saving from month one" or "pays for itself quickly".</p>
+  </div>
+
+  <h3>Being honest about limits</h3>
+  <p>Including a short, plainly-worded paragraph on what solar does not do tends to strengthen the page. It pre-empts the objection the sceptical reader is already forming, and it signals that the rest of the claims can be taken at face value:</p>
+  <div class="copybox">
+    <div class="lb">Suggested honesty paragraph</div>
+    <p style="margin:0">Solar is not suitable for every property. Heavily shaded roofs, limited available area, certain structural conditions and some apartment arrangements can make it impractical or uneconomic. An assessment will tell you honestly whether it makes sense for your property — including when it does not.</p>
+  </div>
+
+  <hr class="div">
+
+  <div class="secnum">Section 14</div>
+  <h2 class="sec">Solar System Options</h2>
+  <p class="lead">An orientation aid, not a price list. The purpose is to help a visitor place themselves roughly on a scale.</p>
+
+  <table>
+    <thead><tr><th style="width:16%">System size</th><th style="width:42%">Commonly considered for</th><th>What determines suitability</th></tr></thead>
+    <tbody>
+      <tr><td><b>3 kW</b></td><td>Smaller independent houses with moderate consumption</td><td>Roof area available, actual monthly units, shading</td></tr>
+      <tr><td><b>5 kW</b></td><td>Larger homes and villas with higher daytime usage</td><td>Consumption pattern, orientation, structural capacity</td></tr>
+      <tr><td><b>10 kW+</b></td><td>Shops, offices and small commercial properties</td><td>Load profile, sanctioned load, roof configuration, regulatory requirements</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-ex">Example</span> Indicative groupings for orientation only. Do not claim fixed savings or generation numbers unless they are calculated using actual location, system specifications and stated assumptions.</p>
+
+  <h3>System selection can depend on</h3>
+  <div class="chips">
+    <span>Electricity consumption</span><span>Available roof area</span><span>Shading</span><span>Roof orientation</span><span>System design</span><span>Local conditions</span><span>Customer objectives</span>
+  </div>
+
+  <div class="callout">
+    <div class="label">Why size ranges belong on the page</div>
+    <p style="margin:0">A visitor with a ₹6,000 monthly bill has no frame of reference for whether they need something small or something substantial. Seeing three bands lets them form a rough expectation, which makes the enquiry feel less like stepping into the unknown. The page should stop short of implying that their band is determined — that is what the assessment establishes.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">16</span></span></div>
+</section>
+
+<!-- ============ S15 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 15</div>
+  <h2 class="sec">Solar Savings Calculator</h2>
+  <p class="lead">The highest-engagement element on a Solar landing page, and the one with the greatest potential to create a compliance problem if built carelessly.</p>
+
+  <h3>Inputs</h3>
+  <table>
+    <thead><tr><th style="width:30%">Field</th><th style="width:34%">Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Monthly Electricity Bill</b></td><td>Numeric, ₹</td><td>Required. The single most useful input.</td></tr>
+      <tr><td><b>Property Type</b></td><td>Select</td><td>Independent House · Villa · Shop · Office · Commercial Property</td></tr>
+      <tr><td><b>Location</b></td><td>City / Area</td><td>Affects generation assumptions and service availability</td></tr>
+      <tr><td><b>Monthly consumption in units</b></td><td>Numeric, optional</td><td>Improves accuracy where the visitor has their bill to hand</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Output framing</h3>
+  <div class="grid2">
+    <div class="card"><h4>Estimated Solar requirement</h4><p style="margin:0">An indicative system size <b>range</b>, not a single figure. A range is both more honest and less likely to be quoted back later.</p></div>
+    <div class="card"><h4>Illustrative potential savings</h4><p style="margin:0">A range, with the assumptions behind it visible on the page rather than hidden.</p></div>
+  </div>
+
+  <div class="warn">
+    <div class="label">Mandatory disclaimer — must appear with the result</div>
+    <p style="margin:0">Estimates are indicative only. Actual system sizing, generation and savings depend on site conditions, electricity consumption, tariff, system design and other factors.</p>
+  </div>
+
+  <div class="principle">
+    <div class="label">Positioning</div>
+    <p>The calculator is an orientation tool. It is not a quotation, and it must never be presented as one.</p>
+  </div>
+
+  <h3>Stating assumptions openly</h3>
+  <p>A calculator that shows its working is more trustworthy than one that produces a confident number from nowhere. Display the assumptions near the result: <span class="tag tag-ex">Example</span></p>
+  <ul>
+    <li>Tariff band assumed: ₹7–9 per unit for residential</li>
+    <li>Specific generation assumed: 4.0–4.6 kWh per kWp per day</li>
+    <li>Useful offset assumed: 70–85% of generation, allowing for consumption timing</li>
+    <li>System size rounded to the nearest 0.5 kW</li>
+  </ul>
+  <p class="smallnote">These are illustrative assumptions for a demonstration build. For a live client, assumptions must be set with the client's technical team using their actual design standards and local irradiance data.</p>
+
+  <h3>Behaviour rules</h3>
+  <table>
+    <thead><tr><th style="width:34%">Situation</th><th>Correct handling</th></tr></thead>
+    <tbody>
+      <tr><td>Bill below the viable threshold</td><td>Say so honestly. "At this consumption level, solar may not offer meaningful savings. An assessment can confirm." Better than a forced qualification.</td></tr>
+      <tr><td>Apartment or rented property selected</td><td>Explain that rooftop rights and society approvals apply, and that suitability depends on the specific arrangement.</td></tr>
+      <tr><td>Location outside service area</td><td>State that the area is not currently serviced rather than capturing a lead that cannot be fulfilled.</td></tr>
+      <tr><td>Result displayed</td><td>Offer the assessment as the natural next step, with the result carried into the form where possible.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Tracking</div>
+    <p style="margin:0">Fire <code>savings_calculator_start</code> on first interaction and <code>savings_calculator_complete</code> when a result is produced. Calculator completers are a materially warmer audience than general page visitors and are worth segmenting for remarketing. Section 27 covers the full event set.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">17</span></span></div>
+</section>
+
+<!-- ============ S16 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 16</div>
+  <h2 class="sec">Lead Form Strategy</h2>
+
+  <h3>Recommended form</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Essential fields</h4>
+      <ul style="margin:0">
+        <li><b>Name</b></li>
+        <li><b>Phone</b></li>
+        <li><b>Email</b></li>
+        <li><b>Location</b></li>
+        <li><b>Property Type</b></li>
+      </ul>
+      <p class="smallnote" style="margin:3mm 0 0">Enough to contact the person and route the enquiry correctly.</p>
+    </div>
+    <div class="card">
+      <h4>Qualification fields</h4>
+      <ul style="margin:0">
+        <li><b>Monthly electricity bill</b></li>
+        <li><b>Purchase timeline</b></li>
+      </ul>
+      <p class="smallnote" style="margin:3mm 0 0">Two questions that let the sales team prioritise before making the first call.</p>
+    </div>
+  </div>
+
+  <h3>Monthly Electricity Bill</h3>
+  <div class="chips">
+    <span>Below ₹2,000</span><span>₹2,000–₹5,000</span><span>₹5,000–₹10,000</span><span>₹10,000–₹20,000</span><span>₹20,000+</span>
+  </div>
+  <p class="smallnote">Bands rather than a free-text amount. Easier on mobile, less intrusive, and sufficient for prioritisation.</p>
+
+  <h3>Timeline</h3>
+  <div class="chips">
+    <span>Just exploring</span><span>Within 3 months</span><span>Within 6 months</span><span>Ready to discuss now</span>
+  </div>
+  <p class="smallnote">Note the absence of a pressuring option. "Just exploring" is a legitimate answer and should be offered without penalty — a visitor who feels forced to overstate intent produces a misleading lead.</p>
+
+  <h3>Why fewer high-value questions beat a long form</h3>
+  <p>Every field is a small request. The question is not how many fields the form has, but whether each one earns its place. A field earns its place if the answer changes what the sales team does next.</p>
+  <table>
+    <thead><tr><th style="width:32%">Field</th><th style="width:26%">Changes what happens next?</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>Phone</td><td>Yes — enables contact</td><td>Essential</td></tr>
+      <tr><td>Property type</td><td>Yes — residential vs commercial routing</td><td>Essential</td></tr>
+      <tr><td>Monthly bill band</td><td>Yes — indicates system scale and priority</td><td>High value</td></tr>
+      <tr><td>Timeline</td><td>Yes — determines follow-up urgency</td><td>High value</td></tr>
+      <tr><td>Roof area in sq ft</td><td>Rarely — most people do not know it</td><td>Drop; establish during assessment</td></tr>
+      <tr><td>Preferred panel brand</td><td>No — premature at enquiry stage</td><td>Drop</td></tr>
+      <tr><td>How did you hear about us</td><td>No — tracking answers this more reliably</td><td>Drop</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Form design details that affect completion</div>
+    <p style="margin:0">Use <code>type="tel"</code> so mobile keyboards show the numeric pad. Use <code>inputmode="numeric"</code> for bill amounts. Validate on blur rather than on every keystroke. Show errors beside the field, never only at the top. Keep the submit button's label specific — "Request My Free Assessment" rather than "Submit". Include a short line stating what happens to the data and that it will not be shared.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Data handling</div>
+    <p style="margin:0">A live Indian lead-generation form collecting name, phone and email requires a privacy policy, a clear statement of purpose, and a lawful basis for contacting the person. Link the policy from the form itself. This is a client obligation, but the agency builds the form — raise it during onboarding rather than after launch.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">18</span></span></div>
+</section>
+
+<!-- ============ S17 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 17</div>
+  <h2 class="sec">Form Optimization</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>Short form</h4>
+      <p style="margin:0">Lower friction. Typically more submissions. Less information per lead, so the sales team qualifies on the call instead.</p>
+    </div>
+    <div class="card">
+      <h4>Longer form</h4>
+      <p style="margin:0">Potentially better qualification. Typically fewer submissions. More context before the first call, and self-selection filters out casual enquiries.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="label">The objective</div>
+    <p>The objective is not the shortest form. It is the best balance between conversion volume and lead quality.</p>
+  </div>
+
+  <p>Which balance is right depends on the client's sales capacity. A client with two salespeople who can handle twenty calls a week is harmed by a short form producing eighty weak leads. A client with an idle team and capacity to spare may prefer volume and will qualify on the phone. Ask about capacity before choosing the form length — it is a business question, not a design one.</p>
+
+  <h3>Progressive testing</h3>
+  <table>
+    <thead><tr><th style="width:20%">Version</th><th style="width:40%">Composition</th><th>Expected trade-off</th></tr></thead>
+    <tbody>
+      <tr><td><b>Version A</b></td><td>Short form — Name, Phone, Location, Property Type</td><td>Higher completion, lower qualification depth</td></tr>
+      <tr><td><b>Version B</b></td><td>Short form + qualification — adds bill band and timeline</td><td>Lower completion, better prioritisation</td></tr>
+    </tbody>
+  </table>
+  <p class="smallnote"><span class="tag tag-hy">Starting Hypothesis</span> Direction of the trade-off is expected, not the magnitude. Measure before concluding.</p>
+
+  <h3>What to measure</h3>
+  <table>
+    <thead><tr><th style="width:28%">Metric</th><th style="width:30%">Source</th><th>Question it answers</th></tr></thead>
+    <tbody>
+      <tr><td><b>Form starts</b></td><td><code>solar_lead_form_start</code></td><td>Is the form being attempted at all?</td></tr>
+      <tr><td><b>Form completion</b></td><td>submits ÷ starts</td><td>Is the form itself causing abandonment?</td></tr>
+      <tr><td><b>Lead quality</b></td><td>Client sales feedback</td><td>Are these people worth calling?</td></tr>
+      <tr><td><b>Qualified leads</b></td><td>CRM or shared sheet</td><td>Which version produces more real opportunities?</td></tr>
+    </tbody>
+  </table>
+
+  <p>The critical pairing is form completion and qualified leads. Completion alone will favour the shorter form almost every time. Qualified leads is what determines which version the client should actually keep.</p>
+
+  <h3>Progressive disclosure as a middle path</h3>
+  <p>Where a client wants qualification without the completion penalty, split the form into two steps: contact details first, qualification questions second. Once someone has entered their name and phone, they are considerably more likely to finish. Fire <code>solar_lead_form_start</code> at step one so partial completions remain visible in the data. <span class="tag tag-rec">Recommendation</span></p>
+
+  <div class="warn">
+    <div class="label">Testing discipline</div>
+    <p style="margin:0">Do not judge a form test on a handful of submissions. With typical Solar lead volumes, a difference of two or three leads across a week is noise. Let the test run until each version has accumulated a meaningful number of submissions, and resist reading the result early — the temptation to call it after three days is the most common way CRO programmes reach confident wrong conclusions.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">19</span></span></div>
+</section>
+
+<!-- ============ S18 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 18</div>
+  <h2 class="sec">CTA Strategy</h2>
+
+  <div class="grid2">
+    <div class="card" style="background:#FFFBEB; border-color:#FDE68A">
+      <h4>Primary CTA</h4>
+      <p style="margin:0; font-size:12pt; font-weight:750">GET A FREE SOLAR ASSESSMENT</p>
+      <p class="smallnote" style="margin:2mm 0 0">One primary action per page. Repeated at hero, mid-page and final CTA — same wording each time.</p>
+    </div>
+    <div class="card">
+      <h4>Secondary CTA</h4>
+      <p style="margin:0; font-size:12pt; font-weight:750">CALL NOW &nbsp;/&nbsp; WHATSAPP US</p>
+      <p class="smallnote" style="margin:2mm 0 0">For visitors who prefer speaking to typing. Visually subordinate to the primary.</p>
+    </div>
+  </div>
+
+  <h3>Weak CTAs to avoid</h3>
+  <div class="chips neg"><span>Submit</span><span>Click Here</span><span>Learn More</span><span>Send</span><span>Continue</span><span>Know More</span></div>
+  <p>These describe a mechanical action rather than an outcome. "Submit" tells the visitor what the button does to the form; "Get My Free Solar Assessment" tells them what they receive. The exception is where the weak label genuinely fits the journey — "Learn More" is acceptable on an educational card that genuinely leads to more information, and forcing a conversion-style CTA there would misrepresent the destination.</p>
+
+  <h3>CTA wording principles</h3>
+  <table>
+    <thead><tr><th style="width:30%">Principle</th><th style="width:32%">Applied</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Name the outcome</td><td>"Get My Free Solar Assessment"</td><td>The visitor knows what they receive</td></tr>
+      <tr><td>First person where natural</td><td>"My" rather than "Your"</td><td>Reads as the visitor's own decision</td></tr>
+      <tr><td>Remove perceived cost</td><td>"Free"</td><td>Addresses the immediate objection, where genuinely free</td></tr>
+      <tr><td>Keep it short</td><td>Four to six words</td><td>Must fit a mobile button without wrapping awkwardly</td></tr>
+      <tr><td>Stay consistent</td><td>Same label at every placement</td><td>Repetition reinforces; variation reads as different offers</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Placement</h3>
+  <table>
+    <thead><tr><th style="width:26%">Location</th><th style="width:30%">CTA</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Hero</td><td>Primary + secondary</td><td>Captures the already-convinced visitor immediately</td></tr>
+      <tr><td>After "How It Works"</td><td>Primary</td><td>Placed where the process has just reduced anxiety</td></tr>
+      <tr><td>After calculator result</td><td>Primary, pre-filled</td><td>Highest-intent moment on the page</td></tr>
+      <tr><td>After FAQ</td><td>Primary</td><td>Objections addressed; the natural point to decide</td></tr>
+      <tr><td>Sticky mobile bar</td><td>Call · WhatsApp · Assessment</td><td>Always reachable without scrolling</td></tr>
+      <tr><td>Footer</td><td>Primary</td><td>Final opportunity for the thorough reader</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Too many competing CTAs</div>
+    <p style="margin:0">A page offering an assessment, a brochure download, a newsletter signup, a callback request and a quotation gives the visitor five decisions instead of one. Each additional option dilutes the primary action. Keep one primary CTA, at most two secondary contact methods, and remove everything else.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">20</span></span></div>
+</section>
+
+<!-- ============ S19 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 19</div>
+  <h2 class="sec">Mobile CRO</h2>
+  <p class="lead">Treat mobile as the primary experience. For Solar traffic in India — particularly from Meta — it is where most visitors and most enquiries originate.</p>
+
+  <p>Designing on a desktop monitor and checking mobile afterwards produces pages that technically work on a phone but are unpleasant to use on one. The order should be reversed: design the mobile layout first, then expand it.</p>
+
+  <h3>Mobile requirements</h3>
+  <table>
+    <thead><tr><th style="width:30%">Requirement</th><th>Implementation standard</th></tr></thead>
+    <tbody>
+      <tr><td><b>Large readable text</b></td><td>Body text 16px minimum. Never rely on pinch-zoom.</td></tr>
+      <tr><td><b>Easy-to-tap buttons</b></td><td>Minimum 48×48px tap target with adequate spacing between adjacent controls.</td></tr>
+      <tr><td><b>Sticky CTA</b></td><td>Persistent bottom bar: Call · WhatsApp · Free Assessment.</td></tr>
+      <tr><td><b>Short forms</b></td><td>Single column. Correct input types so the right keyboard appears.</td></tr>
+      <tr><td><b>Fast loading</b></td><td>Optimised for mobile data, not office broadband.</td></tr>
+      <tr><td><b>Minimal popups</b></td><td>No entry interstitials. Exit-intent does not work reliably on touch devices anyway.</td></tr>
+      <tr><td><b>Clear spacing</b></td><td>Generous vertical rhythm; avoid cramped stacked elements.</td></tr>
+      <tr><td><b>Click-to-call</b></td><td>Every phone number a live <code>tel:</code> link.</td></tr>
+      <tr><td><b>WhatsApp access</b></td><td>Floating button plus inline links, with a pre-filled message.</td></tr>
+      <tr><td><b>No intrusive elements</b></td><td>No autoplay audio, no full-screen overlays, no scroll hijacking.</td></tr>
+      <tr><td><b>No horizontal scrolling</b></td><td>Nothing may exceed the viewport width at any breakpoint.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Mobile landing-page checklist</h3>
+  <ul class="cbx two">
+    <li>CTA visible without scrolling on a 360×640 viewport</li>
+    <li>H1 legible and unbroken at 360px width</li>
+    <li>No horizontal scroll at 320, 360, 390 and 414px</li>
+    <li>Sticky bottom bar present and not obscuring content</li>
+    <li>Phone number opens the dialler on tap</li>
+    <li>WhatsApp link opens the app with the message pre-filled</li>
+    <li>Form fields trigger the correct keyboard type</li>
+    <li>Dropdowns usable with a thumb</li>
+    <li>Validation errors visible without scrolling away</li>
+    <li>Submit button not hidden behind the sticky bar</li>
+    <li>Images sized for mobile, not downscaled desktop files</li>
+    <li>Calculator inputs operable one-handed</li>
+    <li>FAQ accordions tappable across the full row</li>
+    <li>Tested on real hardware, not only browser emulation</li>
+    <li>Tested on mobile data, not only Wi-Fi</li>
+    <li>Thank-you page renders correctly on mobile</li>
+  </ul>
+
+  <div class="callout">
+    <div class="label">The thumb zone</div>
+    <p style="margin:0">On a phone held one-handed, the comfortable reach is the lower two-thirds of the screen. Primary actions placed at the very top require a grip change. This is the practical argument for a sticky bottom bar on Solar pages — it puts Call, WhatsApp and Assessment permanently within reach, regardless of scroll position.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">21</span></span></div>
+</section>
+
+<!-- ============ S20 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 20</div>
+  <h2 class="sec">Page Speed</h2>
+
+  <div class="wwh">
+    <div>
+      <div class="t">What it is</div>
+      <p style="margin:0">How quickly the page becomes visible and usable — particularly the first meaningful content and the point at which the visitor can interact.</p>
+    </div>
+    <div>
+      <div class="t">Why it matters</div>
+      <p style="margin:0">A visitor who leaves before the page renders was paid for and produced nothing. Speed affects every downstream metric at once, and on Google it also feeds landing page experience, which influences cost per click.</p>
+    </div>
+    <div>
+      <div class="t">How it works</div>
+      <p style="margin:0">Reduce bytes transferred, reduce work the browser must do before rendering, and load non-essential resources later.</p>
+    </div>
+    <div>
+      <div class="t">What Smart Pursuit should do</div>
+      <p style="margin:0">Set a performance budget before building, not after. Test on a throttled mobile connection, because that is the real condition for much Indian Solar traffic.</p>
+    </div>
+  </div>
+
+  <h3>Recommended practices</h3>
+  <table>
+    <thead><tr><th style="width:32%">Practice</th><th>Implementation note</th></tr></thead>
+    <tbody>
+      <tr><td><b>WebP / AVIF images</b></td><td>Substantially smaller than JPEG at equivalent quality. Provide a JPEG fallback.</td></tr>
+      <tr><td><b>Compress images</b></td><td>Quality around 80–82 is generally indistinguishable at typical display sizes.</td></tr>
+      <tr><td><b>Lazy-load below-fold images</b></td><td><code>loading="lazy"</code> on everything except the hero. The hero should be preloaded with high fetch priority.</td></tr>
+      <tr><td><b>Minimise unnecessary JavaScript</b></td><td>Most Solar landing pages need no framework. Vanilla JS keeps the bundle small.</td></tr>
+      <tr><td><b>Reduce third-party scripts</b></td><td>Chat widgets, popup tools and multiple analytics libraries are usually the heaviest items on the page.</td></tr>
+      <tr><td><b>Optimise fonts</b></td><td>Two weights at most, <code>display=swap</code>, preconnect to the font host.</td></tr>
+      <tr><td><b>Avoid oversized video</b></td><td>Background video in a hero rarely justifies its weight on mobile data.</td></tr>
+      <tr><td><b>Caching / CDN</b></td><td>Use where appropriate, particularly for image-heavy pages serving multiple cities.</td></tr>
+      <tr><td><b>Responsive image sizes</b></td><td>Serve 480 / 960 / 1600px variants via <code>srcset</code> rather than one large file to every device.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Do not trade away measurement for speed</div>
+    <p style="margin:0">Removing conversion tracking to improve a performance score is a false economy. An untracked page cannot be optimised, cannot report accurately, and cannot feed conversion data back to the ad platforms — which degrades campaign performance far more than a small delay. Reduce third-party bloat instead: consolidate tag managers, remove duplicate pixels, and defer non-critical scripts.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card" style="text-align:center"><b style="font-size:13pt">Performance</b><div class="smallnote" style="margin-top:2mm">Fast enough that visitors stay</div></div>
+    <div class="card" style="text-align:center"><b style="font-size:13pt">Measurement</b><div class="smallnote" style="margin-top:2mm">Instrumented enough to improve</div></div>
+  </div>
+  <p class="smallnote" style="text-align:center">Both, not one at the expense of the other.</p>
+
+  <div class="callout">
+    <div class="label">Practical testing approach</div>
+    <p style="margin:0">Test the live URL on a mid-range Android device over a throttled 4G connection. Lab scores from a desktop browser on office broadband consistently overstate real-world performance for the audience these pages actually serve.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">22</span></span></div>
+</section>
+
+<!-- ============ S21 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 21</div>
+  <h2 class="sec">Landing Page Trust + Friction Audit</h2>
+  <p class="lead">A ten-point diagnostic. Run it before launch, and again whenever performance changes without an obvious cause.</p>
+
+  <div class="level">
+    <div class="h"><b>1 · Clarity</b><em>Five-second test</em></div>
+    <p style="margin:0">Can the visitor understand the offer in five seconds? Show the hero to someone unfamiliar with the business for five seconds, then ask what the company does and what is being offered. If they cannot answer both, the hero is failing.</p>
+  </div>
+  <div class="level l2">
+    <div class="h"><b>2 · Relevance</b><em>Message match</em></div>
+    <p style="margin:0">Does the page match the ad? Compare each live ad against its destination. Wording, offer, visual and location should all align.</p>
+  </div>
+  <div class="level">
+    <div class="h"><b>3 · Trust</b><em>Verifiable evidence</em></div>
+    <p style="margin:0">Is there legitimate evidence? Company details, address, real photographs, genuine reviews, stated warranty terms. Every claim traceable to something checkable.</p>
+  </div>
+  <div class="level l2">
+    <div class="h"><b>4 · CTA</b><em>Next step</em></div>
+    <p style="margin:0">Is the next step obvious? One primary action, visually dominant, repeated at sensible intervals, worded as an outcome.</p>
+  </div>
+  <div class="level l3">
+    <div class="h"><b>5 · Friction</b><em>Form effort</em></div>
+    <p style="margin:0">Is the form unnecessarily difficult? Every field justified, correct input types, clear validation, visible submit button.</p>
+  </div>
+  <div class="level l3">
+    <div class="h"><b>6 · Mobile</b><em>Primary device</em></div>
+    <p style="margin:0">Is the page easy to use on a phone? Run the Section 19 checklist on real hardware.</p>
+  </div>
+  <div class="level l3">
+    <div class="h"><b>7 · Speed</b><em>Real conditions</em></div>
+    <p style="margin:0">Does the page load efficiently on throttled mobile data, not just on office broadband?</p>
+  </div>
+  <div class="level l4">
+    <div class="h"><b>8 · Proof</b><em>Claim verification</em></div>
+    <p style="margin:0">Are claims verifiable? Every number, certification and partnership on the page must be evidenced by the client. Anything that cannot be evidenced comes off the page.</p>
+  </div>
+  <div class="level l2">
+    <div class="h"><b>9 · Objections</b><em>Concerns addressed</em></div>
+    <p style="margin:0">Does the page answer common concerns? Cross-check against the objections in Section 22 and confirm each is handled somewhere.</p>
+  </div>
+  <div class="level">
+    <div class="h"><b>10 · Contact</b><em>Ease of reach</em></div>
+    <p style="margin:0">Can the visitor easily call or WhatsApp? Both reachable from any scroll position, both tested end to end on a real device.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">How to use this</div>
+    <p style="margin:0">This audit identifies <em>whether</em> a problem exists. Section 31 determines what to fix first, and Section 32 converts the findings into a score that can be tracked over time and shown to a client.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">23</span></span></div>
+</section>
+
+<!-- ============ S22 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 22</div>
+  <h2 class="sec">Common Solar Objections</h2>
+  <p class="lead">Every objection the page fails to address becomes a reason not to enquire. These are the recurring six in the Indian residential and small-commercial market.</p>
+
+  <div class="card">
+    <h4>"Will Solar work for my property?"</h4>
+    <p style="margin:0"><b>How to answer:</b> This is exactly what the assessment determines. Suitability depends on available roof area, shading from surrounding structures, orientation and the structural condition of the roof. Rather than claiming it works everywhere, the page should position the assessment as the way to find out — including the possibility that the answer is no.</p>
+  </div>
+
+  <div class="card">
+    <h4>"How much Solar do I need?"</h4>
+    <p style="margin:0"><b>How to answer:</b> System size depends on electricity usage and property conditions. The bill band in the form and the calculator both give the visitor a rough orientation, while making clear that an accurate figure requires a site evaluation.</p>
+  </div>
+
+  <div class="card">
+    <h4>"Will Solar actually save me money?"</h4>
+    <p style="margin:0"><b>How to answer:</b> Savings depend on usage, tariffs, system design, generation and other factors. Explain the mechanism — self-generated units reduce grid draw — and be explicit that the extent varies. Never answer this with a guaranteed figure or a fixed payback period.</p>
+  </div>
+
+  <div class="card">
+    <h4>"How much roof space is required?"</h4>
+    <p style="margin:0"><b>How to answer:</b> Requirements depend on system size and panel and system specifications. Panel efficiency, mounting configuration and layout constraints all affect it. Give the principle rather than a universal number.</p>
+  </div>
+
+  <div class="card">
+    <h4>"What happens after I submit the form?"</h4>
+    <p style="margin:0"><b>How to answer:</b> Describe the process explicitly — who calls, roughly when, what will be discussed, and that there is no obligation. This is the cheapest objection to resolve and one of the most frequently neglected. Section 4 of the page and the thank-you page should both cover it.</p>
+  </div>
+
+  <div class="card">
+    <h4>"How long does installation take?"</h4>
+    <p style="margin:0"><b>How to answer:</b> Do not provide a universal number unless it has been verified for the specific client's process. Timelines vary with system size, site conditions, material availability and approval processes. If the client can commit to a typical range for their own work, state it as typical and note what can extend it.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Objection handling principle</div>
+    <p style="margin:0">Answer the objection honestly, then route to the assessment. The pattern is consistent: acknowledge that it depends, explain what it depends on, and position the assessment as the way to get a specific answer. This is both accurate and commercially effective — it makes the assessment feel necessary rather than promotional.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">24</span></span></div>
+</section>
+
+<!-- ============ S23 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 23</div>
+  <h2 class="sec">FAQ Strategy</h2>
+  <p class="lead">The FAQ is the last section before the form for most readers. It should close remaining doubt rather than introduce new topics.</p>
+
+  <table>
+    <thead><tr><th style="width:42%">Question</th><th>Answer approach</th></tr></thead>
+    <tbody>
+      <tr><td><b>Is Solar suitable for my home?</b></td><td>Depends on roof area, shading, orientation and structure. The assessment evaluates all four for the specific property.</td></tr>
+      <tr><td><b>How do I know what system size I need?</b></td><td>Determined by consumption and available roof area. Bill amount gives a rough indication; site evaluation confirms it.</td></tr>
+      <tr><td><b>Can Solar work on my rooftop?</b></td><td>Most flat and pitched roofs can accommodate a system, but shading and structural condition matter. Assessment confirms.</td></tr>
+      <tr><td><b>What happens during a Solar assessment?</b></td><td>Discussion of usage, evaluation of roof area and shading, and an indicative recommendation on size and approach.</td></tr>
+      <tr><td><b>How much can Solar potentially save?</b></td><td>Varies with consumption, tariff, system size and generation. Explain the factors; do not state a figure.</td></tr>
+      <tr><td><b>Do I need a large rooftop?</b></td><td>Not necessarily — smaller systems suit smaller roofs. Available area influences the size that can be installed.</td></tr>
+      <tr><td><b>Can businesses install rooftop Solar?</b></td><td>Yes. Commercial installations follow a similar process with additional considerations around load profile and regulatory requirements.</td></tr>
+      <tr><td><b>What maintenance does Solar require?</b></td><td>Generally periodic cleaning and inspection. Specific requirements vary by system and site conditions.</td></tr>
+      <tr><td><b>What happens after I request an assessment?</b></td><td>A specialist makes contact to discuss the property and usage, then arranges the next step. No obligation.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Answer tone</div>
+    <p style="margin:0">Answers should be factual and cautious. An FAQ that promises outcomes is more damaging than one that is slightly conservative, because the FAQ is where a careful buyer goes looking for the catch. Finding measured, honest answers there is itself persuasive.</p>
+  </div>
+
+  <h3>FAQ construction notes</h3>
+  <ul>
+    <li><b>Six to ten questions.</b> Beyond that, the section becomes a wall and the important answers get lost.</li>
+    <li><b>Real questions only.</b> Draw from what the client's sales team actually gets asked, not from what is convenient to answer.</li>
+    <li><b>Accordion on mobile, expanded on desktop</b> where space permits. Ensure the full row is tappable.</li>
+    <li><b>Include FAQ schema markup</b> on indexable pages. It is legitimate structured data and can improve search presentation.</li>
+    <li><b>Do not bury objections here.</b> If a concern is stopping most visitors, it belongs higher up the page, not at the bottom.</li>
+    <li><b>Follow the FAQ with a CTA.</b> The reader who finishes it has actively worked through their doubts and is close to deciding.</li>
+  </ul>
+
+  <div class="callout">
+    <div class="label">A useful source of FAQ content</div>
+    <p style="margin:0">After a month of campaigns, ask the client's sales team for the five questions they answer most often on first calls. Those questions belong on the page. Answering them pre-emptively both improves conversion and shortens the sales call, which is a benefit the client will notice directly.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">25</span></span></div>
+</section>
+
+<!-- ============ S24-25 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 24</div>
+  <h2 class="sec">WhatsApp Conversion Flow</h2>
+
+  <div class="card">
+    <h4>CTA</h4>
+    <p style="margin:0 0 3mm; font-size:12pt; font-weight:750">WHATSAPP US</p>
+    <h4>Pre-filled opening message</h4>
+    <p style="margin:0" class="mono">Hi, I'm interested in a Solar assessment for my property.</p>
+  </div>
+
+  <p>Pre-filling the message removes the small but real hesitation of composing an opening line, and it tells the sales team immediately which page the enquiry came from if the text is varied per page.</p>
+
+  <h3>Sales team qualification sequence</h3>
+  <div class="flow">
+    <div class="node acc">Visitor opens WhatsApp with pre-filled message</div>
+    <div class="arw">↓</div>
+    <div class="node">1 · Location<small>Confirm the property is within the service area</small></div>
+    <div class="arw">↓</div>
+    <div class="node">2 · Property type<small>House, villa, shop, office or commercial</small></div>
+    <div class="arw">↓</div>
+    <div class="node">3 · Monthly electricity bill<small>Indicates likely system scale</small></div>
+    <div class="arw">↓</div>
+    <div class="node">4 · Solar timeline<small>Exploring, or ready to proceed</small></div>
+    <div class="arw">↓</div>
+    <div class="node win">Qualified · move to assessment booking</div>
+  </div>
+
+  <div class="warn">
+    <div class="label">Treat WhatsApp as part of the funnel</div>
+    <p style="margin:0">WhatsApp should be treated as part of the lead funnel, not an isolated communication channel. In practice this means: the <code>whatsapp_click</code> event fires on the page, conversations are logged in the same CRM or sheet as form leads, the same qualification questions are asked, and WhatsApp-originated leads appear in reporting alongside every other source. Otherwise a significant share of Solar enquiries becomes invisible in the data.</p>
+  </div>
+
+  <p class="smallnote">Note the measurement limit: the click can be tracked on the page, but the conversation itself cannot be. Attribution from click to qualified lead requires the sales team to log the source. Establish that process during onboarding.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 25</div>
+  <h2 class="sec">Call Conversion Flow</h2>
+
+  <div class="flow">
+    <div class="node acc">CALL NOW<small>Click-to-call from the page</small></div>
+    <div class="arw">↓</div>
+    <div class="node">Sales representative answers</div>
+    <div class="arw">↓</div>
+    <div class="node key">Identify<small>Location · Property type · Electricity usage · Requirement · Timeline</small></div>
+    <div class="arw">↓</div>
+    <div class="node">Qualify</div>
+    <div class="arw">↓</div>
+    <div class="node win">Schedule assessment / site visit</div>
+  </div>
+
+  <h3>Why call tracking matters</h3>
+  <p>Calls are frequently the highest-intent action on a Solar page — someone willing to speak immediately is usually further along than someone filling a form. Without call tracking, that value is attributed to nothing, and campaigns get optimised against an incomplete picture of what is working.</p>
+  <p>Implement call tracking wherever technically possible. At minimum, track the <code>phone_click</code> event on the page. Where budget allows, use a tracked number so calls can be attributed to source, and recorded for qualification review with appropriate consent.</p>
+
+  <div class="callout">
+    <div class="label">Answer-rate reality</div>
+    <p style="margin:0">A click-to-call CTA is only as good as the answer rate behind it. If calls go unanswered during business hours, the page is generating unmeasured, unrecoverable loss. Confirm during onboarding who answers, during what hours, and what happens outside them — and state those hours on the page.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">26</span></span></div>
+</section>
+
+<!-- ============ S26 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 26</div>
+  <h2 class="sec">Thank-You Page</h2>
+  <p class="lead">The most neglected page in most lead-generation builds, and one of the few places where a visitor is reliably paying attention.</p>
+
+  <div class="card" style="background:#fff">
+    <div style="border:1px dashed var(--line); border-radius:10px; padding:6mm; background:var(--paper2)">
+      <div style="font-size:16pt; font-weight:800; margin-bottom:3mm">Your Solar Assessment Request Has Been Received.</div>
+      <p style="margin:0 0 4mm; color:#3F3F46">Our team will review your details and contact you regarding the next step.</p>
+      <div style="display:flex; gap:4mm; flex-wrap:wrap">
+        <div style="background:var(--solar); color:#1a1a1a; font-weight:800; font-size:10pt; padding:8px 16px; border-radius:8px">CALL US</div>
+        <div style="border:1.5px solid var(--ink); font-weight:700; font-size:10pt; padding:8px 16px; border-radius:8px">WHATSAPP US</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Why the thank-you page is another conversion opportunity</h3>
+  <p>The visitor has just demonstrated intent. They are engaged, they are expecting contact, and they have a few seconds of attention that would otherwise be wasted on a bare confirmation message. Four things worth doing with it:</p>
+
+  <table>
+    <thead><tr><th style="width:30%">Opportunity</th><th>Implementation</th></tr></thead>
+    <tbody>
+      <tr><td><b>Accelerate contact</b></td><td>Offer Call and WhatsApp immediately. A prospect who reaches out themselves converts faster than one waiting for a callback.</td></tr>
+      <tr><td><b>Set expectations</b></td><td>State what happens next and roughly when. Reduces the anxiety that leads people to submit enquiries to three competitors.</td></tr>
+      <tr><td><b>Increase preparedness</b></td><td>Ask them to keep their latest electricity bill available. Makes the first call more productive.</td></tr>
+      <tr><td><b>Continue educating</b></td><td>Optional: "While you wait, learn how Solar system sizing works." Keeps the prospect engaged with the client rather than browsing competitors.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Recommended structure</h3>
+  <div class="wire">
+    <div class="band hero"><div class="idx">01</div><div><b>Confirmation headline</b><div class="why">Unambiguous acknowledgement that the request was received.</div></div></div>
+    <div class="band"><div class="idx">02</div><div><b>What happens next</b><div class="why">Two or three short steps. Who contacts them, how, and what will be discussed.</div></div></div>
+    <div class="band"><div class="idx">03</div><div><b>Immediate actions</b><div class="why">Call and WhatsApp buttons for prospects who would rather not wait.</div></div></div>
+    <div class="band"><div class="idx">04</div><div><b>Preparation note</b><div class="why">Keep the latest electricity bill handy.</div></div></div>
+    <div class="band"><div class="idx">05</div><div><b>Optional education link</b><div class="why">System sizing explainer or similar. Genuinely useful, not filler.</div></div></div>
+  </div>
+
+  <div class="callout">
+    <div class="label">Technical requirements</div>
+    <p style="margin:0">The thank-you page must be a distinct URL — it is the most reliable conversion trigger for Google Ads and GA4. Set it to <code>noindex</code> so it cannot be reached from search. Confirm the conversion fires only on genuine submission, not on page load from a direct visit. And verify the page is not accidentally counted as a landing page in reporting, which inflates session counts and distorts conversion rates.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">27</span></span></div>
+</section>
+
+<!-- ============ S27 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 27</div>
+  <h2 class="sec">Conversion Tracking</h2>
+  <p class="lead">The event set every Smart Pursuit Solar landing page ships with. Without these, nothing in Sections 28–32 can be executed.</p>
+
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:30%">Fires when</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>solar_lead_form_view</code></td><td>Form scrolls into viewport</td><td>Establishes how many visitors actually reached the form. Separates "did not see it" from "saw it and declined".</td></tr>
+      <tr><td><code>solar_lead_form_start</code></td><td>First input into any field</td><td>Measures declared intent. The gap between view and start indicates whether the form looks worth attempting.</td></tr>
+      <tr><td><code>solar_lead_form_submit</code></td><td>Validated submission</td><td>The primary conversion. The gap between start and submit isolates friction within the form itself.</td></tr>
+      <tr><td><code>whatsapp_click</code></td><td>Any WhatsApp CTA clicked</td><td>Captures a major Indian conversion path that would otherwise be invisible.</td></tr>
+      <tr><td><code>phone_click</code></td><td>Any <code>tel:</code> link clicked</td><td>Captures high-intent calling behaviour, especially on mobile.</td></tr>
+      <tr><td><code>savings_calculator_start</code></td><td>First calculator interaction</td><td>Identifies visitors actively evaluating rather than browsing.</td></tr>
+      <tr><td><code>savings_calculator_complete</code></td><td>Result produced</td><td>Strong intent signal. A valuable remarketing segment.</td></tr>
+      <tr><td><code>assessment_booking</code></td><td>Assessment slot confirmed</td><td>Where booking exists on-site, this is closer to commercial value than a form submission.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Implementation standards</h3>
+  <ul>
+    <li><b>Push to <code>dataLayer</code>, not directly to platforms.</b> Keeps the page platform-agnostic and lets tags be managed without code changes.</li>
+    <li><b>Attach a <code>link_location</code> parameter</b> to WhatsApp and phone events — hero, sticky bar, footer. Reveals which placements actually drive contact.</li>
+    <li><b>Fire view and start events once per session</b> to avoid inflated counts from scrolling up and down.</li>
+    <li><b>Include non-identifying qualification context</b> on submit — city, property type, bill band — so lead quality can be segmented without handling personal data in analytics.</li>
+    <li><b>No hard-coded IDs in page markup.</b> Container and pixel IDs belong in the tag manager, per Step 4E.</li>
+  </ul>
+
+  <div class="warn">
+    <div class="label">Naming discipline</div>
+    <p style="margin:0">Use these exact event names across every client, every page and every platform. Consistent naming is what makes reporting comparable between accounts and prevents the situation where three clients have three different names for the same action. Step 4E formalises the convention.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Verify before launch, not after</div>
+    <p style="margin:0">Every event must be tested on a real device before the campaign spends money. The most expensive tracking failure is the one discovered in month two, when the preceding weeks of data cannot be reconstructed.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">28</span></span></div>
+</section>
+
+<!-- ============ S28 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 28</div>
+  <h2 class="sec">CRO Metrics</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>Traffic</h4>
+      <ul style="margin:0"><li>Sessions</li><li>Users</li><li>Traffic source</li><li>Landing page views</li></ul>
+      <p class="smallnote" style="margin:2mm 0 0">Context, not performance. Answers "who arrived and from where".</p>
+    </div>
+    <div class="card">
+      <h4>Engagement</h4>
+      <ul style="margin:0"><li>Engagement rate</li><li>Scroll depth, where useful</li><li>CTA clicks</li><li>Form starts</li></ul>
+      <p class="smallnote" style="margin:2mm 0 0">Diagnostic. Shows where on the page attention is lost.</p>
+    </div>
+    <div class="card">
+      <h4>Conversion</h4>
+      <ul style="margin:0"><li>Leads</li><li>Conversion rate</li><li>Cost per lead</li></ul>
+      <p class="smallnote" style="margin:2mm 0 0">Performance. What most reporting stops at.</p>
+    </div>
+    <div class="card" style="border-color:var(--leaf); background:#F0FDF4">
+      <h4 style="color:#14532D">Quality</h4>
+      <ul style="margin:0"><li>Qualified leads</li><li>Cost per qualified lead</li><li>Site assessments</li><li>Quotations</li><li>Sales</li></ul>
+      <p class="smallnote" style="margin:2mm 0 0">Commercial reality. What the client actually cares about.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="label">The most important statement in this section</div>
+    <p>Conversion rate alone does not determine success. A higher conversion rate can still be bad if lead quality falls.</p>
+  </div>
+
+  <h3>Why this matters in practice</h3>
+  <p>Consider two versions of a Solar page. <span class="tag tag-ex">Example — illustrative arithmetic, not benchmarks</span></p>
+  <table>
+    <thead><tr><th>Version</th><th class="num">Visitors</th><th class="num">Leads</th><th class="num">Conv. rate</th><th class="num">Qualified</th><th class="num">Qualified rate</th></tr></thead>
+    <tbody>
+      <tr><td><b>A</b> — form asks for bill band and timeline</td><td class="num">1,000</td><td class="num">40</td><td class="num">4.0%</td><td class="num">22</td><td class="num">55%</td></tr>
+      <tr><td><b>B</b> — form asks name and phone only</td><td class="num">1,000</td><td class="num">70</td><td class="num">7.0%</td><td class="num">18</td><td class="num">26%</td></tr>
+    </tbody>
+  </table>
+  <p>Version B wins decisively on conversion rate and loses on the only metric with commercial value. A report showing conversion rate alone would recommend the worse page — and the client's sales team would absorb 30 additional unproductive calls to get fewer real opportunities.</p>
+
+  <div class="warn">
+    <div class="label">Reporting standard</div>
+    <p style="margin:0">Never report conversion rate to a Solar client without reporting qualified leads beside it. This requires the client's sales team to mark lead outcomes — a process that must be agreed at onboarding, because it cannot be retrofitted. Where the client cannot provide qualification feedback, say plainly in the report that quality data is unavailable rather than letting volume metrics imply success.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">Minimum viable quality loop</div>
+    <p style="margin:0">A shared spreadsheet with four columns — date, lead name, source, outcome — is enough to start. Outcome values: contacted, qualified, assessment booked, quoted, sold, not viable. This costs the client a few minutes a day and transforms what the agency can report and optimise against.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">29</span></span></div>
+</section>
+
+<!-- ============ S29-30 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 29</div>
+  <h2 class="sec">CRO Formula</h2>
+
+  <div class="card" style="text-align:center; background:#fff; border-width:2px">
+    <div class="smallnote" style="letter-spacing:.2em; text-transform:uppercase; font-size:7.4pt; color:var(--accent); font-weight:800; margin-bottom:3mm">Landing Page Conversion Rate</div>
+    <div style="font-size:14pt; font-weight:750">Number of Conversions ÷ Landing Page Visitors × 100</div>
+  </div>
+
+  <div class="card">
+    <h4>Worked example</h4>
+    <p style="margin:0 0 2mm">If a page receives <b>1,000 visitors</b> and produces <b>50 leads</b>:</p>
+    <p style="margin:0 0 2mm" class="mono">50 ÷ 1,000 × 100 = 5%</p>
+    <p style="margin:0">The landing page conversion rate is <b>5%</b>.</p>
+  </div>
+
+  <div class="warn">
+    <div class="label">Read this carefully</div>
+    <p style="margin:0">The figures above are a <b>mathematical example demonstrating the formula</b>. They are <b>not</b> a Solar benchmark, not a target, and not an expected result. Smart Pursuit has no Solar conversion rate data, and any agency quoting a standard Solar landing page conversion rate without reference to a specific account, traffic source and offer is guessing.</p>
+  </div>
+
+  <h3>Definitional care</h3>
+  <ul>
+    <li><b>Count conversions consistently.</b> Decide whether WhatsApp and phone clicks count as conversions, then apply it uniformly. Mixing definitions between months makes trends meaningless.</li>
+    <li><b>Use landing page sessions, not total site sessions.</b> Including other pages understates the page's actual performance.</li>
+    <li><b>Segment by device and source.</b> A blended rate can hide a mobile problem entirely.</li>
+    <li><b>Exclude internal and test traffic.</b> Agency and client visits during build distort early figures noticeably at low volumes.</li>
+  </ul>
+
+  <hr class="div">
+
+  <div class="secnum">Section 30</div>
+  <h2 class="sec">A/B Testing</h2>
+  <p>A/B testing shows two versions of a page to comparable audiences and measures which performs better against a defined goal. Its purpose is to replace opinion with evidence — particularly useful when agency and client disagree about a change.</p>
+  <p>Test one major variable at a time where practical. Changing several things at once may produce a result, but it will not explain which change caused it, so nothing transferable is learned.</p>
+
+  <table>
+    <thead><tr><th style="width:12%">Test</th><th style="width:44%">Variable</th><th>What it investigates</th></tr></thead>
+    <tbody>
+      <tr><td><b>1</b></td><td>Headline A vs Headline B</td><td>Which framing of the offer resonates</td></tr>
+      <tr><td><b>2</b></td><td>Long form vs short form</td><td>The volume / quality trade-off from Section 17</td></tr>
+      <tr><td><b>3</b></td><td>Assessment CTA vs Consultation CTA</td><td>Which word carries less perceived commitment</td></tr>
+      <tr><td><b>4</b></td><td>Hero image A vs hero image B</td><td>Whether imagery affects credibility and engagement</td></tr>
+      <tr><td><b>5</b></td><td>Form above fold vs form lower on page</td><td>Whether the visitor needs context before being asked</td></tr>
+      <tr><td><b>6</b></td><td>Savings calculator vs no calculator</td><td>Whether interactivity aids or delays conversion</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Not every test produces a winner</div>
+    <p style="margin:0">Many tests end inconclusive, and that is a legitimate outcome — it means the variable did not matter much, which is itself worth knowing. Use sufficient data before drawing strong conclusions. With the traffic volumes typical of a single Solar client, expect tests to run for weeks rather than days, and expect to test only changes substantial enough to produce a detectable difference. Testing button colour on 400 visitors a week is not CRO; it is noise collection.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">30</span></span></div>
+</section>
+
+<!-- ============ S31 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 31</div>
+  <h2 class="sec">CRO Priority Framework</h2>
+  <p class="lead">Most CRO effort is misallocated toward small changes that are easy to make. This framework forces attention to what actually constrains conversion.</p>
+
+  <div class="level l4">
+    <div class="h"><b>High Impact</b><em>Fix immediately</em></div>
+    <ul style="margin:0">
+      <li><b>Broken form</b> — submissions failing, validation blocking valid input, leads not arriving</li>
+      <li><b>Wrong CTA</b> — the primary action does not match what the traffic wants</li>
+      <li><b>Poor mobile experience</b> — unusable on the device most visitors use</li>
+      <li><b>Slow page</b> — visitors leaving before the page renders</li>
+      <li><b>Ad / page mismatch</b> — the promise in the ad is absent from the page</li>
+      <li><b>Unclear offer</b> — visitor cannot tell what is being offered or to whom</li>
+    </ul>
+    <p class="smallnote" style="margin:3mm 0 0">Each of these can suppress conversion substantially on its own. None require testing — they require fixing.</p>
+  </div>
+
+  <div class="level l3">
+    <div class="h"><b>Medium Impact</b><em>Test deliberately</em></div>
+    <ul style="margin:0">
+      <li><b>Headline testing</b> — framing and emphasis</li>
+      <li><b>Form length</b> — the volume / quality balance</li>
+      <li><b>CTA wording</b> — "assessment" versus "consultation"</li>
+      <li><b>Trust placement</b> — where proof appears relative to the form</li>
+    </ul>
+    <p class="smallnote" style="margin:3mm 0 0">Worth structured testing once high-impact issues are resolved and traffic is sufficient.</p>
+  </div>
+
+  <div class="level l2">
+    <div class="h"><b>Low Impact</b><em>Address opportunistically</em></div>
+    <ul style="margin:0">
+      <li><b>Minor font changes</b></li>
+      <li><b>Small spacing adjustments</b></li>
+      <li><b>Decorative changes</b></li>
+    </ul>
+    <p class="smallnote" style="margin:3mm 0 0">Fine to improve while doing other work. Never the answer to "leads are down".</p>
+  </div>
+
+  <div class="principle">
+    <div class="label">Priority rule</div>
+    <p>Fix major conversion blockers before optimizing cosmetic details.</p>
+  </div>
+
+  <h3>Prioritising within a tier</h3>
+  <p>Where several items sit at the same level, rank them on three questions: <b>How many visitors does this affect?</b> <b>How severely does it affect them?</b> <b>How quickly can it be fixed?</b> A mobile issue affecting 70% of traffic outranks a desktop issue affecting 30%, even if the desktop issue is more visually obvious in the agency's own browser.</p>
+
+  <div class="warn">
+    <div class="label">A pattern worth recognising</div>
+    <p style="margin:0">When a client asks for a redesign because "the page isn't converting", run the Section 21 audit first. The constraint is frequently a single high-impact item — a broken form notification, a slow hero image, a mismatch between ad and page. Fixing it costs an afternoon. A redesign costs weeks and rebuilds the same problem in a new layout.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">31</span></span></div>
+</section>
+
+<!-- ============ S32 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 32</div>
+  <h2 class="sec">Solar Landing Page Audit Score</h2>
+  <p class="lead">A practical scoring framework. Score each category from 0 to 10 for a total out of 100.</p>
+
+  <table class="score">
+    <thead><tr><th style="width:6%">#</th><th style="width:26%">Category</th><th style="width:46%">What a 10 looks like</th><th class="num">Score</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Offer clarity</td><td>Offer and audience understood in five seconds, no ambiguity</td><td class="num">__ /10</td></tr>
+      <tr><td>2</td><td>Headline</td><td>Specific, relevant, matches traffic intent, legible on mobile</td><td class="num">__ /10</td></tr>
+      <tr><td>3</td><td>Message match</td><td>Wording, offer, visual and location all align with the ad</td><td class="num">__ /10</td></tr>
+      <tr><td>4</td><td>CTA visibility</td><td>One primary action, dominant, repeated, outcome-worded</td><td class="num">__ /10</td></tr>
+      <tr><td>5</td><td>Trust</td><td>Verifiable company detail, genuine proof, no unsupported claims</td><td class="num">__ /10</td></tr>
+      <tr><td>6</td><td>Form UX</td><td>Every field justified, correct input types, clear validation</td><td class="num">__ /10</td></tr>
+      <tr><td>7</td><td>Mobile UX</td><td>Passes the full Section 19 checklist on real hardware</td><td class="num">__ /10</td></tr>
+      <tr><td>8</td><td>Page speed</td><td>Loads quickly on throttled mobile data</td><td class="num">__ /10</td></tr>
+      <tr><td>9</td><td>Objection handling</td><td>All six Section 22 objections addressed somewhere on the page</td><td class="num">__ /10</td></tr>
+      <tr><td>10</td><td>Conversion tracking</td><td>All Section 27 events firing and verified</td><td class="num">__ /10</td></tr>
+    </tbody>
+  </table>
+  <div style="text-align:right; font-weight:800; font-size:12pt; margin-bottom:5mm">Total: ____ / 100</div>
+
+  <h3>Score bands</h3>
+  <div class="band"><span class="pill p1">90–100</span><span><b>Strong foundation.</b> Focus on structured testing of medium-impact variables.</span></div>
+  <div class="band"><span class="pill p2">75–89</span><span><b>Good but has optimization opportunities.</b> Address the lowest-scoring categories in order.</span></div>
+  <div class="band"><span class="pill p3">60–74</span><span><b>Needs improvement.</b> Likely one or two high-impact blockers suppressing performance.</span></div>
+  <div class="band"><span class="pill p4">Below 60</span><span><b>Major conversion issues.</b> Do not increase spend until the fundamentals are fixed.</span></div>
+
+  <div class="warn">
+    <div class="label">Important qualification</div>
+    <p style="margin:0">This is an <b>internal Smart Pursuit scoring framework, not an industry-standard benchmark</b>. It exists to make audits consistent between team members and to give clients a tangible before-and-after measure. Do not present it as an external standard, and do not imply that a score correlates to a specific conversion rate.</p>
+  </div>
+
+  <div class="callout">
+    <div class="label">How to use it commercially</div>
+    <p style="margin:0">Score the page at onboarding and re-score monthly. A client who sees a page move from 62 to 84 across a quarter can see the work, even in months where lead volume was affected by seasonality or budget changes. It is an honest way to demonstrate progress without over-claiming causation on lead numbers.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">32</span></span></div>
+</section>
+
+<!-- ============ S33-34 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 33</div>
+  <h2 class="sec">Meta Landing Page</h2>
+  <p class="lead">Recommended URL: <span class="mono">/solar-assessment</span></p>
+
+  <p>Meta users may not be actively searching for Solar. They were scrolling a feed, and an ad interrupted something else. Interest exists but it is fragile, and the page has to build the case that the ad only hinted at.</p>
+
+  <h3>Therefore the page should</h3>
+  <table>
+    <thead><tr><th style="width:30%">Requirement</th><th>Implementation</th></tr></thead>
+    <tbody>
+      <tr><td><b>Educate quickly</b></td><td>Explain in plain terms what rooftop solar involves, without assuming prior knowledge or patience.</td></tr>
+      <tr><td><b>Explain the problem</b></td><td>Open with rising electricity costs — the recognisable situation that makes solar relevant.</td></tr>
+      <tr><td><b>Build interest</b></td><td>Move from problem to possibility before asking for anything.</td></tr>
+      <tr><td><b>Introduce the assessment</b></td><td>Present it as a low-commitment way to find out, not as a sales step.</td></tr>
+      <tr><td><b>Reduce friction</b></td><td>Strip navigation. Shorter form. WhatsApp prominent, since Meta traffic is overwhelmingly mobile.</td></tr>
+      <tr><td><b>Use strong visual communication</b></td><td>Real rooftop photography carrying meaning, not decorative filler.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="label">Structural note</div>
+    <p style="margin:0">Remove the header navigation entirely. On a campaign landing page, every navigation link is an exit route that competes with the only action worth taking. Retain the logo — unlinked or linking only to the page itself — for credibility.</p>
+  </div>
+
+  <hr class="div">
+
+  <div class="secnum">Section 34</div>
+  <h2 class="sec">Google Landing Page</h2>
+  <p class="lead">Recommended URL: <span class="mono">/solar-installation</span></p>
+
+  <p>Google users often have stronger active intent. They typed a query, which means they had already formed the thought before encountering the client. The page's job is not to create interest but to confirm it has arrived somewhere credible.</p>
+
+  <h3>Therefore the page should</h3>
+  <table>
+    <thead><tr><th style="width:30%">Requirement</th><th>Implementation</th></tr></thead>
+    <tbody>
+      <tr><td><b>Confirm relevance immediately</b></td><td>H1 that mirrors the search intent. No preamble.</td></tr>
+      <tr><td><b>Mention installation / service</b></td><td>Lead with what is actually provided, not with why solar is a good idea.</td></tr>
+      <tr><td><b>Mention location where appropriate</b></td><td>Service areas visible above the fold for location-qualified searches.</td></tr>
+      <tr><td><b>Explain process</b></td><td>The visitor is comparing suppliers. A clear process differentiates.</td></tr>
+      <tr><td><b>Build trust</b></td><td>Company detail, warranty terms, genuine proof — placed high, not buried.</td></tr>
+      <tr><td><b>Provide fast contact options</b></td><td>Phone prominent. High-intent search traffic calls more readily than it fills forms.</td></tr>
+      <tr><td><b>Make the lead action obvious</b></td><td>No hunting for how to enquire, at any scroll position.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Why the education section gets cut here</div>
+    <p style="margin:0">Placing a "why consider solar" section above the fold on a high-intent search page delays someone who has already decided. They want to know whether this company can do the work, where it operates, and how to reach it. Answer those first; the educational content can sit lower for the minority who want it.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">33</span></span></div>
+</section>
+
+<!-- ============ S35 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 35</div>
+  <h2 class="sec">Meta vs Google Landing Pages</h2>
+
+  <table>
+    <thead><tr><th style="width:24%">Element</th><th style="width:38%">Meta Landing Page</th><th>Google Landing Page</th></tr></thead>
+    <tbody>
+      <tr><td><b>User intent</b></td><td>Lower / latent</td><td>Higher / active</td></tr>
+      <tr><td><b>Primary goal</b></td><td>Educate + convert</td><td>Confirm intent + convert</td></tr>
+      <tr><td><b>Education</b></td><td>Higher</td><td>Moderate</td></tr>
+      <tr><td><b>Search keyword relevance</b></td><td>Not applicable</td><td>Very important</td></tr>
+      <tr><td><b>Message match</b></td><td>Ad creative → page</td><td>Search term → ad → page</td></tr>
+      <tr><td><b>CTA</b></td><td>Assessment</td><td>Assessment / Call</td></tr>
+      <tr><td><b>Trust</b></td><td>Important</td><td>Extremely important</td></tr>
+      <tr><td><b>Speed</b></td><td>Important</td><td>Extremely important</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <div class="label">Read these as tendencies</div>
+    <p style="margin:0">These are strategic tendencies, not absolute rules. A Meta remarketing audience that has already visited the site may have higher intent than a broad Google search for "solar panel price". Let the specific audience and query set determine the page, rather than applying the channel default without thinking.</p>
+  </div>
+
+  <h3>Why trust and speed rank higher for Google</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Trust</h4>
+      <p style="margin:0">A search user is actively comparing. They will visit three or four suppliers in one session, and the page is being evaluated against competitors seen minutes earlier. Weak credibility loses the comparison outright. A Meta user is not comparing anyone — they are deciding whether to be interested at all.</p>
+    </div>
+    <div class="card">
+      <h4>Speed</h4>
+      <p style="margin:0">Search users have alternatives one back-button away, and page experience also feeds Google's Ad Rank — so a slow page raises cost per click as well as losing visitors. On Meta, the user has left their feed deliberately and tolerates marginally more delay, though not much.</p>
+    </div>
+  </div>
+
+  <h3>Shared requirements regardless of channel</h3>
+  <div class="chips">
+    <span>One primary CTA</span><span>Mobile-first build</span><span>Verifiable claims only</span><span>Full event tracking</span><span>Working phone and WhatsApp</span><span>Honest savings language</span><span>Thank-you page</span><span>No invented proof</span>
+  </div>
+
+  <div class="callout">
+    <div class="label">Practical implication for build order</div>
+    <p style="margin:0">Build the Google page first when a client has budget for both. It is the simpler brief — confirm relevance, prove competence, make contact easy — and the trust and process content developed for it can be reused on the Meta page. Building the education-heavy Meta page first tends to produce a page that is then awkwardly trimmed for search traffic.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">34</span></span></div>
+</section>
+
+<!-- ============ S36-37 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 36</div>
+  <h2 class="sec">The Complete CRO Process</h2>
+
+  <div class="flow">
+    <div class="node acc">TRAFFIC DATA<small>Sessions, sources, devices</small></div>
+    <div class="arw">↓</div>
+    <div class="node">USER BEHAVIOR<small>Scroll depth, CTA clicks, form starts</small></div>
+    <div class="arw">↓</div>
+    <div class="node">IDENTIFY FRICTION<small>Where attention or intent is lost</small></div>
+    <div class="arw">↓</div>
+    <div class="node">CREATE HYPOTHESIS<small>A specific, testable statement of cause</small></div>
+    <div class="arw">↓</div>
+    <div class="node">PRIORITIZE<small>Section 31 framework</small></div>
+    <div class="arw">↓</div>
+    <div class="node key">IMPLEMENT TEST<small>One major variable where practical</small></div>
+    <div class="arw">↓</div>
+    <div class="node">MEASURE<small>Against conversion and quality</small></div>
+    <div class="arw">↓</div>
+    <div class="node">LEARN<small>Including from inconclusive results</small></div>
+    <div class="arw">↓</div>
+    <div class="node win">IMPROVE<small>Apply the finding</small></div>
+    <div class="arw">↓</div>
+    <div class="node acc">REPEAT</div>
+  </div>
+
+  <div class="warn">
+    <div class="label">CRO is ongoing, not a redesign</div>
+    <p style="margin:0">A landing page is never finished. Traffic composition shifts, competitors change their offers, seasons affect Solar demand, and what worked in one quarter may not hold in the next. Treating CRO as a one-time project means the page decays quietly while the budget behind it grows.</p>
+  </div>
+
+  <h3>Writing a usable hypothesis</h3>
+  <p>A hypothesis should name the observation, the proposed cause and the expected effect. Vague intentions cannot be tested.</p>
+  <div class="grid2">
+    <div class="copybox bad"><div class="lb">Too vague</div><p style="margin:0">"Improve the form."</p></div>
+    <div class="copybox"><div class="lb">Testable</div><p style="margin:0">"Form starts are high but completions are low on mobile. We believe the eight-field form is too long for a phone. Reducing it to five fields should increase completion rate."</p></div>
+  </div>
+  <p class="smallnote"><span class="tag tag-ex">Example</span> Structure illustration. The observation must come from the client's own data.</p>
+
+  <hr class="div">
+
+  <div class="secnum">Section 37</div>
+  <h2 class="sec">Smart Pursuit Landing Page SOP</h2>
+
+  <ul class="checklist">
+    <li><div class="n">1</div><div><b>Understand traffic source</b><div class="smallnote">Meta, Google Search, location campaign or remarketing. Determines everything downstream.</div></div></li>
+    <li><div class="n">2</div><div><b>Understand keyword / ad / creative intent</b><div class="smallnote">Read the actual ads and search terms. What is the visitor expecting?</div></div></li>
+    <li><div class="n">3</div><div><b>Define landing-page objective</b><div class="smallnote">One primary conversion action, agreed with the client before design begins.</div></div></li>
+    <li><div class="n">4</div><div><b>Create offer</b><div class="smallnote">Usually the free assessment. Confirm what the client can genuinely deliver.</div></div></li>
+    <li><div class="n">5</div><div><b>Write page structure</b><div class="smallnote">Select sections from Section 6 based on traffic source. Drop what does not earn its place.</div></div></li>
+    <li><div class="n">6</div><div><b>Build page</b><div class="smallnote">Mobile-first, performance-budgeted, verified claims only.</div></div></li>
+    <li><div class="n">7</div><div><b>Connect form / call / WhatsApp</b><div class="smallnote">Test that leads actually arrive, and that someone receives the notification.</div></div></li>
+    <li><div class="n">8</div><div><b>Install tracking</b><div class="smallnote">Full Section 27 event set via tag manager.</div></div></li>
+    <li><div class="n">9</div><div><b>Test mobile and desktop</b><div class="smallnote">Real devices, real network conditions, every contact path.</div></div></li>
+    <li><div class="n">10</div><div><b>Launch</b><div class="smallnote">Only after the Section 38 pre-launch checklist is complete.</div></div></li>
+    <li><div class="n">11</div><div><b>Collect data</b><div class="smallnote">Allow enough time for meaningful volume before drawing conclusions.</div></div></li>
+    <li><div class="n">12</div><div><b>Identify friction</b><div class="smallnote">Section 21 audit plus behavioural data.</div></div></li>
+    <li><div class="n">13</div><div><b>Run CRO tests</b><div class="smallnote">Prioritised per Section 31, one major variable at a time.</div></div></li>
+    <li><div class="n">14</div><div><b>Document results</b><div class="smallnote">Including inconclusive tests. This record becomes Smart Pursuit's genuine expertise over time.</div></div></li>
+  </ul>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">35</span></span></div>
+</section>
+
+<!-- ============ S38 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 38</div>
+  <h2 class="sec">Pre-Launch Checklist</h2>
+  <p class="lead">No Smart Pursuit Solar landing page goes live until every item is confirmed. Campaign spend begins only after this is complete.</p>
+
+  <h4>Offer</h4>
+  <ul class="cbx two">
+    <li>Offer is clear</li>
+    <li>CTA is clear</li>
+    <li>No false claims</li>
+    <li>Savings language hedged correctly</li>
+    <li>Subsidy language uses the approved wording</li>
+    <li>Nothing promised the client cannot deliver</li>
+  </ul>
+
+  <h4>Page</h4>
+  <ul class="cbx two">
+    <li>H1 is clear</li>
+    <li>Ad / page message matches</li>
+    <li>Mobile layout works</li>
+    <li>Forms work</li>
+    <li>Phone works</li>
+    <li>WhatsApp works</li>
+    <li>No horizontal scroll at any breakpoint</li>
+    <li>All images have meaningful alt text</li>
+    <li>Canonical tag correct</li>
+    <li>Meta title and description unique</li>
+    <li>Thank-you page reachable and correct</li>
+    <li>404 and error states handled</li>
+  </ul>
+
+  <h4>Tracking</h4>
+  <ul class="cbx two">
+    <li>Form view tracked</li>
+    <li>Form start tracked</li>
+    <li>Form submit tracked</li>
+    <li>Phone click tracked</li>
+    <li>WhatsApp click tracked</li>
+    <li>Calculator tracked</li>
+    <li>Events verified on a real device</li>
+    <li>Conversion registered in the ad platform</li>
+  </ul>
+
+  <h4>Performance</h4>
+  <ul class="cbx two">
+    <li>Images optimized</li>
+    <li>Mobile speed checked</li>
+    <li>Desktop speed checked</li>
+    <li>Unnecessary scripts removed</li>
+    <li>Hero image preloaded</li>
+    <li>Below-fold images lazy-loaded</li>
+  </ul>
+
+  <h4>Trust</h4>
+  <ul class="cbx two">
+    <li>Company details verified</li>
+    <li>Testimonials verified</li>
+    <li>Project claims verified</li>
+    <li>Certifications verified</li>
+    <li>Image rights confirmed</li>
+    <li>Privacy policy linked from the form</li>
+  </ul>
+
+  <h4>Lead Handling</h4>
+  <ul class="cbx two">
+    <li>Leads reach sales team</li>
+    <li>Notification works</li>
+    <li>Lead response process exists</li>
+    <li>Test lead submitted end to end</li>
+    <li>Response-time expectation agreed</li>
+    <li>Quality feedback loop agreed</li>
+  </ul>
+
+  <div class="warn">
+    <div class="label">The single most important item</div>
+    <p style="margin:0">Submit a real test lead and confirm it arrives, that the notification reaches a person, and that the person knows what to do with it. A page that collects leads nobody receives is the most expensive failure in this document — and it is more common than it should be, because it is invisible from the agency's side of the process.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">36</span></span></div>
+</section>
+
+<!-- ============ S39-40 ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Section 39</div>
+  <h2 class="sec">Smart Pursuit's CRO Principle</h2>
+
+  <div class="principle">
+    <div class="label">The principle</div>
+    <p>Don't optimize a Solar landing page to look better. Optimize it to make the next decision easier for the right visitor.</p>
+  </div>
+
+  <p>Two words carry the weight. <b>Decision</b> — because the visitor is not browsing, they are deciding whether to spend a significant sum on their own roof. And <b>right</b> — because converting the wrong visitor produces a lead the sales team wastes time on and a cost the client absorbs.</p>
+
+  <h3>The sequence a page must support</h3>
+  <div class="flow">
+    <div class="node">What is this?<small>Understood within five seconds of arrival</small></div>
+    <div class="arw">↓</div>
+    <div class="node">Is it relevant to me?<small>My property type, my city, my situation</small></div>
+    <div class="arw">↓</div>
+    <div class="node">Can I trust it?<small>Verifiable company, honest claims, real detail</small></div>
+    <div class="arw">↓</div>
+    <div class="node">What happens if I enquire?<small>Who calls, when, and what it commits me to</small></div>
+    <div class="arw">↓</div>
+    <div class="node key">What should I do next?<small>One obvious action, easy to take</small></div>
+  </div>
+
+  <p>Every section in the architecture exists to answer one of these. A section that answers none of them is decoration, and decoration on a lead-generation page is a cost paid in scroll depth and attention.</p>
+
+  <div class="callout">
+    <div class="label">A test for any proposed change</div>
+    <p style="margin:0">Before making a change, identify which of the five questions it helps answer, and for whom. If the answer is "it looks more modern", the change may still be worth making — but it should not be expected to affect conversion, and it should not be prioritised ahead of something that does.</p>
+  </div>
+
+  <hr class="div">
+
+  <div class="secnum">Section 40</div>
+  <h2 class="sec">The Complete Solar Marketing System So Far</h2>
+
+  <div class="flow">
+    <div class="node acc">SOLAR DEMO WEBSITE<small>The destination and proof of capability</small></div>
+    <div class="arw">↓</div>
+    <div class="node">META ADS<small>Step 4B — demand creation</small></div>
+    <div class="arw">↓</div>
+    <div class="node">GOOGLE ADS<small>Step 4C — demand capture</small></div>
+    <div class="arw">↓</div>
+    <div class="node">LANDING PAGE<small>Step 4D — where traffic becomes intent</small></div>
+    <div class="arw">↓</div>
+    <div class="node key">CRO<small>Step 4D — where intent becomes enquiries</small></div>
+    <div class="arw">↓</div>
+    <div class="node win">LEAD<small>The commercial output</small></div>
+  </div>
+
+  <p>Four components are now built. Individually each is a deliverable; together they are the beginning of a system a client can be shown end to end — how demand is created, how it is captured, where it lands, and how that landing place is improved over time.</p>
+
+  <p>This is what allows a pre-client agency to sell competence honestly. Smart Pursuit is not claiming Solar results it does not have. It is demonstrating a method it can execute from day one, measure from week one, and improve from month one.</p>
+
+  <div class="warn">
+    <div class="label">Positioning note for client conversations</div>
+    <p style="margin:0">Present these as Smart Pursuit's internal standards and frameworks. Never present the examples inside them as campaign results. When a prospect asks "what results have you achieved for Solar clients", the honest answer — that this is a system built specifically for the niche and they would be the first Solar client — is more credible than a vague claim, and it sets a relationship where reporting can be trusted.</p>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">37</span></span></div>
+</section>
+
+<!-- ============ NEXT ============ -->
+<section class="page">
+  <div class="runhead"><span><b>Smart Pursuit</b> · Solar Digital Marketing System</span><span>Step 4D · v1.0</span></div>
+  <div class="secnum">Next Step</div>
+  <h2 class="sec">Step 4E — Tracking &amp; Analytics System</h2>
+  <p class="lead">Step 4D repeatedly depends on measurement that has not yet been formally built. Step 4E builds it.</p>
+
+  <p>Almost every recommendation in this document — the audit, the priority framework, the metrics, the testing discipline — assumes reliable data underneath it. Without that, CRO becomes a series of confident opinions. Step 4E is what makes the rest of this system executable rather than theoretical.</p>
+
+  <div class="card">
+    <div class="grid2">
+      <ol style="margin:0">
+        <li>Google Tag Manager</li>
+        <li>GA4</li>
+        <li>Meta Pixel</li>
+        <li>Conversion API concepts</li>
+        <li>Google Ads conversion tracking</li>
+        <li>UTM parameters</li>
+        <li>Event naming</li>
+        <li>Lead source tracking</li>
+        <li>CRM / spreadsheet tracking</li>
+      </ol>
+      <ol start="10" style="margin:0">
+        <li>Call tracking</li>
+        <li>WhatsApp tracking</li>
+        <li>Funnel reporting</li>
+        <li>Attribution basics</li>
+        <li>Lead quality tracking</li>
+        <li>Dashboard structure</li>
+        <li>Troubleshooting tracking</li>
+        <li>Tracking QA checklist</li>
+      </ol>
+    </div>
+  </div>
+
+  <h3>System status</h3>
+  <ul class="checklist">
+    <li><div class="n">1</div><div><b>Solar Demo Website</b><div class="smallnote">Main site, three landing pages, thank-you page, estimator.</div></div><span class="st done">Built</span></li>
+    <li><div class="n">2</div><div><b>Meta Ads Lead Generation System</b><div class="smallnote">Step 4B — demand creation framework.</div></div><span class="st done">Built</span></li>
+    <li><div class="n">3</div><div><b>Google Ads Lead Generation System</b><div class="smallnote">Step 4C — demand capture framework.</div></div><span class="st done">Built</span></li>
+    <li><div class="n">4</div><div><b>Landing Page + CRO System</b><div class="smallnote">Step 4D — this document.</div></div><span class="st this">This doc</span></li>
+    <li><div class="n">5</div><div><b>Tracking &amp; Analytics System</b><div class="smallnote">Step 4E — measurement layer beneath everything above.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">6</div><div><b>Lead Qualification SOP</b><div class="smallnote">Questions, scoring, handover rules, speed-to-lead standard.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">7</div><div><b>Reporting Dashboard</b><div class="smallnote">Weekly template through to sales outcomes.</div></div><span class="st next">Next</span></li>
+    <li><div class="n">8</div><div><b>Solar Audit</b><div class="smallnote">The pre-sales diagnostic used to open conversations with prospects.</div></div><span class="st next">Next</span></li>
+  </ul>
+
+  <div style="margin-top:10mm; border-top:1px solid var(--line); padding-top:6mm; display:flex; justify-content:space-between; align-items:flex-end">
+    <div>
+      <div class="brandmark" style="filter:none">
+        <div class="dot" style="width:28px;height:28px;font-size:11pt">S</div>
+        <div><div class="name" style="color:var(--ink); font-size:10pt">Smart Pursuit</div>
+        <div class="sub" style="font-size:7pt">Solar Digital Marketing System</div></div>
+      </div>
+    </div>
+    <div class="smallnote" style="text-align:right">
+      <b>Step 4D — Landing Page + CRO System</b><br>
+      India · Version 1.0 · Internal SOP &amp; Client Strategy Framework<br>
+      Contains no client performance data.
+    </div>
+  </div>
+
+  <div class="runfoot"><span>Solar Conversion &amp; Lead Generation Framework</span><span>India · v1.0 · Page <span class="pg">38</span></span></div>
+</section>
+
+</body>
+</html>
